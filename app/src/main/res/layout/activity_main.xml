@@ -72,15 +72,27 @@
         app:srcCompat="@drawable/s1" />
 
     <Button
-        android:id="@+id/buttonStart"
-        android:layout_width="144dp"
-        android:layout_height="93dp"
-        android:text="Start"
-        android:onClick="startGame"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.841" />
+            android:id="@+id/buttonStart"
+            android:layout_width="143dp"
+            android:layout_height="69dp"
+            android:text="@string/start"
+            android:onClick="startGame"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.787"
+            app:layout_constraintHorizontal_bias="0.507" />
+
+    <Button
+            android:text="@string/impostazioni"
+            android:layout_width="147dp"
+            android:layout_height="65dp"
+            android:id="@+id/impostazioni"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.935" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

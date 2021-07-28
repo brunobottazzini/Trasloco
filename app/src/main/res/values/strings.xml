@@ -4,4 +4,6 @@
     <string name="trasloco">Trasloco</string>
     <string name="nessuna_carta_selezionata">Nessuna carta selezionata</string>
     <string name="reset">Reset</string>
+    <string name="start">Start</string>
+    <string name="impostazioni">Impostazioni</string>
 </resources>
