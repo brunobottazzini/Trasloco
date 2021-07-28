@@ -1,4 +1,4 @@
-package com.bottazzini.trasloco
+package com.bottazzini.trasloco.utils
 
 class DeckSetup {
     companion object {
@@ -9,12 +9,11 @@ class DeckSetup {
 
         private fun getOrderedDeck(): List<String> {
             val orderedDeck = ArrayList<String>()
-            for (s in SEMI) {
+            SEMI.forEach { s ->
                 for (i in 1..10) {
                     orderedDeck.add(s + i)
                 }
             }
-
             return orderedDeck
         }
 

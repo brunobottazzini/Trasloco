@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bottazzini.trasloco.utils.CardNameTranslator
+import com.bottazzini.trasloco.utils.DeckSetup
 
 class GameActivity : AppCompatActivity() {
 
@@ -23,7 +24,6 @@ class GameActivity : AppCompatActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.game)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
         supportActionBar?.hide()
 
         DeckSetup.shuffleDeck()
@@ -100,12 +100,12 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun moveCard(
-        cardPosition: Int,
+        desiredCardPosition: Int,
         desiredPosition: String,
         selectedCard: String,
         selectedPositionId: Int
     ) {
-        setImage(cardPosition, selectedCard)
+        setImage(desiredCardPosition, selectedCard)
         val selectedPositionName =
             resources.getResourceEntryName(selectedPositionId).split("subDeck")[1]
 
@@ -138,25 +138,41 @@ class GameActivity : AppCompatActivity() {
 
     private fun canBeInserted(sourceCard: String, movingCard: String, endClickDeck: Boolean): Boolean {
         val sourceSeme = sourceCard.substring(0, 1)
-        val movingSame = movingCard.substring(0, 1)
+        val movingSeme = movingCard.substring(0, 1)
         val movingNumber = movingCard.substring(1, movingCard.length).toInt()
         if (endClickDeck ) {
-            if (sourceCard == "zero") {
-                return movingNumber == 1
-            }
-
-            val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
-            if (sourceSeme == movingSame) {
-                if (sourceNumber == movingNumber - 1) {
-                    return true
-                }
-            }
+            return canBeInsertedEndDeck(
+                sourceCard = sourceCard,
+                sourceSeme = sourceSeme,
+                movingSeme = movingSeme,
+                movingNumber = movingNumber
+            )
         } else {
-            if (sourceSeme == movingSame) {
+            if (sourceSeme == movingSeme) {
                 val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
                 if (sourceNumber - 1 == movingNumber) {
                     return true
                 }
+            }
+        }
+
+        return false
+    }
+
+    private fun canBeInsertedEndDeck(
+        sourceCard: String,
+        sourceSeme: String,
+        movingSeme: String,
+        movingNumber: Int
+    ): Boolean {
+        if (sourceCard == "zero") {
+            return movingNumber == 1
+        }
+
+        val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
+        if (sourceSeme == movingSeme) {
+            if (sourceNumber == movingNumber - 1) {
+                return true
             }
         }
 
@@ -190,6 +206,7 @@ class GameActivity : AppCompatActivity() {
                 val position = "$line${pos}"
                 val imageViewId =
                     resources.getIdentifier("subDeck$position", "id", this.packageName)
+
                 if (getCardName(imageViewId) == "zero") {
                     setImage(imageViewId, cardName)
                     cardTableMap[position] = arrayListOf(cardName)
