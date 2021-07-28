@@ -312,11 +312,11 @@
             android:text="@string/nessuna_carta_selezionata" />
 
     <Button
-            android:text="@string/reset"
+            android:text="@string/undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/resetButton"
-            android:onClick="resetClick"
+            android:onClick="undoClick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

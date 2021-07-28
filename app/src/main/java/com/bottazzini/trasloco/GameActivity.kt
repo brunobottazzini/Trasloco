@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ class GameActivity : AppCompatActivity() {
 
     private var subDeckMap = HashMap<String, List<String>>()
     private var cardTableMap = HashMap<String, ArrayList<String>>()
+    private val playList = HashMap<String, List<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
 
@@ -31,12 +33,16 @@ class GameActivity : AppCompatActivity() {
         prepareTable()
     }
 
-    fun resetClick(view: View) {
-        if (selectedCard != null) {
-            selectedCard = null
-            selectedPositionId = null
-            val textView = findViewById<TextView>(R.id.selectedCardTextView)
-            textView.text = resources.getString(R.string.nessuna_carta_selezionata)
+    fun undoClick(view: View) {
+        if (playList.isNotEmpty()) {
+            val undoSelectedCard = playList.keys.iterator().next()
+            val cardPosition = playList[undoSelectedCard]!![0]
+            val desiredPosition = playList[undoSelectedCard]!![1]
+            val undoPosition = resources.getResourceEntryName(desiredPosition).split("subDeck")[1]
+
+            moveCard(desiredPosition, undoPosition, undoSelectedCard, cardPosition)
+
+            clearUndoButton()
         }
     }
 
@@ -76,33 +82,47 @@ class GameActivity : AppCompatActivity() {
             textView.text = CardNameTranslator.translate(cardName)
         } else {
             if (canBeInserted(cardName, selectedCard!!, isEndDeckClick(desiredPosition))) {
-                moveCard(cardPosition, desiredPosition)
+                moveCard(cardPosition, desiredPosition, selectedCard!!, selectedPositionId!!)
+                if (!isEndDeckClick(desiredPosition)) {
+                    playList[selectedCard!!] = listOf(cardPosition, selectedPositionId!!)
+                } else {
+                    clearUndoButton()
+                }
             }
 
             textView.text = resources.getString(R.string.nessuna_carta_selezionata)
             selectedPositionId = null
             selectedCard = null
         }
+
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isEnabled = playList.isNotEmpty()
     }
 
-    private fun moveCard(cardPosition: Int, desiredPosition: String) {
-        setImage(cardPosition, selectedCard!!)
+    private fun moveCard(
+        cardPosition: Int,
+        desiredPosition: String,
+        selectedCard: String,
+        selectedPositionId: Int
+    ) {
+        setImage(cardPosition, selectedCard)
         val selectedPositionName =
-            resources.getResourceEntryName(selectedPositionId!!).split("subDeck")[1]
+            resources.getResourceEntryName(selectedPositionId).split("subDeck")[1]
 
-        cardTableMap[desiredPosition]?.add(selectedCard!!)
+        cardTableMap[desiredPosition]?.add(selectedCard)
         if (!isEndDeckClick(desiredPosition)) {
             setNumberOfCards(cardTableMap[desiredPosition]!!, desiredPosition)
         }
 
-        cardTableMap[selectedPositionName]!!.remove(selectedCard!!)
+        cardTableMap[selectedPositionName]!!.remove(selectedCard)
         setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
 
         if (cardTableMap[selectedPositionName]!!.isEmpty()) {
-            setImage(selectedPositionId!!, "zero")
+            setImage(selectedPositionId, "zero")
         } else {
-            setImage(selectedPositionId!!, cardTableMap[selectedPositionName]!!.last())
+            setImage(selectedPositionId, cardTableMap[selectedPositionName]!!.last())
         }
+
     }
 
     private fun setNumberOfCards(cardsList: List<String>, position: String) {
@@ -156,7 +176,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun getSubDeckListConcurrentSafely(line: String) : MutableList<String> {
-        var list = ArrayList<String>()
+        val list = ArrayList<String>()
         list.addAll(subDeckMap[line]!!)
         return list
     }
@@ -174,6 +194,8 @@ class GameActivity : AppCompatActivity() {
                     setImage(imageViewId, cardName)
                     cardTableMap[position] = arrayListOf(cardName)
                     iterator.remove()
+
+                    clearUndoButton()
                     break
                 }
             }
@@ -192,5 +214,10 @@ class GameActivity : AppCompatActivity() {
     private fun getCardName(cardPosition: Int): String {
         val imageView = findViewById<ImageView>(cardPosition)
         return (imageView.tag) as String
+    }
+
+    private fun clearUndoButton() {
+        findViewById<Button>(R.id.resetButton).isEnabled = false
+        playList.clear()
     }
 }
