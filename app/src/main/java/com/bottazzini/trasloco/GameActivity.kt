@@ -40,6 +40,11 @@ class GameActivity : AppCompatActivity() {
 
     fun subDeckClick(view: View) {
         val cardPosition = view.id
+        val cardName = getCardName(cardPosition)
+        if (cardName == "zero") {
+            return
+        }
+
         val imageView = findViewById<ImageView>(cardPosition)
         val line = (imageView.tag) as String
         val subDeck = getSubDeckListConcurrentSafely(line)
@@ -54,16 +59,20 @@ class GameActivity : AppCompatActivity() {
     fun gameCardClick(view: View) {
         val cardPosition = view.id
         val cardName = getCardName(cardPosition)
+        val desiredPosition = resources.getResourceEntryName(cardPosition).split("subDeck")[1]
+        if (cardName == "zero" && !isEndDeckClick(desiredPosition)) {
+            return
+        }
+
         val textView = findViewById<TextView>(R.id.selectedCardTextView)
         if (selectedCard == null) {
-            if (isEndDeckClick(resources.getResourceEntryName(cardPosition).split("subDeck")[1])) {
+            if (isEndDeckClick(desiredPosition)) {
                 return
             }
             selectedCard = cardName
             selectedPositionId = view.id
             textView.text = CardNameTranslator.translate(cardName)
         } else {
-            val desiredPosition = resources.getResourceEntryName(cardPosition).split("subDeck")[1]
             if (canBeInserted(cardName, selectedCard!!, isEndDeckClick(desiredPosition))) {
                 moveCard(cardPosition, desiredPosition)
             }
