@@ -126,8 +126,10 @@ class GameActivity : AppCompatActivity() {
             }
 
             val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
-            if (sourceNumber == movingNumber - 1) {
-                return true
+            if (sourceSeme == movingSame) {
+                if (sourceNumber == movingNumber - 1) {
+                    return true
+                }
             }
         } else {
             if (sourceSeme == movingSame) {
