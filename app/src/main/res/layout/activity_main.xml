@@ -24,7 +24,6 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autofillHints=""
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
