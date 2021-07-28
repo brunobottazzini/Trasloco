@@ -1,6 +1,7 @@
 package com.bottazzini.trasloco
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     fun startGame(view: View) {
