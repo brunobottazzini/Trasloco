@@ -8,13 +8,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import com.bottazzini.trasloco.utils.CardNameTranslator
 import com.bottazzini.trasloco.utils.DeckSetup
-
 class GameActivity : AppCompatActivity() {
 
+    private var coppiedSubDeckMap = HashMap<String, List<String>>()
     private var subDeckMap = HashMap<String, List<String>>()
     private var cardTableMap = HashMap<String, ArrayList<String>>()
+    private var endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+
     private val playList = HashMap<String, List<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
@@ -26,10 +29,35 @@ class GameActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         supportActionBar?.hide()
 
+        startNewGame()
+
+    }
+
+    fun startNewGame(view: View) {
+        startNewGame()
+    }
+
+    fun startNewGame() {
+        zeroFill()
         DeckSetup.shuffleDeck()
         DeckSetup.prepareSubDecks()
         subDeckMap = DeckSetup.getSubDeckMap()
+        coppiedSubDeckMap = HashMap(subDeckMap)
 
+        prepareTextAndButtonForNewGame()
+        prepareTable()
+    }
+
+    fun retryGame(view: View) {
+        zeroFill()
+        cardTableMap.clear()
+        endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+        playList.clear()
+        selectedCard = null
+        selectedPositionId = null
+        subDeckMap = HashMap(coppiedSubDeckMap)
+
+        prepareTextAndButtonForNewGame()
         prepareTable()
     }
 
@@ -62,6 +90,10 @@ class GameActivity : AppCompatActivity() {
                 setImage(cardPosition, "zero")
             }
         }
+
+        if (hasReachedLostConditions()) {
+            showYouLost()
+        }
     }
 
     fun gameCardClick(view: View) {
@@ -86,7 +118,17 @@ class GameActivity : AppCompatActivity() {
                 if (!isEndDeckClick(desiredPosition)) {
                     playList[selectedCard!!] = listOf(cardPosition, selectedPositionId!!)
                 } else {
+                    val line = desiredPosition.first()
+                    endDeckList[line.toString()] = selectedCard!!
                     clearUndoButton()
+                }
+
+                if (hasReachedWonConditions()) {
+                    showYouWon()
+                    return
+                } else if (hasReachedLostConditions()) {
+                    showYouLost()
+                    return
                 }
             }
 
@@ -136,11 +178,15 @@ class GameActivity : AppCompatActivity() {
 
     private fun isEndDeckClick(positionName: String) = positionName.last() == '4'
 
-    private fun canBeInserted(sourceCard: String, movingCard: String, endClickDeck: Boolean): Boolean {
+    private fun canBeInserted(
+        sourceCard: String,
+        movingCard: String,
+        endClickDeck: Boolean
+    ): Boolean {
         val sourceSeme = sourceCard.substring(0, 1)
         val movingSeme = movingCard.substring(0, 1)
         val movingNumber = movingCard.substring(1, movingCard.length).toInt()
-        if (endClickDeck ) {
+        if (endClickDeck) {
             return canBeInsertedEndDeck(
                 sourceCard = sourceCard,
                 sourceSeme = sourceSeme,
@@ -180,7 +226,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun getDrawableByName(imageName: String) =
-            resources.getIdentifier("drawable/$imageName", "id", this.packageName)
+        resources.getIdentifier("drawable/$imageName", "id", this.packageName)
 
     private fun getTextViewByName(textName: String) =
         resources.getIdentifier("textView$textName", "id", this.packageName)
@@ -191,10 +237,98 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSubDeckListConcurrentSafely(line: String) : MutableList<String> {
+    private fun getSubDeckListConcurrentSafely(line: String): MutableList<String> {
         val list = ArrayList<String>()
         list.addAll(subDeckMap[line]!!)
         return list
+    }
+
+    private fun hasReachedWonConditions() =
+        endDeckList.values.count { card -> card.substring(1, card.length) == "10" } == 4
+
+    private fun hasReachedLostConditions(): Boolean {
+        if (canDealCard()) {
+            return false
+        }
+
+        return !canMoveCard()
+    }
+
+    private fun canMoveCard(): Boolean {
+        for (tableMap in cardTableMap.entries) {
+            if (tableMap.value.isEmpty()) {
+                continue
+            }
+
+            val currentCard = tableMap.value.last()
+            if (currentCard == "zero") {
+                continue
+            }
+
+            for (endPos in listOf("14", "24", "34", "44")) {
+                val line = endPos.substring(0, 1)
+                val endCard = endDeckList[line]
+                if (endCard != "zero") {
+                    if (canBeInserted(
+                            endCard!!,
+                            currentCard,
+                            isEndDeckClick(endPos)
+                        )
+                    ) {
+                        return true
+                    }
+                }
+            }
+
+            for (destinationTableMap in cardTableMap.entries) {
+                val desiredPosition = destinationTableMap.key
+
+                if (destinationTableMap.value.isEmpty()) {
+                    continue
+                }
+
+                val destinationCard = destinationTableMap.value.last()
+                if (destinationCard == "zero") {
+                    continue
+                }
+
+                when {
+                    canBeInserted(
+                        currentCard,
+                        destinationCard,
+                        isEndDeckClick(desiredPosition)
+                    ) -> {
+                        return true
+                    }
+                    canBeInserted(
+                        destinationCard,
+                        currentCard,
+                        isEndDeckClick(desiredPosition)
+                    ) -> {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    private fun canDealCard(): Boolean {
+        for (line in listOf("1", "2", "3", "4")) {
+            val subDeck = subDeckMap[line]
+            if (subDeck?.isNotEmpty() == true) {
+                for (pos in 1..3) {
+                    val position = "$line${pos}"
+                    val imageViewId =
+                        resources.getIdentifier("subDeck$position", "id", this.packageName)
+                    if (getCardName(imageViewId) == "zero") {
+                        return true
+                    }
+                }
+            }
+        }
+
+        return false
     }
 
     private fun dealCard(line: String) {
@@ -237,4 +371,50 @@ class GameActivity : AppCompatActivity() {
         findViewById<Button>(R.id.resetButton).isEnabled = false
         playList.clear()
     }
+
+    private fun prepareTextAndButtonForNewGame() {
+        findViewById<Button>(R.id.resetButton).isInvisible = false
+        findViewById<TextView>(R.id.selectedCardTextView).isInvisible = false
+        findViewById<TextView>(R.id.lostTextView).isInvisible = true
+        findViewById<Button>(R.id.retryButton).isInvisible = true
+        findViewById<Button>(R.id.newGameButton).isInvisible = true
+    }
+
+    private fun showYouLost() {
+        findViewById<Button>(R.id.resetButton).isInvisible = true
+        findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
+        findViewById<TextView>(R.id.lostTextView).text = "Hai perso"
+        findViewById<TextView>(R.id.lostTextView).isInvisible = false
+        findViewById<Button>(R.id.retryButton).isInvisible = false
+        findViewById<Button>(R.id.newGameButton).isInvisible = false
+    }
+
+    private fun showYouWon() {
+        findViewById<Button>(R.id.resetButton).isInvisible = true
+        findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
+        findViewById<TextView>(R.id.lostTextView).text = "Hai vintooooooo!!!"
+        findViewById<TextView>(R.id.lostTextView).isInvisible = false
+        findViewById<Button>(R.id.retryButton).isInvisible = false
+        findViewById<Button>(R.id.newGameButton).isInvisible = false
+    }
+
+    private fun zeroFill() {
+        for (line in listOf("1", "2", "3", "4")) {
+            val hideCardDeck =
+                resources.getIdentifier("subDeck$line", "id", this.packageName)
+            findViewById<ImageView>(hideCardDeck).setImageResource(R.drawable.bg)
+            for (pos in 1..4) {
+                val position = "$line${pos}"
+                val imageViewId =
+                    resources.getIdentifier("subDeck$position", "id", this.packageName)
+                setImage(imageViewId, "zero")
+
+                if (!isEndDeckClick(position)) {
+                    val textView = findViewById<TextView>(getTextViewByName(position))
+                    textView.text = ""
+                }
+            }
+        }
+    }
 }
+
