@@ -16,7 +16,7 @@ class GameActivity : AppCompatActivity() {
     private var coppiedSubDeckMap = HashMap<String, List<String>>()
     private var subDeckMap = HashMap<String, List<String>>()
     private var cardTableMap = HashMap<String, ArrayList<String>>()
-    private var endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+    private var endDeckList = HashMap<String, String>()
 
     private val playList = HashMap<String, List<Int>>()
     private var selectedCard: String? = null
@@ -39,6 +39,7 @@ class GameActivity : AppCompatActivity() {
 
     fun startNewGame() {
         zeroFill()
+        endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
         DeckSetup.shuffleDeck()
         DeckSetup.prepareSubDecks()
         subDeckMap = DeckSetup.getSubDeckMap()
@@ -394,7 +395,7 @@ class GameActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<TextView>(R.id.lostTextView).text = "Hai vintooooooo!!!"
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
-        findViewById<Button>(R.id.retryButton).isInvisible = false
+        findViewById<Button>(R.id.retryButton).isInvisible = true
         findViewById<Button>(R.id.newGameButton).isInvisible = false
     }
 
@@ -403,6 +404,7 @@ class GameActivity : AppCompatActivity() {
             val hideCardDeck =
                 resources.getIdentifier("subDeck$line", "id", this.packageName)
             findViewById<ImageView>(hideCardDeck).setImageResource(R.drawable.bg)
+            findViewById<ImageView>(hideCardDeck).tag = line
             for (pos in 1..4) {
                 val position = "$line${pos}"
                 val imageViewId =
