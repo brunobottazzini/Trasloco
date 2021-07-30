@@ -278,6 +278,11 @@ class GameActivity : AppCompatActivity() {
                     ) {
                         return true
                     }
+                } else {
+                    val currentCardNumber = currentCard.substring(1, currentCard.length)
+                    if (currentCardNumber == "1" && endCard == "zero") {
+                        return true
+                    }
                 }
             }
 
