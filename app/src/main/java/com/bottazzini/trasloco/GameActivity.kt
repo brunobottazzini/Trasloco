@@ -22,6 +22,10 @@ class GameActivity : AppCompatActivity() {
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
 
+    companion object {
+        private const val ENABLED_FAST_END_DECK_CLICK = true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -122,6 +126,20 @@ class GameActivity : AppCompatActivity() {
                     val line = desiredPosition.first()
                     endDeckList[line.toString()] = selectedCard!!
                     clearUndoButton()
+
+                    if (ENABLED_FAST_END_DECK_CLICK) {
+                        val selectedPositionName =
+                            resources.getResourceEntryName(selectedPositionId!!).split("subDeck")[1]
+
+                        if (cardTableMap[selectedPositionName]!!.isNotEmpty()) {
+                            forceCardsEndDeck(
+                                selectedPositionId!!,
+                                selectedPositionName,
+                                cardPosition,
+                                line.toString()
+                            )
+                        }
+                    }
                 }
 
                 if (hasReachedWonConditions()) {
@@ -136,11 +154,27 @@ class GameActivity : AppCompatActivity() {
             textView.text = resources.getString(R.string.nessuna_carta_selezionata)
             selectedPositionId = null
             selectedCard = null
+
         }
 
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
     }
+
+    private fun forceCardsEndDeck(
+        selectedPositionId: Int,
+        selectedPositionName: String,
+        desiredCardPositionId: Int,
+        line: String
+    ) {
+        val lastCard = cardTableMap[selectedPositionName]!!.first()
+        cardTableMap[selectedPositionName]!!.clear()
+        setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
+        setImage(selectedPositionId, "zero")
+        setImage(desiredCardPositionId, lastCard)
+        endDeckList[line] = lastCard
+    }
+
 
     private fun moveCard(
         desiredCardPosition: Int,
