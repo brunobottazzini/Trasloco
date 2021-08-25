@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/settingsConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/verde"
+        tools:context=".SettingsActivity">
+
+    <TextView
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="211dp"
+            android:layout_height="46dp"
+            android:ems="10"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:inputType="textPersonName"
+            android:text="@string/impostazioni"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.023" />
+
+    <Switch
+            android:text="@string/fast_deal"
+            android:layout_width="238dp"
+            android:layout_height="55dp"
+            android:id="@+id/switchFastDeal"
+            android:onClick="changeFastDeal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintVertical_bias="0.172" />
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintVertical_bias="0.295">
+
+        <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/bg"
+                android:onClick="setBackCard"
+                android:tag="bg"
+                android:id="@+id/bg" />
+
+        <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/bg2"
+                android:onClick="setBackCard"
+                android:tag="bg2"
+                android:id="@+id/bg2" />
+
+        <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="setBackCard"
+                android:drawableRight="@drawable/bg3"
+                android:tag="bg3"
+                android:id="@+id/bg3" />
+    </RadioGroup>
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.848"
+            app:layout_constraintHorizontal_bias="0.506">
+
+        <RadioButton
+                android:text="@string/panno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="panno"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton8" />
+
+        <RadioButton
+                android:text="@string/legno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="legno"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton7" />
+
+        <RadioButton
+                android:text="@string/sabbia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="sabbia"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton6" />
+
+        <RadioButton
+                android:text="@string/tappeto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="tappeto"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton4" />
+
+        <RadioButton
+                android:text="@string/tavolo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="tavolo"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton5" />
+
+        <RadioButton
+                android:text="@string/verde"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="verde"
+                android:onClick="setBackGround"
+                android:id="@+id/radioButton9" />
+    </RadioGroup>
+
+    <TextView
+            android:text="@string/sfondo"
+            android:autoSizeTextType="uniform"
+            android:layout_width="79dp"
+            android:layout_height="27dp"
+            android:id="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.495"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

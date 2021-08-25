@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/verde"
-    android:onClick="startGame"
+    android:background="@drawable/legno"
     tools:context=".MainActivity">
 
     <ImageView
@@ -20,20 +20,21 @@
         app:layout_constraintVertical_bias="0.59"
         app:srcCompat="@drawable/b1" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="@string/trasloco"
-        app:layout_constraintBottom_toTopOf="@+id/imageView6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.242" />
+    <TextView
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="200dp"
+            android:layout_height="64dp"
+            android:ems="10"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:inputType="textPersonName"
+            android:text="@string/trasloco"
+            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.242" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -72,15 +73,27 @@
         app:srcCompat="@drawable/s1" />
 
     <Button
-        android:id="@+id/buttonStart"
-        android:layout_width="144dp"
-        android:layout_height="93dp"
-        android:text="@string/start"
-        android:onClick="startGame"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.841" />
+            android:id="@+id/buttonStart"
+            android:layout_width="197dp"
+            android:layout_height="65dp"
+            android:text="@string/start"
+            android:onClick="startGame"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.767" />
+
+    <Button
+            android:id="@+id/buttonSetting"
+            android:layout_width="197dp"
+            android:layout_height="65dp"
+            android:text="@string/impostazioni"
+            android:onClick="openSettings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.896" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
