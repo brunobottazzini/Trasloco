@@ -8,11 +8,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
+import com.bottazzini.trasloco.settings.Configuration
+import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.CardNameTranslator
 import com.bottazzini.trasloco.utils.DeckSetup
+
 class GameActivity : AppCompatActivity() {
 
+    private lateinit var settingsHandler: SettingsHandler
     private var coppiedSubDeckMap = HashMap<String, List<String>>()
     private var subDeckMap = HashMap<String, List<String>>()
     private var cardTableMap = HashMap<String, ArrayList<String>>()
@@ -21,10 +27,7 @@ class GameActivity : AppCompatActivity() {
     private val playList = HashMap<String, List<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
-
-    companion object {
-        private const val ENABLED_FAST_END_DECK_CLICK = true
-    }
+    private var enabledFastEndDeckClick = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +35,9 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.game)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         supportActionBar?.hide()
-
+        settingsHandler = SettingsHandler(applicationContext)
+        processSettings()
         startNewGame()
-
     }
 
     fun startNewGame(view: View) {
@@ -42,27 +45,19 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun startNewGame() {
-        zeroFill()
-        endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+        prePrepareTable()
         DeckSetup.shuffleDeck()
         DeckSetup.prepareSubDecks()
         subDeckMap = DeckSetup.getSubDeckMap()
         coppiedSubDeckMap = HashMap(subDeckMap)
-
-        prepareTextAndButtonForNewGame()
         prepareTable()
     }
 
     fun retryGame(view: View) {
-        zeroFill()
+        prePrepareTable()
         cardTableMap.clear()
-        endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
         playList.clear()
-        selectedCard = null
-        selectedPositionId = null
         subDeckMap = HashMap(coppiedSubDeckMap)
-
-        prepareTextAndButtonForNewGame()
         prepareTable()
     }
 
@@ -127,7 +122,7 @@ class GameActivity : AppCompatActivity() {
                     endDeckList[line.toString()] = selectedCard!!
                     clearUndoButton()
 
-                    if (ENABLED_FAST_END_DECK_CLICK) {
+                    if (enabledFastEndDeckClick) {
                         val selectedPositionName =
                             resources.getResourceEntryName(selectedPositionId!!).split("subDeck")[1]
 
@@ -151,14 +146,18 @@ class GameActivity : AppCompatActivity() {
                 }
             }
 
-            textView.text = resources.getString(R.string.nessuna_carta_selezionata)
-            selectedPositionId = null
-            selectedCard = null
-
+            clearCardSelection()
         }
 
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
+    }
+
+    private fun clearCardSelection() {
+        val textView = findViewById<TextView>(R.id.selectedCardTextView)
+        textView.text = resources.getString(R.string.nessuna_carta_selezionata)
+        selectedPositionId = null
+        selectedCard = null
     }
 
     private fun forceCardsEndDeck(
@@ -442,7 +441,6 @@ class GameActivity : AppCompatActivity() {
         for (line in listOf("1", "2", "3", "4")) {
             val hideCardDeck =
                 resources.getIdentifier("subDeck$line", "id", this.packageName)
-            findViewById<ImageView>(hideCardDeck).setImageResource(R.drawable.bg)
             findViewById<ImageView>(hideCardDeck).tag = line
             for (pos in 1..4) {
                 val position = "$line${pos}"
@@ -456,6 +454,45 @@ class GameActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun prePrepareTable() {
+        clearCardSelection()
+        zeroFill()
+        endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+        prepareTextAndButtonForNewGame()
+    }
+
+    private fun processSettings() {
+        val fastDealValue = settingsHandler.readValue(Configuration.FAST_DEAL.value)
+        if (fastDealValue != "enabled") enabledFastEndDeckClick = false
+
+        val backCardValue = settingsHandler.readValue(Configuration.CARD_BACK.value)
+        setBackCards(backCardValue!!)
+
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
+        val drawable = getDrawableByName(backgroundConf!!)
+        val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
+        layout.background = ContextCompat.getDrawable(this, drawable)
+
+    }
+
+    private fun setBackCards(imageName: String) {
+        for (line in listOf("1", "2", "3", "4")) {
+            setBackDeckCard(imageName, line)
+        }
+    }
+
+    private fun setBackDeckCard(imageName: String, position: String) {
+        val imageViewId =
+            resources.getIdentifier("subDeck$position", "id", this.packageName)
+        val imageView = findViewById<ImageView>(imageViewId)
+        imageView.setImageResource(getDrawableByName(imageName))
+    }
+
+    override fun onDestroy() {
+        settingsHandler.close()
+        super.onDestroy()
     }
 }
 
