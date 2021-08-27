@@ -19,6 +19,8 @@ class DeckSetup {
 
         fun getSubDeckMap() = subDeckMap
 
+        fun getRandomDeck() = randomDeck
+
         fun prepareSubDecks() {
             subDeckMap["1"] = randomDeck.subList(0, 10)
             subDeckMap["2"] = randomDeck.subList(10, 20)

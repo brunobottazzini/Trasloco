@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.ResourceUtils
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -53,8 +54,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun changeBackGround() {
-        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
-        val drawable = resources.getIdentifier("drawable/$backgroundConf", "id", this.packageName)
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)!!
+        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
         val layout = findViewById<ConstraintLayout>(R.id.settingsConstraintLayout)
         layout.background = ContextCompat.getDrawable(this, drawable)
     }

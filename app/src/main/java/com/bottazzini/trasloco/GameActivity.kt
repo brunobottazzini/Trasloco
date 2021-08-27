@@ -15,6 +15,7 @@ import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.CardNameTranslator
 import com.bottazzini.trasloco.utils.DeckSetup
+import com.bottazzini.trasloco.utils.ResourceUtils
 
 class GameActivity : AppCompatActivity() {
 
@@ -259,9 +260,6 @@ class GameActivity : AppCompatActivity() {
         return false
     }
 
-    private fun getDrawableByName(imageName: String) =
-        resources.getIdentifier("drawable/$imageName", "id", this.packageName)
-
     private fun getTextViewByName(textName: String) =
         resources.getIdentifier("textView$textName", "id", this.packageName)
 
@@ -396,7 +394,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun setImage(position: Int, imageName: String) {
         val imageView = findViewById<ImageView>(position)
-        val id = getDrawableByName(imageName)
+        val id = ResourceUtils.getDrawableByName(resources, this.packageName, imageName)
         imageView.setImageResource(id)
         imageView.tag = imageName
     }
@@ -441,6 +439,8 @@ class GameActivity : AppCompatActivity() {
         for (line in listOf("1", "2", "3", "4")) {
             val hideCardDeck =
                 resources.getIdentifier("subDeck$line", "id", this.packageName)
+            val backCardValue = settingsHandler.readValue(Configuration.CARD_BACK.value)!!
+            setBackDeckCard(backCardValue, line)
             findViewById<ImageView>(hideCardDeck).tag = line
             for (pos in 1..4) {
                 val position = "$line${pos}"
@@ -471,7 +471,7 @@ class GameActivity : AppCompatActivity() {
         setBackCards(backCardValue!!)
 
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
-        val drawable = getDrawableByName(backgroundConf!!)
+        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
         val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
         layout.background = ContextCompat.getDrawable(this, drawable)
 
@@ -487,7 +487,13 @@ class GameActivity : AppCompatActivity() {
         val imageViewId =
             resources.getIdentifier("subDeck$position", "id", this.packageName)
         val imageView = findViewById<ImageView>(imageViewId)
-        imageView.setImageResource(getDrawableByName(imageName))
+        imageView.setImageResource(
+            ResourceUtils.getDrawableByName(
+                resources,
+                this.packageName,
+                imageName
+            )
+        )
     }
 
     override fun onDestroy() {

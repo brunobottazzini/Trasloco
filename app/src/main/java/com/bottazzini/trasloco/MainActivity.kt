@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.DeckSetup
+import com.bottazzini.trasloco.utils.ResourceUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,12 +28,13 @@ class MainActivity : AppCompatActivity() {
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()
         changeBackground()
-
+        showRandomCards()
     }
 
     override fun onResume() {
         super.onResume()
         changeBackground()
+        showRandomCards()
     }
 
     private fun changeBackground() {
@@ -53,5 +57,23 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
+    }
+
+    private fun showRandomCards() {
+        DeckSetup.shuffleDeck()
+        val randomDeck = DeckSetup.getRandomDeck()
+
+        for (i in 1..4) {
+            val imageViewId =
+                resources.getIdentifier("c$i", "id", this.packageName)
+            val imageView = findViewById<ImageView>(imageViewId)
+            imageView.setImageResource(
+                ResourceUtils.getDrawableByName(
+                    resources,
+                    this.packageName,
+                    randomDeck[i]
+                )
+            )
+        }
     }
 }
