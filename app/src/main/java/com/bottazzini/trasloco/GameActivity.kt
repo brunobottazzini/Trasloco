@@ -52,6 +52,9 @@ class GameActivity : AppCompatActivity() {
         subDeckMap = DeckSetup.getSubDeckMap()
         coppiedSubDeckMap = HashMap(subDeckMap)
         prepareTable()
+        if (hasReachedLostConditions()) {
+            startNewGame()
+        }
     }
 
     fun retryGame(view: View) {
