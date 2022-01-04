@@ -16,6 +16,9 @@ import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.CardNameTranslator
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class GameActivity : AppCompatActivity() {
 
@@ -25,7 +28,7 @@ class GameActivity : AppCompatActivity() {
     private var cardTableMap = HashMap<String, ArrayList<String>>()
     private var endDeckList = HashMap<String, String>()
 
-    private val playList = HashMap<String, List<Int>>()
+    private var playList = HashMap<String, LinkedList<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
     private var enabledFastEndDeckClick = true
@@ -60,7 +63,7 @@ class GameActivity : AppCompatActivity() {
     fun retryGame(view: View) {
         prePrepareTable()
         cardTableMap.clear()
-        playList.clear()
+        newPlayList()
         subDeckMap = HashMap(coppiedSubDeckMap)
         prepareTable()
     }
@@ -120,7 +123,8 @@ class GameActivity : AppCompatActivity() {
             if (canBeInserted(cardName, selectedCard!!, isEndDeckClick(desiredPosition))) {
                 moveCard(cardPosition, desiredPosition, selectedCard!!, selectedPositionId!!)
                 if (!isEndDeckClick(desiredPosition)) {
-                    playList[selectedCard!!] = listOf(cardPosition, selectedPositionId!!)
+                    newPlayList()
+                    playList[selectedCard!!] = linkedListOf(cardPosition, selectedPositionId!!)
                 } else {
                     val line = desiredPosition.first()
                     endDeckList[line.toString()] = selectedCard!!
@@ -409,7 +413,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun clearUndoButton() {
         findViewById<Button>(R.id.resetButton).isEnabled = false
-        playList.clear()
+        newPlayList()
     }
 
     private fun prepareTextAndButtonForNewGame() {
@@ -499,9 +503,19 @@ class GameActivity : AppCompatActivity() {
         )
     }
 
+    private fun linkedListOf(val1: Int, val2: Int): LinkedList<Int> {
+        val linkedList = LinkedList<Int>()
+        linkedList.add(val1)
+        linkedList.add(val2)
+        return linkedList
+    }
+
+    private fun newPlayList() {
+        playList = HashMap()
+    }
+
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
     }
 }
-
