@@ -17,14 +17,19 @@ allprojects {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.bottazzini.trasloco"
-        minSdkVersion 26
-        targetSdkVersion 30
+        compileSdk = 34 // Or at least 31, but 34 is recommended
         versionCode 1
         versionName "1.0"
+
+        defaultConfig {
+            applicationId = "com.bottazzini.trasloco"
+            minSdk = 24
+            targetSdk = 34 // It's good practice to keep targetSdk updated as well
+            // ...
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +47,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.bottazzini.trasloco'
 
 }
 
@@ -53,6 +59,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

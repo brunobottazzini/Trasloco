@@ -17,6 +17,7 @@
             android:autoSizeTextType="uniform"
             android:inputType="textPersonName"
             android:text="@string/impostazioni"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +31,7 @@
             android:layout_height="55dp"
             android:id="@+id/switchFastDeal"
             android:onClick="changeFastDeal"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -88,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tag="panno"
+                android:textColor="@color/white"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton8" />
 
@@ -96,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tag="legno"
+                android:textColor="@color/white"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton7" />
 
@@ -104,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tag="sabbia"
+                android:textColor="@color/white"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton6" />
 
@@ -112,6 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="tappeto"
+                android:textColor="@color/white"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton4" />
 
@@ -119,6 +125,7 @@
                 android:text="@string/tavolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:tag="tavolo"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton5" />
@@ -127,6 +134,7 @@
                 android:text="@string/verde"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+            android:textColor="@color/white"
                 android:tag="verde"
                 android:onClick="setBackGround"
                 android:id="@+id/radioButton9" />
@@ -138,6 +146,7 @@
             android:layout_width="79dp"
             android:layout_height="27dp"
             android:id="@+id/textView"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
