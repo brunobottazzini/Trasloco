@@ -1,20 +1,21 @@
 <resources>
-    <string name="app_name">Trasloco</string>
-    <string name="title">Trasloco</string>
-    <string name="trasloco">Trasloco</string>
-    <string name="nessuna_carta_selezionata">Nessuna carta selezionata</string>
-    <string name="undo">Annulla</string>
-    <string name="hai_perso">Hai perso</string>
-    <string name="nuova_partita">Nuova partita</string>
-    <string name="riprova">Riprova</string>
-    <string name="start">Gioca</string>
-    <string name="impostazioni">Impostazioni</string>
-    <string name="fast_deal">Trasferisci intero mazzo</string>
-    <string name="sfondo">Sfondo</string>
-    <string name="panno">Panno</string>
-    <string name="legno">Legno</string>
-    <string name="sabbia">Sabbia</string>
-    <string name="tappeto">Tappeto</string>
-    <string name="tavolo">Tavolo</string>
-    <string name="verde">Verde</string>
+    <string name="app_name" translatable="false">Trasloco</string>
+    <string name="title" translatable="false">Trasloco</string>
+    <string name="trasloco" translatable="false">Trasloco</string>
+    <string name="invaild_move">Invalid Move</string>
+    <string name="undo">Undo</string>
+    <string name="hai_perso">You lost</string>
+    <string name="nuova_partita">New Game</string>
+    <string name="riprova">Retry</string>
+    <string name="start">Play</string>
+    <string name="impostazioni">Settings</string>
+    <string name="fast_deal">Transfer entire deck</string>
+    <string name="sfondo">Background</string>
+    <string name="panno">Cloth</string>
+    <string name="legno">Wood</string>
+    <string name="sabbia">Sand</string>
+    <string name="tappeto">Carpet</string>
+    <string name="tavolo">Table</string>
+    <string name="verde">Green</string>
+    <string name="hai_vinto">You Won!!!</string>
 </resources>

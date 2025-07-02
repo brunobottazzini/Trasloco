@@ -9,35 +9,33 @@
         tools:context=".SettingsActivity">
 
     <TextView
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="211dp"
-            android:layout_height="46dp"
-            android:ems="10"
-            android:gravity="center"
-            android:autoSizeTextType="uniform"
-            android:inputType="textPersonName"
-            android:text="@string/impostazioni"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.023" />
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="211dp"
+        android:layout_height="46dp"
+        android:autoSizeTextType="uniform"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="@string/impostazioni"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.14" />
 
     <Switch
-            android:text="@string/fast_deal"
-            android:layout_width="238dp"
-            android:layout_height="55dp"
-            android:id="@+id/switchFastDeal"
-            android:onClick="changeFastDeal"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.507"
-            app:layout_constraintVertical_bias="0.172" />
+        android:id="@+id/switchFastDeal"
+        android:layout_width="238dp"
+        android:layout_height="55dp"
+        android:onClick="changeFastDeal"
+        android:text="@string/fast_deal"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
             android:layout_width="wrap_content"
@@ -76,81 +74,82 @@
     </RadioGroup>
 
     <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.848">
+
+        <RadioButton
+            android:id="@+id/radioButton8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setBackGround"
+            android:tag="panno"
+            android:text="@string/panno"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/radioButton7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setBackGround"
+            android:tag="legno"
+            android:text="@string/legno"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/radioButton6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setBackGround"
+            android:tag="sabbia"
+            android:text="@string/sabbia"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.848"
-            app:layout_constraintHorizontal_bias="0.506">
+            android:onClick="setBackGround"
+            android:tag="tappeto"
+            android:text="@string/tappeto"
+            android:textColor="@color/white" />
 
         <RadioButton
-                android:text="@string/panno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:tag="panno"
-                android:textColor="@color/white"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton8" />
+            android:id="@+id/radioButton5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setBackGround"
+            android:tag="tavolo"
+            android:text="@string/tavolo"
+            android:textColor="@color/white" />
 
         <RadioButton
-                android:text="@string/legno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:tag="legno"
-                android:textColor="@color/white"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton7" />
-
-        <RadioButton
-                android:text="@string/sabbia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:tag="sabbia"
-                android:textColor="@color/white"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton6" />
-
-        <RadioButton
-                android:text="@string/tappeto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:tag="tappeto"
-                android:textColor="@color/white"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton4" />
-
-        <RadioButton
-                android:text="@string/tavolo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:tag="tavolo"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton5" />
-
-        <RadioButton
-                android:text="@string/verde"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-            android:textColor="@color/white"
-                android:tag="verde"
-                android:onClick="setBackGround"
-                android:id="@+id/radioButton9" />
+            android:id="@+id/radioButton9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="setBackGround"
+            android:tag="verde"
+            android:text="@string/verde"
+            android:textColor="@color/white" />
     </RadioGroup>
 
     <TextView
-            android:text="@string/sfondo"
-            android:autoSizeTextType="uniform"
-            android:layout_width="79dp"
-            android:layout_height="27dp"
-            android:id="@+id/textView"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.495"
-            app:layout_constraintEnd_toEndOf="parent" />
+        android:id="@+id/textView"
+        android:layout_width="79dp"
+        android:layout_height="27dp"
+        android:autoSizeTextType="uniform"
+        android:text="@string/sfondo"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.612" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

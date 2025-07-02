@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
-import com.bottazzini.trasloco.utils.CardNameTranslator
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
 import java.util.*
@@ -98,6 +97,8 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
+        clearCardSelection()
+
         if (hasReachedLostConditions()) {
             showYouLost()
         }
@@ -107,18 +108,20 @@ class GameActivity : AppCompatActivity() {
         val cardPosition = view.id
         val cardName = getCardName(cardPosition)
         val desiredPosition = resources.getResourceEntryName(cardPosition).split("subDeck")[1]
+        val textView = findViewById<TextView>(R.id.selectedCardTextView)
+        textView.text = ""
         if (cardName == "zero" && !isEndDeckClick(desiredPosition)) {
             return
         }
 
-        val textView = findViewById<TextView>(R.id.selectedCardTextView)
         if (selectedCard == null) {
             if (isEndDeckClick(desiredPosition)) {
                 return
             }
+            clearCardSelection()
             selectedCard = cardName
             selectedPositionId = view.id
-            textView.text = CardNameTranslator.translate(cardName)
+            setSelected(selectedPositionId)
         } else {
             if (canBeInserted(cardName, selectedCard!!, isEndDeckClick(desiredPosition))) {
                 moveCard(cardPosition, desiredPosition, selectedCard!!, selectedPositionId!!)
@@ -152,6 +155,17 @@ class GameActivity : AppCompatActivity() {
                     showYouLost()
                     return
                 }
+            } else {
+                if (selectedPositionId == cardPosition) {
+                    return
+                }
+
+                clearCardSelection()
+                selectedPositionId = cardPosition
+                selectedCard = cardName
+                setSelected(cardPosition)
+                textView.text = resources.getString(R.string.invaild_move)
+                return
             }
 
             clearCardSelection()
@@ -163,7 +177,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun clearCardSelection() {
         val textView = findViewById<TextView>(R.id.selectedCardTextView)
-        textView.text = resources.getString(R.string.nessuna_carta_selezionata)
+        textView.text = ""
+        setUnselected(selectedPositionId)
         selectedPositionId = null
         selectedCard = null
     }
@@ -425,18 +440,20 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouLost() {
+        clearCardSelection()
         findViewById<Button>(R.id.resetButton).isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<TextView>(R.id.lostTextView).text = "Hai perso"
+        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
         findViewById<Button>(R.id.retryButton).isInvisible = false
         findViewById<Button>(R.id.newGameButton).isInvisible = false
     }
 
     private fun showYouWon() {
+        clearCardSelection()
         findViewById<Button>(R.id.resetButton).isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<TextView>(R.id.lostTextView).text = "Hai vintooooooo!!!"
+        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_vinto)
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
         findViewById<Button>(R.id.retryButton).isInvisible = true
         findViewById<Button>(R.id.newGameButton).isInvisible = false
@@ -508,6 +525,25 @@ class GameActivity : AppCompatActivity() {
         linkedList.add(val1)
         linkedList.add(val2)
         return linkedList
+    }
+
+    private fun setSelected(cardPositionId: Int?) {
+        if (cardPositionId == null) {
+            return
+        }
+
+        val currentImageView = findViewById<ImageView>(cardPositionId)
+        currentImageView.foreground = ContextCompat.getDrawable(this, R.drawable.selected_border)
+        currentImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+    }
+
+    private fun setUnselected(cardPositionId: Int?) {
+        if (cardPositionId == null) {
+            return
+        }
+
+        val currentImageView = findViewById<ImageView>(cardPositionId)
+        currentImageView.foreground = null
     }
 
     private fun newPlayList() {
