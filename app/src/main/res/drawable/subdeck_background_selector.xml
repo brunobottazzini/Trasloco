@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when pressed -->
+    <item android:state_pressed="true"
+        android:drawable="@drawable/selected_border" />
+
+    <!-- Default state (not pressed, not focused, etc.) -->
+    <!-- This should usually be the last item, as it's a fallback -->
+    <item android:drawable="@android:color/transparent"  />
+</selector>

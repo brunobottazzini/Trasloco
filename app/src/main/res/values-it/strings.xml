@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trasloco</string>
+    <string name="title">Trasloco</string>
+    <string name="trasloco">Trasloco</string>
+    <string name="invaild_move">Mossa invalida</string>
+    <string name="undo">Annulla</string>
+    <string name="hai_perso">Hai perso</string>
+    <string name="nuova_partita">Nuova partita</string>
+    <string name="riprova">Riprova</string>
+    <string name="start">Gioca</string>
+    <string name="impostazioni">Impostazioni</string>
+    <string name="fast_deal">Trasferisci intero mazzo</string>
+    <string name="sfondo">Sfondo</string>
+    <string name="panno">Panno</string>
+    <string name="legno">Legno</string>
+    <string name="sabbia">Sabbia</string>
+    <string name="tappeto">Tappeto</string>
+    <string name="tavolo">Tavolo</string>
+    <string name="verde">Verde</string>
+    <string name="hai_vinto">Hai Vinto!!!</string>
+</resources>
