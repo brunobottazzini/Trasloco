@@ -20,15 +20,14 @@ android {
 
     defaultConfig {
         applicationId "com.bottazzini.trasloco"
-        compileSdk = 34 // Or at least 31, but 34 is recommended
-        versionCode 2
-        versionName "0.1b"
+        compileSdk = 36
+        versionCode 3
+        versionName "0.2b"
 
         defaultConfig {
             applicationId = "com.bottazzini.trasloco"
             minSdk = 24
-            targetSdk = 34 // It's good practice to keep targetSdk updated as well
-            // ...
+            targetSdk = 36
         }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
