@@ -18,4 +18,6 @@
     <string name="tavolo">Table</string>
     <string name="verde">Green</string>
     <string name="hai_vinto">You Won!!!</string>
+    <string name="menu_button_label">Menu</string>
+    <string name="exit_button_label">Exit</string>
 </resources>

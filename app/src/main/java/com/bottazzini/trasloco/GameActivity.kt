@@ -1,15 +1,18 @@
 package com.bottazzini.trasloco
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isInvisible
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
@@ -34,7 +37,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        hideSystemBars()
         setContentView(R.layout.game)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         supportActionBar?.hide()
@@ -453,10 +456,12 @@ class GameActivity : AppCompatActivity() {
         clearCardSelection()
         findViewById<Button>(R.id.resetButton).isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_vinto)
-        findViewById<TextView>(R.id.lostTextView).isInvisible = false
         findViewById<Button>(R.id.retryButton).isInvisible = true
-        findViewById<Button>(R.id.newGameButton).isInvisible = false
+        // --- Navigate to YouWonActivity ---
+        val intent = Intent(this, YouWonActivity::class.java)
+        startActivity(intent)
+
+        finish()
     }
 
     private fun zeroFill() {
@@ -553,5 +558,16 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
+    }
+
+    private fun hideSystemBars() {
+        WindowCompat.setDecorFitsSystemWindows(window, false) // Crucial for edge-to-edge
+
+        val controller = androidx.core.view.WindowInsetsControllerCompat(window, window.decorView)
+        if (controller != null) {
+            controller.hide(WindowInsetsCompat.Type.systemBars()) // Hides status AND navigation bars
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 }

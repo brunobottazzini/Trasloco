@@ -19,4 +19,6 @@
     <string name="tavolo">Tavolo</string>
     <string name="verde">Verde</string>
     <string name="hai_vinto">Hai Vinto!!!</string>
+    <string name="menu_button_label">Menu</string>
+    <string name="exit_button_label">Chiudi</string>
 </resources>
