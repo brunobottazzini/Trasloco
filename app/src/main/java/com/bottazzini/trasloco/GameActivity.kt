@@ -163,6 +163,10 @@ class GameActivity : AppCompatActivity() {
                     return
                 }
 
+                if (isEndDeckClick(desiredPosition)) {
+                    return
+                }
+
                 clearCardSelection()
                 selectedPositionId = cardPosition
                 selectedCard = cardName
