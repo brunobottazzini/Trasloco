@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -13,19 +14,25 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bottazzini.trasloco.settings.Configuration
+import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.PartyGifs.Companion.partyGifUrls
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.TimeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import java.util.Random
 
 class YouWonActivity : AppCompatActivity() {
 
+    private lateinit var recordsHandler: RecordsHandler
     private lateinit var imageViewPartyGif: ImageView
     private lateinit var buttonNewGame: Button
     private lateinit var buttonMenu: Button
     private lateinit var buttonExit: Button
+    private lateinit var textViewGameTimeTaken: TextView
+    private lateinit var victoryInARow: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,36 @@ class YouWonActivity : AppCompatActivity() {
         buttonMenu = findViewById(R.id.buttonMenuYouWon)
         buttonExit = findViewById(R.id.buttonExitYouWon)
 
+        recordsHandler = RecordsHandler(applicationContext)
+        val millisPassed = recordsHandler.readValue(Type.TIME)
+        val isNewTime = recordsHandler.readNew(Type.TIME)
+        textViewGameTimeTaken = findViewById(R.id.textViewTimeTaken)
+        victoryInARow = findViewById(R.id.textConcurrentWin)
+
+        if (millisPassed != null) {
+            val formattedTime = TimeUtils.formatTime(millisPassed)
+            var text: CharSequence?
+            text = getString(R.string.time_taken, formattedTime)
+            if (isNewTime != null && isNewTime == true) {
+                text = text + " " + getString(R.string.new_record)
+            }
+            textViewGameTimeTaken.text = text
+            recordsHandler.update(Type.TIME, millisPassed, 0L, false)
+        } else {
+            textViewGameTimeTaken.text = ""
+        }
+
+        val victoryInARow = recordsHandler.readValue(Type.CONSECUTIVE)
+        if (victoryInARow != null) {
+            var text: CharSequence?
+            val isNewinARow = recordsHandler.readNew(Type.CONSECUTIVE)
+             text = getString(R.string.victory_in_a_row, victoryInARow.toString())
+            if (isNewinARow != null && isNewinARow == true) {
+                text = text + " " + getString(R.string.new_record)
+            }
+
+            this.victoryInARow.text = text
+        }
 
         loadRandomPartyGifFromUrl()
 

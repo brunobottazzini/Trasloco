@@ -21,4 +21,7 @@
     <string name="hai_vinto">Você ganhou!!!</string>
     <string name="menu_button_label">Menu</string>
     <string name="exit_button_label">Sair</string>
+    <string name="time_taken">Melhor tempo:  %1$s</string>
+    <string name="new_record">- (Novo Recorde!)</string>
+    <string name="victory_in_a_row">Vitória consecutiva: %1$s</string>
 </resources>

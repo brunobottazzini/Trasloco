@@ -7,6 +7,19 @@
     android:id="@+id/gameConstraintLayout"
     android:background="@drawable/verde">
 
+    <TextView
+        android:id="@+id/textViewGameTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
     <ImageView
         android:id="@+id/subDeck14"
         android:layout_width="wrap_content"
@@ -535,16 +548,16 @@
             app:layout_constraintVertical_bias="0.023" />
 
     <Button
-            android:text="@string/riprova"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/retryButton"
-            android:onClick="retryGame"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.948"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.023" />
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="retryGame"
+        android:text="@string/riprova"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.724"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 </androidx.constraintlayout.widget.ConstraintLayout>

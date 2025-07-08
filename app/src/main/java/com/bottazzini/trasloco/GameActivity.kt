@@ -3,6 +3,8 @@ package com.bottazzini.trasloco
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -15,33 +17,46 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isInvisible
 import com.bottazzini.trasloco.settings.Configuration
+import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import com.bottazzini.trasloco.utils.TimeUtils
+import java.util.LinkedList
+
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
+    private lateinit var recordsHandler: RecordsHandler
+    private lateinit var textViewGameTimer: TextView
+    private var gameStartTimeMillis: Long = 0L
+    private var consecutiveWins: Long = 0L
     private var coppiedSubDeckMap = HashMap<String, List<String>>()
     private var subDeckMap = HashMap<String, List<String>>()
     private var cardTableMap = HashMap<String, ArrayList<String>>()
     private var endDeckList = HashMap<String, String>()
-
     private var playList = HashMap<String, LinkedList<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
     private var enabledFastEndDeckClick = true
+    private val timerHandler = Handler(Looper.getMainLooper())
+    private lateinit var timerRunnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hideSystemBars()
         setContentView(R.layout.game)
+        textViewGameTimer = findViewById(R.id.textViewGameTimer)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
+        recordsHandler = RecordsHandler(applicationContext)
+        if (recordsHandler.readValue(Type.CONSECUTIVE) != null) {
+            consecutiveWins = recordsHandler.readValue(Type.CONSECUTIVE)!!
+        }
+
         processSettings()
         startNewGame()
     }
@@ -51,6 +66,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun startNewGame() {
+        stopTimer()
         prePrepareTable()
         DeckSetup.shuffleDeck()
         DeckSetup.prepareSubDecks()
@@ -60,14 +76,17 @@ class GameActivity : AppCompatActivity() {
         if (hasReachedLostConditions()) {
             startNewGame()
         }
+        startTimer()
     }
 
     fun retryGame(view: View) {
+        stopTimer()
         prePrepareTable()
         cardTableMap.clear()
         newPlayList()
         subDeckMap = HashMap(coppiedSubDeckMap)
         prepareTable()
+        startTimer()
     }
 
     fun undoClick(view: View) {
@@ -454,6 +473,11 @@ class GameActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
         findViewById<Button>(R.id.retryButton).isInvisible = false
         findViewById<Button>(R.id.newGameButton).isInvisible = false
+        stopTimer()
+        val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
+        if (consecutive != null) {
+            recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
+        }
     }
 
     private fun showYouWon() {
@@ -461,10 +485,31 @@ class GameActivity : AppCompatActivity() {
         findViewById<Button>(R.id.resetButton).isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<Button>(R.id.retryButton).isInvisible = true
+        stopTimer()
+        val previousTime = recordsHandler.readValue(Type.TIME)
+        val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
+        if (previousTime != null) {
+            if (previousTime > millisPassed || previousTime == -1L) {
+                recordsHandler.update(Type.TIME, millisPassed, 0L, true)
+            }
+        }
+
+        val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
+        val currentValue = if (recordsHandler.readCurrentValue(Type.CONSECUTIVE) != null) {
+            recordsHandler.readCurrentValue(Type.CONSECUTIVE)!! + 1L
+        } else {
+            0L
+        }
+        if (consecutive != null) {
+            if (currentValue > consecutive) {
+                recordsHandler.update(Type.CONSECUTIVE, currentValue, currentValue, true)
+            } else {
+                recordsHandler.update(Type.CONSECUTIVE, consecutive, currentValue, false)
+            }
+        }
         // --- Navigate to YouWonActivity ---
         val intent = Intent(this, YouWonActivity::class.java)
         startActivity(intent)
-
         finish()
     }
 
@@ -572,6 +617,24 @@ class GameActivity : AppCompatActivity() {
             controller.hide(WindowInsetsCompat.Type.systemBars()) // Hides status AND navigation bars
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
+    private fun startTimer() {
+        gameStartTimeMillis = System.currentTimeMillis()
+        timerRunnable = object : Runnable {
+            override fun run() {
+                val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
+                textViewGameTimer.text = TimeUtils.formatTime(millisPassed)
+                timerHandler.postDelayed(this, 1000) // Aggiorna ogni secondo
+            }
+        }
+        timerHandler.post(timerRunnable) // Avvia il runnable immediatamente
+    }
+
+    private fun stopTimer() {
+        if (::timerRunnable.isInitialized) { // Controlla se timerRunnable è stata inizializzata
+            timerHandler.removeCallbacks(timerRunnable)
         }
     }
 }
