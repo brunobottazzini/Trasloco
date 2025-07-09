@@ -20,7 +20,7 @@
     <string name="hai_vinto">You Won!!!</string>
     <string name="menu_button_label">Menu</string>
     <string name="exit_button_label">Exit</string>
-    <string name="time_taken">Best time:  %1$s</string>
-    <string name="new_record">- (New Record!)</string>
-    <string name="victory_in_a_row">Victory in a row: %1$s</string>
+    <string name="time_taken">Time: %1$s Best time:  %2$s</string>
+    <string name="new_record">(New Record!!!)</string>
+    <string name="victory_in_a_row">Victory in a row: %1$s, Record: %2$s</string>
 </resources>

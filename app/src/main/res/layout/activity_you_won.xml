@@ -8,98 +8,99 @@
     android:padding="16dp"
     tools:context=".YouWonActivity">
 
-    <TextView
-        android:id="@+id/textConcurrentWin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-        app:layout_constraintVertical_bias="0.287"
-        tools:text="@string/time_taken" />
-
-    <TextView
-        android:id="@+id/textViewTimeTaken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-        app:layout_constraintVertical_bias="0.87"
-        tools:text="@string/time_taken" />
-
-    <TextView
-        android:id="@+id/textViewYouWon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:text="@string/hai_vinto"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <ImageView
-        android:id="@+id/imageViewPartyGif"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonNewGameYouWon"
-        tools:srcCompat="@tools:sample/avatars" /> <!-- Placeholder for design view -->
-
-    <Button
-        android:id="@+id/buttonNewGameYouWon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nuova_partita"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/imageViewPartyGif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="32dp"/>
-
-    <Button
-        android:id="@+id/buttonMenuYouWon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/menu_button_label"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonNewGameYouWon"
-        app:layout_constraintVertical_bias="0.069" />
-
+    <!-- Pulsante Esci in alto a destra -->
     <Button
         android:id="@+id/buttonExitYouWon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/exit_button_label"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buttonMenuYouWon"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Testo "Hai Vinto!" in alto al centro -->
+
+    <!-- ImageView centrata (verticalmente tra textViewYouWon e i pulsanti in basso) -->
+    <!-- Centra verticalmente nello spazio disponibile -->
+
+    <!-- Testo Vittorie Consecutive, sopra l'ImageView -->
+
+    <TextView
+        android:id="@+id/textViewYouWon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="144dp"
+        android:text="@string/hai_vinto"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="60sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewPartyGif"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/buttonNewGameYouWon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
+        app:layout_constraintVertical_bias="0.84"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!-- Testo Tempo Impiegato, sopra l'ImageView e sotto textConcurrentWin -->
+
+    <!-- Pulsanti in basso -->
+
+    <TextView
+        android:id="@+id/textConcurrentWin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/textViewTimeTaken"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Vittorie Consecutive: X (Record: Y)" />
+
+    <TextView
+        android:id="@+id/textViewTimeTaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/time_taken" />
+
+    <Button
+        android:id="@+id/buttonNewGameYouWon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="@string/nuova_partita"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/buttonMenuYouWon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonMenuYouWon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_button_label"
+        android:textSize="20sp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var settingsHandler: SettingsHandler
     private lateinit var recordsHandler: RecordsHandler
     private lateinit var textViewGameTimer: TextView
+    private var timerPausedTimeMillis: Long = 0L
+    private var isTimerPaused: Boolean = false
     private var gameStartTimeMillis: Long = 0L
     private var consecutiveWins: Long = 0L
     private var coppiedSubDeckMap = HashMap<String, List<String>>()
@@ -490,7 +492,12 @@ class GameActivity : AppCompatActivity() {
         val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
         if (previousTime != null) {
             if (previousTime > millisPassed || previousTime == -1L) {
-                recordsHandler.update(Type.TIME, millisPassed, 0L, true)
+                recordsHandler.update(Type.TIME, millisPassed, millisPassed, true)
+            } else {
+                val currentRecord = recordsHandler.readValue(Type.TIME)
+                if (currentRecord != null) {
+                    recordsHandler.update(Type.TIME, currentRecord, millisPassed, false)
+                }
             }
         }
 
@@ -609,6 +616,26 @@ class GameActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (::timerRunnable.isInitialized && !isFinishing) {
+            pauseTimer()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isTimerPaused) {
+            startTimer()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::timerRunnable.isInitialized && !isFinishing) {
+            pauseTimer()
+        }
+    }
     private fun hideSystemBars() {
         WindowCompat.setDecorFitsSystemWindows(window, false) // Crucial for edge-to-edge
 
@@ -621,15 +648,35 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        gameStartTimeMillis = System.currentTimeMillis()
-        timerRunnable = object : Runnable {
-            override fun run() {
-                val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
-                textViewGameTimer.text = TimeUtils.formatTime(millisPassed)
-                timerHandler.postDelayed(this, 1000) // Aggiorna ogni secondo
+        if (isTimerPaused) { // Se il timer era in pausa, calcola il nuovo tempo di inizio
+            val timeElapsedBeforePause = timerPausedTimeMillis - gameStartTimeMillis
+            gameStartTimeMillis = System.currentTimeMillis() - timeElapsedBeforePause
+        } else { // Altrimenti, è un nuovo inizio o una ripresa da uno stato non in pausa
+            gameStartTimeMillis = System.currentTimeMillis()
+        }
+        isTimerPaused = false
+        timerPausedTimeMillis = 0L // Resetta il tempo di pausa
+
+        if (!::timerRunnable.isInitialized || timerHandler.hasCallbacks(timerRunnable).not()) {
+            timerRunnable = object : Runnable {
+                override fun run() {
+                    if (!isTimerPaused) { // Controlla di nuovo prima di aggiornare e ripianificare
+                        val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
+                        textViewGameTimer.text = TimeUtils.formatTime(millisPassed)
+                        timerHandler.postDelayed(this, 1000) // Aggiorna ogni secondo
+                    }
+                }
             }
         }
-        timerHandler.post(timerRunnable) // Avvia il runnable immediatamente
+        timerHandler.post(timerRunnable) // Avvia o riavvia il runnable
+    }
+
+    private fun pauseTimer() {
+        if (::timerRunnable.isInitialized && !isTimerPaused) {
+            timerHandler.removeCallbacks(timerRunnable)
+            timerPausedTimeMillis = System.currentTimeMillis() // Salva l'ora corrente come ora di pausa
+            isTimerPaused = true
+        }
     }
 
     private fun stopTimer() {

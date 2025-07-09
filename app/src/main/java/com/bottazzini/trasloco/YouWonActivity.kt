@@ -47,16 +47,16 @@ class YouWonActivity : AppCompatActivity() {
 
         recordsHandler = RecordsHandler(applicationContext)
         val millisPassed = recordsHandler.readValue(Type.TIME)
+        val currentMillis = recordsHandler.readCurrentValue(Type.TIME)
         val isNewTime = recordsHandler.readNew(Type.TIME)
         textViewGameTimeTaken = findViewById(R.id.textViewTimeTaken)
         victoryInARow = findViewById(R.id.textConcurrentWin)
 
-        if (millisPassed != null) {
-            val formattedTime = TimeUtils.formatTime(millisPassed)
+        if (millisPassed != null && currentMillis != null) {
             var text: CharSequence?
-            text = getString(R.string.time_taken, formattedTime)
+            text = getString(R.string.time_taken, TimeUtils.formatTime(currentMillis), TimeUtils.formatTime(millisPassed))
             if (isNewTime != null && isNewTime == true) {
-                text = text + " " + getString(R.string.new_record)
+                text = text + "\n" + getString(R.string.new_record)
             }
             textViewGameTimeTaken.text = text
             recordsHandler.update(Type.TIME, millisPassed, 0L, false)
@@ -65,12 +65,13 @@ class YouWonActivity : AppCompatActivity() {
         }
 
         val victoryInARow = recordsHandler.readValue(Type.CONSECUTIVE)
+        val currentConsecutive = recordsHandler.readCurrentValue(Type.CONSECUTIVE)
         if (victoryInARow != null) {
             var text: CharSequence?
             val isNewinARow = recordsHandler.readNew(Type.CONSECUTIVE)
-             text = getString(R.string.victory_in_a_row, victoryInARow.toString())
+             text = getString(R.string.victory_in_a_row, currentConsecutive.toString(), victoryInARow.toString())
             if (isNewinARow != null && isNewinARow == true) {
-                text = text + " " + getString(R.string.new_record)
+                text = text + "\n" + getString(R.string.new_record)
             }
 
             this.victoryInARow.text = text
