@@ -23,4 +23,8 @@
     <string name="time_taken">Time: %1$s Best time:  %2$s</string>
     <string name="new_record">(New Record!!!)</string>
     <string name="victory_in_a_row">Victory in a row: %1$s, Record: %2$s</string>
+    <string name="title_activity_records">Records</string>
+    <string name="best_time_label">Best Time</string>
+    <string name="no_records_yet">No records yet</string>
+    <string name="consecutive_wins_label">Consecutive wins</string>
 </resources>

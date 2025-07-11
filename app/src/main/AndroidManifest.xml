@@ -19,6 +19,7 @@
         <activity android:name=".GameActivity" android:theme="@style/Theme.Trasloco.GameActivity.Immersive" />
         <activity android:name=".YouWonActivity" android:theme="@style/Theme.Trasloco.GameActivity.Immersive" />
         <activity android:name=".SettingsActivity" android:theme="@style/Theme.Trasloco" />
+        <activity android:name=".RecordActivity" android:theme="@style/Theme.Trasloco" />
     </application>
 
 </manifest>

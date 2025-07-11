@@ -21,8 +21,8 @@ android {
     defaultConfig {
         applicationId "com.bottazzini.trasloco"
         compileSdk = 36
-        versionCode 8
-        versionName "0.6b"
+        versionCode 10
+        versionName "0.8b"
 
         defaultConfig {
             applicationId = "com.bottazzini.trasloco"
@@ -35,8 +35,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

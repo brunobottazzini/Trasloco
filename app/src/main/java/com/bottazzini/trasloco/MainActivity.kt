@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun showRecords(view: View) {
+        val intent = Intent(this, RecordActivity::class.java)
+        startActivity(intent)
+    }
+
     fun openSettings(view: View) {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)

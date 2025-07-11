@@ -24,4 +24,8 @@
     <string name="time_taken">Tempo: %1$s, Miglior tempo:  %2$s</string>
     <string name="new_record">(Nuovo Record!!!)</string>
     <string name="victory_in_a_row">Vittoria di fila: %1$s, Record: %2$s</string>
+    <string name="title_activity_records">Record</string>
+    <string name="best_time_label">Miglior Tempo</string>
+    <string name="no_records_yet">Nessun record ancora</string>
+    <string name="consecutive_wins_label">Vittorie consecutive</string>
 </resources>
