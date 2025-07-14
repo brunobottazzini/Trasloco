@@ -2,6 +2,7 @@ package com.bottazzini.trasloco
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -45,6 +46,9 @@ class GameActivity : AppCompatActivity() {
     private var enabledFastEndDeckClick = true
     private val timerHandler = Handler(Looper.getMainLooper())
     private lateinit var timerRunnable: Runnable
+    private var mediaPlayerAtomic: MediaPlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var isInitiating = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +72,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun startNewGame() {
+        playSound(R.raw.shuffle)
+        isInitiating = true
         stopTimer()
         prePrepareTable()
         DeckSetup.shuffleDeck()
@@ -79,9 +85,12 @@ class GameActivity : AppCompatActivity() {
             startNewGame()
         }
         startTimer()
+        isInitiating = false
     }
 
     fun retryGame(view: View) {
+        playSound(R.raw.shuffle)
+        isInitiating = true
         stopTimer()
         prePrepareTable()
         cardTableMap.clear()
@@ -89,6 +98,7 @@ class GameActivity : AppCompatActivity() {
         subDeckMap = HashMap(coppiedSubDeckMap)
         prepareTable()
         startTimer()
+        isInitiating = false
     }
 
     fun undoClick(view: View) {
@@ -436,6 +446,7 @@ class GameActivity : AppCompatActivity() {
                     clearUndoButton()
                     break
                 }
+
             }
         }
 
@@ -443,6 +454,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setImage(position: Int, imageName: String) {
+        if (!isInitiating) playSoundAtomic(R.raw.flipcard)
         val imageView = findViewById<ImageView>(position)
         val id = ResourceUtils.getDrawableByName(resources, this.packageName, imageName)
         imageView.setImageResource(id)
@@ -479,6 +491,44 @@ class GameActivity : AppCompatActivity() {
         val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
         if (consecutive != null) {
             recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
+        }
+
+        playSound(R.raw.youlost)
+    }
+
+    private fun playSound(soundId: Int) {
+        try {
+            if (mediaPlayer?.isPlaying == true) {
+                mediaPlayer?.stop()
+                mediaPlayer?.reset()
+            }
+            mediaPlayer?.release()
+            mediaPlayer = null
+
+            mediaPlayer = MediaPlayer.create(this, soundId)
+            mediaPlayer?.setOnCompletionListener {
+                mediaPlayer?.release()
+                mediaPlayer = null
+            }
+            mediaPlayer?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun playSoundAtomic(soundId: Int) {
+        try {
+            mediaPlayerAtomic =
+                MediaPlayer.create(this, soundId)
+            mediaPlayerAtomic?.setOnCompletionListener {
+                if (mediaPlayerAtomic?.isPlaying == false) {
+                    mediaPlayerAtomic?.release()
+                    mediaPlayerAtomic = null
+                }
+            }
+            mediaPlayerAtomic?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -657,7 +707,7 @@ class GameActivity : AppCompatActivity() {
         isTimerPaused = false
         timerPausedTimeMillis = 0L // Resetta il tempo di pausa
 
-        if (!::timerRunnable.isInitialized || timerHandler.hasCallbacks(timerRunnable).not()) {
+        if (!::timerRunnable.isInitialized) {
             timerRunnable = object : Runnable {
                 override fun run() {
                     if (!isTimerPaused) { // Controlla di nuovo prima di aggiornare e ripianificare

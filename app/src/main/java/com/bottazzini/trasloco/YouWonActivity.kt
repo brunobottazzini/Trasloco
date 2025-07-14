@@ -2,10 +2,12 @@ package com.bottazzini.trasloco
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -33,6 +35,7 @@ class YouWonActivity : AppCompatActivity() {
     private lateinit var buttonExit: Button
     private lateinit var textViewGameTimeTaken: TextView
     private lateinit var victoryInARow: TextView
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +105,27 @@ class YouWonActivity : AppCompatActivity() {
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
         val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
         layout.background = ContextCompat.getDrawable(this, drawable)
+
+        try {
+            mediaPlayer = MediaPlayer.create(this, R.raw.youwin) // Sostituisci con il nome del tuo file
+            mediaPlayer?.setOnCompletionListener {
+                // Rilascia MediaPlayer quando la riproduzione è finita
+                releaseMediaPlayer()
+            }
+            mediaPlayer?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Gestisci eventuali errori durante la creazione o l'avvio del MediaPlayer
+        }
+
+        // --- NUOVA GESTIONE DEL TASTO INDIETRO ---
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                buttonNewGame.performClick()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+        // --- FINE NUOVA GESTIONE DEL TASTO INDIETRO ---
     }
 
     private fun loadRandomPartyGifFromUrl() {
@@ -117,9 +141,7 @@ class YouWonActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        buttonNewGame.performClick() // Optionally force new game on back press
-    }
+
 
     private fun hideSystemBars() {
         WindowCompat.setDecorFitsSystemWindows(window, false) // Crucial for edge-to-edge
@@ -130,5 +152,10 @@ class YouWonActivity : AppCompatActivity() {
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    private fun releaseMediaPlayer() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }

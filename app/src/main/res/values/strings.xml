@@ -27,4 +27,19 @@
     <string name="best_time_label">Best Time</string>
     <string name="no_records_yet">No records yet</string>
     <string name="consecutive_wins_label">Consecutive wins</string>
+    <string name="title_activity_rules">Game Rules</string>
+    <string name="game_rules_title">How to Play</string>
+    <string name="got_it_button">Got it!</string>
+
+    <string-array name="game_rules_array">
+        <item>Goal: Move all cards, organized by suit and in ascending order from Ace to King, to the final deck area consisting of 4 empty foundation piles.</item>
+        <item>You can build sequences within the columns on the table by placing cards in descending order (e.g. 6-5-4...) but only if they are of the same suit.</item>
+        <item>To win, each of the 4 foundation piles must start with an Ace and be built up in the same suit through to the King (Ace, 2, 3... King).</item>
+        <item>You may move entire suited sequences or individual cards between columns to create empty spaces and reveal new cards.</item>
+        <item>Only an Ace or a sequence starting with an Ace can be placed into an empty foundation pile (final deck space).</item>
+        <item>You do not have a personal hand; use only the cards available on the table and in the 4 sub-decks (if present) to progress.</item>
+        <item>You win the game by successfully building all 4 suits from Ace to King in the foundation piles.</item>
+        <item>You lose if there are no legal moves left and not all cards have been moved to the final deck.</item>
+        <item>Note: This game uses Piacentine cards. Each suit (Coins, Cups, Swords, Clubs) has 10 cards: Ace (1), 2–7, Knave (Fante), Knight (Cavallo), and King (Re). The order is Ace to King. Learn to recognize the suits and court cards before playing.</item>
+    </string-array>
 </resources>

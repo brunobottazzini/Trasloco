@@ -28,4 +28,19 @@
     <string name="best_time_label">Miglior Tempo</string>
     <string name="no_records_yet">Nessun record ancora</string>
     <string name="consecutive_wins_label">Vittorie consecutive</string>
+    <string name="title_activity_rules">Regole del Gioco</string>
+    <string name="game_rules_title">Come Giocare</string>
+    <string name="got_it_button">Capito!</string>
+
+    <string-array name="game_rules_array">
+        <item>Obiettivo: Spostare tutte le carte, ordinate per seme e in ordine crescente dall’Asso al Re, nell’area finale composta da 4 pile vuote di base.</item>
+        <item>Puoi costruire sequenze nelle colonne sul tavolo disponendo le carte in ordine decrescente (es. 6-5-4...) ma solo se sono dello stesso seme.</item>
+        <item>Per vincere, ogni pila finale deve iniziare con un Asso e proseguire con carte dello stesso seme fino al Re (Asso, 2, 3... Re).</item>
+        <item>Puoi spostare intere sequenze dello stesso seme o singole carte tra le colonne per creare spazi vuoti e scoprire nuove carte.</item>
+        <item>Solo un Asso o una sequenza che inizia con un Asso può essere collocata in una pila finale vuota (spazio finale del mazzo).</item>
+        <item>Non hai una mano personale; utilizza solo le carte sul tavolo e nei 4 sotto-mazzi (se presenti) per progredire.</item>
+        <item>Vinci la partita se riesci a costruire tutte e 4 le sequenze complete dall’Asso al Re nelle pile finali.</item>
+        <item>Perdi se non ci sono più mosse possibili e restano carte sul tavolo.</item>
+        <item>Nota: Questo gioco utilizza le carte Piacentine. Ogni seme (Denari, Coppe, Spade, Bastoni) ha 10 carte: Asso (1), dal 2 al 7, Fante, Cavallo e Re. L’ordine è dall’Asso al Re. Impara a riconoscere i semi e le figure prima di giocare.</item>
+    </string-array>
 </resources>

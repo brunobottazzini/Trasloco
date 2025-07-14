@@ -8,7 +8,22 @@
         android:background="#000000"
         tools:context=".MainActivity">
 
-        <ImageView
+    <Button
+        android:id="@+id/buttonTopRightRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="16dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:onClick="showRules"
+        android:text="@string/title_activity_rules"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </Button>
+
+    <ImageView
             android:id="@+id/c4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,27 +67,27 @@
             app:layout_constraintVertical_bias="0.65" />
 
         <Button
-            android:id="@+id/buttonSetting"
-            android:layout_width="197dp"
-            android:layout_height="65dp"
-            android:text="@string/impostazioni"
-            android:onClick="openSettings"
+            android:id="@+id/buttonShowRecords"
+            android:onClick="showRecords"
+            android:text="@string/title_activity_records"
             app:layout_constraintTop_toBottomOf="@id/buttonStart"
             app:layout_constraintStart_toStartOf="@id/buttonStart"
             app:layout_constraintEnd_toEndOf="@id/buttonStart"
-            android:layout_marginTop="16dp" />
-
-        <Button
-            android:id="@+id/buttonShowRecords"
-            android:layout_width="197dp"
-            android:layout_height="65dp"
-            android:text="@string/title_activity_records"
-            android:onClick="showRecords"
-            app:layout_constraintTop_toBottomOf="@id/buttonSetting"
-            app:layout_constraintStart_toStartOf="@id/buttonSetting"
-            app:layout_constraintEnd_toEndOf="@id/buttonSetting"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="197dp"
+            android:layout_height="65dp"
             app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/buttonSetting"
+        android:onClick="openSettings"
+        android:text="@string/impostazioni"
+        app:layout_constraintTop_toBottomOf="@id/buttonShowRecords"
+        app:layout_constraintStart_toStartOf="@id/buttonShowRecords"
+        app:layout_constraintEnd_toEndOf="@id/buttonShowRecords"
+        android:layout_marginTop="16dp"
+        android:layout_width="197dp"
+        android:layout_height="65dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

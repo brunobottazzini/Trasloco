@@ -28,4 +28,19 @@
     <string name="best_time_label">Melhor tempo</string>
     <string name="no_records_yet">Nenhum recorde feito ainda</string>
     <string name="consecutive_wins_label">Vitória consecutivas</string>
+    <string name="title_activity_rules">Regras do Jogo</string>
+    <string name="game_rules_title">Como Jogar</string>
+    <string name="got_it_button">Entendi!</string>
+
+    <string-array name="game_rules_array">
+        <item>Objetivo: Mover todas as cartas, organizadas por naipe e em ordem crescente de Ás até Rei, para a área final composta por 4 pilhas de base vazias.</item>
+        <item>Você pode construir sequências nas colunas da mesa colocando cartas em ordem decrescente (ex: 6-5-4...), mas apenas se forem do mesmo naipe.</item>
+        <item>Para vencer, cada uma das 4 pilhas finais deve começar com um Ás e ser completada com cartas do mesmo naipe até o Rei (Ás, 2, 3... Rei).</item>
+        <item>Você pode mover sequências inteiras do mesmo naipe ou cartas individuais entre as colunas para criar espaços vazios e revelar novas cartas.</item>
+        <item>Apenas um Ás ou uma sequência que comece com um Ás pode ser colocada em uma pilha final vazia (espaço final do baralho).</item>
+        <item>Você não tem uma mão pessoal; use apenas as cartas disponíveis na mesa e nos 4 baralhos auxiliares (se existirem) para avançar.</item>
+        <item>Você vence o jogo ao completar todas as 4 sequências de Ás até Rei nas pilhas finais.</item>
+        <item>Você perde se não houver mais movimentos possíveis e restarem cartas na mesa.</item>
+        <item>Nota: Este jogo usa cartas Piacentine. Cada naipe (Ouros, Copas, Espadas, Paus) tem 10 cartas: Ás (1), do 2 ao 7, Valete (Fante), Cavalo (Cavallo) e Rei (Re). A ordem é do Ás ao Rei. Aprenda a reconhecer os naipes e figuras antes de jogar.</item>
+    </string-array>
 </resources>
