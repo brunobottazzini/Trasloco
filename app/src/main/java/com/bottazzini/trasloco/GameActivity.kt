@@ -48,7 +48,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var timerRunnable: Runnable
     private var mediaPlayerAtomic: MediaPlayer? = null
     private var mediaPlayer: MediaPlayer? = null
-    private var isInitiating = true
+    private var isInitializing = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +72,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun startNewGame() {
+        isInitializing = true
         playSound(R.raw.shuffle)
-        isInitiating = true
         stopTimer()
         prePrepareTable()
         DeckSetup.shuffleDeck()
@@ -85,12 +85,12 @@ class GameActivity : AppCompatActivity() {
             startNewGame()
         }
         startTimer()
-        isInitiating = false
+        isInitializing = false
     }
 
     fun retryGame(view: View) {
+        isInitializing = true
         playSound(R.raw.shuffle)
-        isInitiating = true
         stopTimer()
         prePrepareTable()
         cardTableMap.clear()
@@ -98,7 +98,7 @@ class GameActivity : AppCompatActivity() {
         subDeckMap = HashMap(coppiedSubDeckMap)
         prepareTable()
         startTimer()
-        isInitiating = false
+        isInitializing = false
     }
 
     fun undoClick(view: View) {
@@ -259,7 +259,7 @@ class GameActivity : AppCompatActivity() {
         } else {
             setImage(selectedPositionId, cardTableMap[selectedPositionName]!!.last())
         }
-
+        playSoundAtomic(R.raw.flipcard)
     }
 
     private fun setNumberOfCards(cardsList: List<String>, position: String) {
@@ -439,6 +439,9 @@ class GameActivity : AppCompatActivity() {
                     resources.getIdentifier("subDeck$position", "id", this.packageName)
 
                 if (getCardName(imageViewId) == "zero") {
+                    if (!isInitializing) {
+                        playSoundAtomic(R.raw.flipcard)
+                    }
                     setImage(imageViewId, cardName)
                     cardTableMap[position] = arrayListOf(cardName)
                     iterator.remove()
@@ -454,7 +457,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun setImage(position: Int, imageName: String) {
-        if (!isInitiating) playSoundAtomic(R.raw.flipcard)
         val imageView = findViewById<ImageView>(position)
         val id = ResourceUtils.getDrawableByName(resources, this.packageName, imageName)
         imageView.setImageResource(id)
