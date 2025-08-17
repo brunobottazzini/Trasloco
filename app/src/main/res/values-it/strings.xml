@@ -43,4 +43,5 @@
         <item>Perdi se non ci sono più mosse possibili e restano carte sul tavolo.</item>
         <item>Nota: Questo gioco utilizza le carte Piacentine. Ogni seme (Denari, Coppe, Spade, Bastoni) ha 10 carte: Asso (1), dal 2 al 7, Fante, Cavallo e Re. L’ordine è dall’Asso al Re. Impara a riconoscere i semi e le figure prima di giocare.</item>
     </string-array>
+    <string name="choose_backcard">Scegli Dorso Carta</string>
 </resources>

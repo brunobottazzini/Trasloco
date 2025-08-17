@@ -55,8 +55,8 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/buttonGotIt"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonGotIt" style="@style/CardGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/got_it_button"

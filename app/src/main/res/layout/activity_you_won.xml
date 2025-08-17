@@ -8,9 +8,9 @@
     android:padding="16dp"
     tools:context=".YouWonActivity">
 
-    <!-- Pulsante Esci in alto a destra -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonExitYouWon"
+        style="@style/CardGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/exit_button_label"
@@ -18,18 +18,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Testo "Hai Vinto!" in alto al centro -->
-
-    <!-- ImageView centrata (verticalmente tra textViewYouWon e i pulsanti in basso) -->
-    <!-- Centra verticalmente nello spazio disponibile -->
-
-    <!-- Testo Vittorie Consecutive, sopra l'ImageView -->
-
     <TextView
         android:id="@+id/textViewYouWon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="68dp"
         android:text="@string/hai_vinto"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="60sp"
@@ -60,7 +53,7 @@
         android:id="@+id/textConcurrentWin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/textViewTimeTaken"
@@ -80,20 +73,21 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/time_taken" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonNewGameYouWon"
+        style="@style/CardGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/nuova_partita"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/buttonMenuYouWon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/buttonMenuYouWon"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonMenuYouWon" style="@style/CardGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/menu_button_label"

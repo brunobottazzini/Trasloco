@@ -43,4 +43,5 @@
         <item>Você perde se não houver mais movimentos possíveis e restarem cartas na mesa.</item>
         <item>Nota: Este jogo usa cartas Piacentine. Cada naipe (Ouros, Copas, Espadas, Paus) tem 10 cartas: Ás (1), do 2 ao 7, Valete (Fante), Cavalo (Cavallo) e Rei (Re). A ordem é do Ás ao Rei. Aprenda a reconhecer os naipes e figuras antes de jogar.</item>
     </string-array>
+    <string name="choose_backcard">Escolhe o verso da carta</string>
 </resources>

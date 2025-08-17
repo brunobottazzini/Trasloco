@@ -2,6 +2,8 @@ package com.bottazzini.trasloco
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -211,6 +213,20 @@ class GameActivity : AppCompatActivity() {
 
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
+        if (resetButton.isEnabled) {
+            updateBackgroundTint(resetButton)
+        }
+    }
+
+    private fun updateBackgroundTint(resetButton: Button) {
+        val materialResetButton = resetButton as? com.google.android.material.button.MaterialButton
+
+        if (resetButton.isEnabled) {
+            val enabledColor = ContextCompat.getColor(this, R.color.blu_savoia)
+            materialResetButton?.backgroundTintList = ColorStateList.valueOf(enabledColor)
+            return
+        }
+        materialResetButton?.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
     }
 
     private fun clearCardSelection() {
@@ -469,12 +485,16 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun clearUndoButton() {
-        findViewById<Button>(R.id.resetButton).isEnabled = false
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isEnabled = false
+        updateBackgroundTint(resetButton)
         newPlayList()
     }
 
     private fun prepareTextAndButtonForNewGame() {
-        findViewById<Button>(R.id.resetButton).isInvisible = false
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isInvisible = false
+        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = false
         findViewById<TextView>(R.id.lostTextView).isInvisible = true
         findViewById<Button>(R.id.retryButton).isInvisible = true
@@ -483,7 +503,9 @@ class GameActivity : AppCompatActivity() {
 
     private fun showYouLost() {
         clearCardSelection()
-        findViewById<Button>(R.id.resetButton).isInvisible = true
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isInvisible = true
+        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
@@ -536,7 +558,9 @@ class GameActivity : AppCompatActivity() {
 
     private fun showYouWon() {
         clearCardSelection()
-        findViewById<Button>(R.id.resetButton).isInvisible = true
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isInvisible = true
+        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<Button>(R.id.retryButton).isInvisible = true
         stopTimer()

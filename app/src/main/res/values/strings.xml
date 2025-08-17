@@ -42,4 +42,5 @@
         <item>You lose if there are no legal moves left and not all cards have been moved to the final deck.</item>
         <item>Note: This game uses Piacentine cards. Each suit (Coins, Cups, Swords, Clubs) has 10 cards: Ace (1), 2–7, Knave (Fante), Knight (Cavallo), and King (Re). The order is Ace to King. Learn to recognize the suits and court cards before playing.</item>
     </string-array>
+    <string name="choose_backcard">Choose Card Back</string>
 </resources>

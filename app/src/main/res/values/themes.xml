@@ -1,24 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Trasloco" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Primary brand color. -->
+    <style name="Theme.Trasloco" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/app_maker_logo</item>
         <item name="windowSplashScreenBackground">@color/cardview_dark_background</item>
         <item name="postSplashScreenTheme">@style/Theme.Trasloco</item>
     </style>
-    <style name="Theme.Trasloco.GameActivity.Immersive" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Trasloco.GameActivity.Immersive" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="p">shortEdges</item>
@@ -29,4 +24,39 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
     </style>
+
+    <style name="ShapeAppearance.MyApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CardGameButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/blu_savoia</item>
+        <item name="android:textColor">@color/card_game_button_text_color</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Circle</item>
+        <item name="strokeColor">@color/card_game_button_stroke_color</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:minHeight">64dp</item>
+    </style>
+
+    <style name="RoundButton" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Circle</item>
+    </style>
+
+    <style name="GameButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/blu_savoia</item>
+        <item name="android:textColor">@color/card_game_button_text_color</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Circle</item>
+        <item name="strokeColor">@color/card_game_button_stroke_color</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
 </resources>

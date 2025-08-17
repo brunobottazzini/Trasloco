@@ -8,8 +8,9 @@
         android:background="#000000"
         tools:context=".MainActivity">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonTopRightRules"
+        style="@style/CardGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
@@ -21,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </Button>
+    </com.google.android.material.button.MaterialButton>
 
     <ImageView
             android:id="@+id/c4"
@@ -54,8 +55,9 @@
             tools:ignore="TextViewEdits"
         />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonStart"
+            style="@style/CardGameButton"
             android:layout_width="197dp"
             android:layout_height="65dp"
             android:text="@string/start"
@@ -66,8 +68,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.65" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonShowRecords"
+            style="@style/CardGameButton"
             android:onClick="showRecords"
             android:text="@string/title_activity_records"
             app:layout_constraintTop_toBottomOf="@id/buttonStart"
@@ -79,8 +82,9 @@
             android:layout_height="65dp"
             app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSetting"
+        style="@style/CardGameButton"
         android:onClick="openSettings"
         android:text="@string/impostazioni"
         app:layout_constraintTop_toBottomOf="@id/buttonShowRecords"

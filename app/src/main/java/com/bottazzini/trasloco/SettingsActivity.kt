@@ -6,6 +6,7 @@ import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +18,8 @@ import com.bottazzini.trasloco.utils.ResourceUtils
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
+    private lateinit var radioGroupBackgroundRow1: RadioGroup
+    private lateinit var radioGroupBackgroundRow2: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,36 @@ class SettingsActivity : AppCompatActivity() {
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         settingsHandler = SettingsHandler(applicationContext)
+
+
+        radioGroupBackgroundRow1 = findViewById(R.id.radioGroupBackgroundRow1)
+        radioGroupBackgroundRow2 = findViewById(R.id.radioGroupBackgroundRow2)
+
+        radioGroupBackgroundRow1.setOnCheckedChangeListener { group, checkedId ->
+            val currentlyCheckedRadioButton = group.findViewById<RadioButton>(checkedId)
+            if (checkedId != -1 && currentlyCheckedRadioButton != null && currentlyCheckedRadioButton.isChecked) {
+                if (radioGroupBackgroundRow2.checkedRadioButtonId != -1) {
+                    radioGroupBackgroundRow2.clearCheck()
+                }
+                val selectedTag = currentlyCheckedRadioButton.tag?.toString() ?: "No Tag"
+                settingsHandler.updateSetting(Configuration.BACKGROUND.value, selectedTag)
+                changeBackGround()
+            }
+        }
+
+        radioGroupBackgroundRow2.setOnCheckedChangeListener { group, checkedId ->
+            val currentlyCheckedRadioButton = group.findViewById<RadioButton>(checkedId)
+            if (checkedId != -1 && currentlyCheckedRadioButton != null && currentlyCheckedRadioButton.isChecked) {
+                if (radioGroupBackgroundRow1.checkedRadioButtonId != -1) {
+                    radioGroupBackgroundRow1.clearCheck()
+                }
+
+                val selectedTag = currentlyCheckedRadioButton.tag?.toString() ?: "No Tag"
+                settingsHandler.updateSetting(Configuration.BACKGROUND.value, selectedTag)
+                changeBackGround()
+            }
+        }
+
         readConfigurations()
     }
 
@@ -39,13 +72,6 @@ class SettingsActivity : AppCompatActivity() {
         val radioButton = findViewById<RadioButton>(view.id)
         val imageName = radioButton.tag as String
         settingsHandler.updateSetting(Configuration.CARD_BACK.value, imageName)
-    }
-
-    fun setBackGround(view: View) {
-        val radioButton = findViewById<RadioButton>(view.id)
-        val imageName = radioButton.tag as String
-        settingsHandler.updateSetting(Configuration.BACKGROUND.value, imageName)
-        changeBackGround()
     }
 
     override fun onDestroy() {

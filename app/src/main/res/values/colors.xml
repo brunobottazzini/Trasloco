@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
-    <color name="ic_launcher_background">#FFFFFFFF</color> <!-- puoi scegliere un altro colore -->
+    <color name="ic_launcher_background">#FFFFFFFF</color>
+    <color name="blu_savoia">#003087</color>
+    <color name="card_game_button_text_color">#FFFFFF</color>
+    <color name="card_game_button_stroke_color">#001F59</color>
 </resources>
