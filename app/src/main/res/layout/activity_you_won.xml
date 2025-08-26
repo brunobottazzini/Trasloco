@@ -18,11 +18,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Testo Tempo Impiegato, sopra l'ImageView e sotto textConcurrentWin -->
+
+    <!-- Pulsanti in basso -->
+
     <TextView
         android:id="@+id/textViewYouWon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="128dp"
         android:text="@string/hai_vinto"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="60sp"
@@ -42,19 +46,15 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-        app:layout_constraintVertical_bias="0.84"
+        app:layout_constraintVertical_bias="0.747"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <!-- Testo Tempo Impiegato, sopra l'ImageView e sotto textConcurrentWin -->
-
-    <!-- Pulsanti in basso -->
 
     <TextView
         android:id="@+id/textConcurrentWin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/textViewTimeTaken"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +65,8 @@
         android:id="@+id/textViewTimeTaken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:textColor="@android:color/black"
+        android:layout_marginBottom="48dp"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
         app:layout_constraintEnd_toEndOf="parent"
