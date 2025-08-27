@@ -2,11 +2,15 @@ package com.bottazzini.trasloco
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -24,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recordsHandler: RecordsHandler
     private var mediaPlayer: MediaPlayer? = null
 
+    private var tapCount = 0
+    private var lastTapTime: Long = 0
+    private var tripleTapTimeout: Long = 1000 //ms
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         splashScreen.setOnExitAnimationListener {
@@ -39,6 +47,12 @@ class MainActivity : AppCompatActivity() {
         settingsHandler.insertDefaultSettings()
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
+
+        val mainImage: ImageView = findViewById(R.id.c4)
+
+        mainImage.setOnClickListener {
+            handleTripleTap()
+        }
     }
 
     fun startGame(view: View) {
@@ -72,6 +86,43 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
+    }
+
+    private fun handleTripleTap() {
+        val currentTime = SystemClock.uptimeMillis()
+
+        if (tapCount > 0 && (currentTime - lastTapTime > tripleTapTimeout)) {
+            // Timeout, reset count
+            tapCount = 0
+        }
+
+        tapCount++
+        lastTapTime = currentTime
+
+        if (tapCount == 3) {
+            // Triple tap detected
+            showAppVersionToast()
+            tapCount = 0 // Reset for next triple tap
+        }
+    }
+
+    private fun showAppVersionToast() {
+        try {
+            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
+            val versionName: String
+            if (packageInfo.versionName != null) {
+                versionName = packageInfo.versionName.toString()
+            } else {
+                versionName = "N/A"
+            }
+            val versionCode: Int = packageInfo.versionCode // Or use Long for modern AGP: Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? packageInfo.longVersionCode : packageInfo.versionCode
+
+            val versionText = "Version: $versionName (Code: $versionCode)"
+            Toast.makeText(this, versionText, Toast.LENGTH_LONG).show()
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Could not get app version", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun playSound(soundId: Int) {
