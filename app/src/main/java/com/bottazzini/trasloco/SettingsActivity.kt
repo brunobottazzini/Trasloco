@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.settings)
-        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsConstraintLayout))
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsScrollView))
         supportActionBar?.hide()
 
         settingsHandler = SettingsHandler(applicationContext)
@@ -82,8 +82,8 @@ class SettingsActivity : AppCompatActivity() {
     private fun changeBackGround() {
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)!!
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
-        val layout = findViewById<ConstraintLayout>(R.id.settingsConstraintLayout)
-        layout.background = ContextCompat.getDrawable(this, drawable)
+        val root = findViewById<View>(R.id.settingsScrollView)
+        root.background = ContextCompat.getDrawable(this, drawable)
     }
 
     private fun readConfigurations() {

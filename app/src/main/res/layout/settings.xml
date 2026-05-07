@@ -1,182 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settingsConstraintLayout"
+    android:id="@+id/settingsScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/verde"
-    tools:context=".SettingsActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="211dp"
-        android:layout_height="46dp"
-        android:autoSizeTextType="uniform"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="@string/impostazioni"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <TextView
-        android:id="@+id/textViewCardBackLabel"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settingsConstraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose_backcard"
-        android:textColor="@color/white"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:paddingBottom="24dp"
+        tools:context=".SettingsActivity">
 
-    <RadioGroup
-        android:id="@+id/radioGroupCardBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCardBackLabel"
-        android:layout_marginTop="8dp">
-
-        <RadioButton
-            android:id="@+id/rbCardBack1"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/bg"
-            android:tag="bg"
-            android:onClick="setBackCard"
-            android:layout_marginEnd="8dp"/>
-
-        <RadioButton
-            android:id="@+id/rbCardBack2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/bg2"
-            android:tag="bg2"
-            android:onClick="setBackCard"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
-
-
-        <RadioButton
-            android:id="@+id/rbCardBack3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/bg3"
-            android:onClick="setBackCard"
-            android:tag="bg3"
-            android:layout_marginStart="8dp"/>
-    </RadioGroup>
-
-    <Switch
-        android:id="@+id/switchFastDeal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="238dp"
-        android:minHeight="55dp"
-        android:onClick="changeFastDeal"
-        android:text="@string/fast_deal"
-        android:textColor="@color/white"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupCardBack" />
-
-    <TextView
-        android:id="@+id/textViewBackgroundLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sfondo"
-        android:textColor="@color/white"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/switchFastDeal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <RadioGroup
-        android:id="@+id/radioGroupBackgroundRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBackgroundLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <RadioButton
-            android:id="@+id/rbPanno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/panno"
-            android:tag="panno"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:autoSizeMaxTextSize="32sp"
+            android:autoSizeMinTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/impostazioni"
             android:textColor="@color/white"
-            android:layout_marginEnd="8dp"/>
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/rbLegno"
+        <TextView
+            android:id="@+id/textViewCardBackLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/legno"
-            android:tag="legno"
+            android:layout_marginTop="24dp"
+            android:text="@string/choose_backcard"
             android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
 
-        <RadioButton
-            android:id="@+id/rbSabbia"
+        <RadioGroup
+            android:id="@+id/radioGroupCardBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sabbia"
-            android:tag="sabbia"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"/>
-    </RadioGroup>
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewCardBackLabel">
 
+            <RadioButton
+                android:id="@+id/rbCardBack1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:drawableEnd="@drawable/bg"
+                android:onClick="setBackCard"
+                android:tag="bg" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupBackgroundRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupBackgroundRow1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            <RadioButton
+                android:id="@+id/rbCardBack2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:drawableEnd="@drawable/bg2"
+                android:onClick="setBackCard"
+                android:tag="bg2" />
 
-        <RadioButton
-            android:id="@+id/rbTappeto"
+            <RadioButton
+                android:id="@+id/rbCardBack3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:drawableEnd="@drawable/bg3"
+                android:onClick="setBackCard"
+                android:tag="bg3" />
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/switchFastDeal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tappeto"
-            android:tag="tappeto"
+            android:layout_marginTop="24dp"
+            android:minWidth="238dp"
+            android:minHeight="55dp"
+            android:onClick="changeFastDeal"
+            android:text="@string/fast_deal"
             android:textColor="@color/white"
-            android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupCardBack" />
 
-        <RadioButton
-            android:id="@+id/rbTavolo"
+        <TextView
+            android:id="@+id/textViewBackgroundLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tavolo"
-            android:tag="tavolo"
+            android:layout_marginTop="24dp"
+            android:text="@string/sfondo"
             android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/switchFastDeal" />
 
-        <RadioButton
-            android:id="@+id/rbVerde"
+        <RadioGroup
+            android:id="@+id/radioGroupBackgroundRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/verde"
-            android:tag="verde"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"/>
-    </RadioGroup>
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewBackgroundLabel">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/rbPanno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:tag="panno"
+                android:text="@string/panno"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbLegno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tag="legno"
+                android:text="@string/legno"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbSabbia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:tag="sabbia"
+                android:text="@string/sabbia"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radioGroupBackgroundRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupBackgroundRow1">
+
+            <RadioButton
+                android:id="@+id/rbTappeto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:tag="tappeto"
+                android:text="@string/tappeto"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbTavolo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tag="tavolo"
+                android:text="@string/tavolo"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbVerde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:tag="verde"
+                android:text="@string/verde"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
