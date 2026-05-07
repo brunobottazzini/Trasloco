@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class RulesActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ class RulesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_rules)
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsConstraintLayout))
         supportActionBar?.hide()
 
         linearLayoutRulesContainer = findViewById(R.id.linearLayoutRulesContainer)

@@ -1,6 +1,5 @@
 package com.bottazzini.trasloco
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -14,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -25,9 +25,9 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.settings)
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsConstraintLayout))
         supportActionBar?.hide()
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         settingsHandler = SettingsHandler(applicationContext)
 
 

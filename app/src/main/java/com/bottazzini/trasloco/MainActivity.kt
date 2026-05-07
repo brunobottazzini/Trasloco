@@ -1,7 +1,6 @@
 package com.bottazzini.trasloco
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -21,6 +20,7 @@ import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.mainConstraintLayout))
         supportActionBar?.hide()
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()
         recordsHandler = RecordsHandler(applicationContext)

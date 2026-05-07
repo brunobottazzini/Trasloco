@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/gameConstraintLayout"
+    android:background="@drawable/verde">
+
+    <!-- ========== GUIDELINES ========== -->
+
+    <!-- Horizontal Guidelines (Rows) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_row_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.13" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_row_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_row_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_row_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- Vertical Guidelines (Columns) - centered for landscape -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_col_deck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_col_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_col_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_col_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_col_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <!-- ========== TOP BAR ========== -->
+
+    <TextView
+        android:id="@+id/textViewGameTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/resetButton" style="@style/RoundButton"
+        android:text="@string/undo"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="undoClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedCardTextView"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintVertical_bias="0.06"
+        android:text="" />
+
+    <!-- ========== ROW 1 ========== -->
+
+    <ImageView
+        android:id="@+id/subDeck1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="subDeckClick"
+        android:tag="1"
+        android:foreground="@drawable/subdeck_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_deck"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_1"
+        app:srcCompat="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/subDeck11"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_1"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_1"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck12"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_2"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_1"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_3"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_1"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck14"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        android:background="@drawable/final_stack_border"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_4"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_1"
+        app:srcCompat="@drawable/zero" />
+
+    <!-- ========== ROW 2 ========== -->
+
+    <ImageView
+        android:id="@+id/subDeck2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="subDeckClick"
+        android:tag="2"
+        android:foreground="@drawable/subdeck_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_deck"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_2"
+        app:srcCompat="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/subDeck21"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_1"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_2"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck22"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_2"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_2"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck23"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_3"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_2"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck24"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        android:background="@drawable/final_stack_border"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_4"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_2"
+        app:srcCompat="@drawable/zero" />
+
+    <!-- ========== ROW 3 ========== -->
+
+    <ImageView
+        android:id="@+id/subDeck3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="subDeckClick"
+        android:tag="3"
+        android:foreground="@drawable/subdeck_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_deck"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_3"
+        app:srcCompat="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/subDeck31"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_1"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_3"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck32"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_2"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_3"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck33"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_3"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_3"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck34"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        android:background="@drawable/final_stack_border"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_4"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_3"
+        app:srcCompat="@drawable/zero" />
+
+    <!-- ========== ROW 4 ========== -->
+
+    <ImageView
+        android:id="@+id/subDeck4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="subDeckClick"
+        android:tag="4"
+        android:foreground="@drawable/subdeck_background_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_deck"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_4"
+        app:srcCompat="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/subDeck41"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_1"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_4"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck42"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_2"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_4"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck43"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_3"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_4"
+        app:srcCompat="@drawable/zero" />
+
+    <ImageView
+        android:id="@+id/subDeck44"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintDimensionRatio="W,58:113"
+        android:scaleType="centerCrop"
+        android:onClick="gameCardClick"
+        android:tag="zero"
+        android:background="@drawable/final_stack_border"
+        app:layout_constraintStart_toStartOf="@id/guideline_col_4"
+        app:layout_constraintTop_toTopOf="@id/guideline_row_4"
+        app:srcCompat="@drawable/zero" />
+
+    <!-- ========== CARD COUNT TEXT VIEWS ========== -->
+
+    <!-- Row 1 counts -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck11"
+        app:layout_constraintEnd_toEndOf="@id/subDeck11"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck11"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView12"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck12"
+        app:layout_constraintEnd_toEndOf="@id/subDeck12"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck12"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView13"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck13"
+        app:layout_constraintEnd_toEndOf="@id/subDeck13"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck13"
+        android:layout_marginBottom="2dp" />
+
+    <!-- Row 2 counts -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView21"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck21"
+        app:layout_constraintEnd_toEndOf="@id/subDeck21"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck21"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView22"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck22"
+        app:layout_constraintEnd_toEndOf="@id/subDeck22"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck22"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView23"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck23"
+        app:layout_constraintEnd_toEndOf="@id/subDeck23"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck23"
+        android:layout_marginBottom="2dp" />
+
+    <!-- Row 3 counts -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView31"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck31"
+        app:layout_constraintEnd_toEndOf="@id/subDeck31"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck31"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView32"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck32"
+        app:layout_constraintEnd_toEndOf="@id/subDeck32"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck32"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView33"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck33"
+        app:layout_constraintEnd_toEndOf="@id/subDeck33"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck33"
+        android:layout_marginBottom="2dp" />
+
+    <!-- Row 4 counts -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView41"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck41"
+        app:layout_constraintEnd_toEndOf="@id/subDeck41"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck41"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView42"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck42"
+        app:layout_constraintEnd_toEndOf="@id/subDeck42"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck42"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView43"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/subDeck43"
+        app:layout_constraintEnd_toEndOf="@id/subDeck43"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck43"
+        android:layout_marginBottom="2dp" />
+
+    <!-- ========== GAME STATUS UI ========== -->
+
+    <TextView
+        android:text="@string/hai_perso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lostTextView"
+        android:visibility="invisible"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.97" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newGameButton" style="@style/GameButton"
+        android:text="@string/nuova_partita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startNewGame"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retryButton" style="@style/GameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="retryGame"
+        android:text="@string/riprova"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

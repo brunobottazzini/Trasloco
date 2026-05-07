@@ -1,7 +1,6 @@
 package com.bottazzini.trasloco
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -19,6 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isInvisible
+import androidx.lifecycle.ViewModelProvider
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
@@ -51,13 +51,15 @@ class GameActivity : AppCompatActivity() {
     private var mediaPlayerAtomic: MediaPlayer? = null
     private var mediaPlayer: MediaPlayer? = null
     private var isInitializing = true
+    private val gameViewModel: GameViewModel by lazy {
+        ViewModelProvider(this).get(GameViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hideSystemBars()
         setContentView(R.layout.game)
         textViewGameTimer = findViewById(R.id.textViewGameTimer)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
@@ -66,7 +68,11 @@ class GameActivity : AppCompatActivity() {
         }
 
         processSettings()
-        startNewGame()
+        if (gameViewModel.hasActiveGame) {
+            restoreGameFromViewModel()
+        } else {
+            startNewGame()
+        }
     }
 
     fun startNewGame(view: View) {
@@ -75,6 +81,8 @@ class GameActivity : AppCompatActivity() {
 
     fun startNewGame() {
         isInitializing = true
+        gameViewModel.hasActiveGame = true
+        gameViewModel.gameLost = false
         playSound(R.raw.shuffle)
         stopTimer()
         prePrepareTable()
@@ -92,6 +100,7 @@ class GameActivity : AppCompatActivity() {
 
     fun retryGame(view: View) {
         isInitializing = true
+        gameViewModel.gameLost = false
         playSound(R.raw.shuffle)
         stopTimer()
         prePrepareTable()
@@ -517,6 +526,7 @@ class GameActivity : AppCompatActivity() {
             recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
         }
 
+        gameViewModel.gameLost = true
         playSound(R.raw.youlost)
     }
 
@@ -687,6 +697,87 @@ class GameActivity : AppCompatActivity() {
         playList = HashMap()
     }
 
+    private fun snapshotToViewModel() {
+        gameViewModel.gameStartTimeMillis = gameStartTimeMillis
+        gameViewModel.timerPausedTimeMillis = timerPausedTimeMillis
+        gameViewModel.isTimerPaused = isTimerPaused
+        gameViewModel.coppiedSubDeckMap = HashMap(coppiedSubDeckMap)
+        gameViewModel.subDeckMap = HashMap(subDeckMap)
+        gameViewModel.cardTableMap = HashMap(cardTableMap)
+        gameViewModel.endDeckList = HashMap(endDeckList)
+        gameViewModel.playList = HashMap(playList)
+        gameViewModel.selectedCard = selectedCard
+        gameViewModel.selectedPositionId = selectedPositionId
+    }
+
+    private fun restoreGameFromViewModel() {
+        isInitializing = true
+
+        prePrepareTable()
+
+        gameStartTimeMillis = gameViewModel.gameStartTimeMillis
+        timerPausedTimeMillis = gameViewModel.timerPausedTimeMillis
+        isTimerPaused = gameViewModel.isTimerPaused
+        coppiedSubDeckMap = HashMap(gameViewModel.coppiedSubDeckMap)
+        subDeckMap = HashMap(gameViewModel.subDeckMap)
+        cardTableMap = HashMap(gameViewModel.cardTableMap)
+        endDeckList = HashMap(gameViewModel.endDeckList)
+        playList = HashMap(gameViewModel.playList)
+        selectedCard = gameViewModel.selectedCard
+        selectedPositionId = gameViewModel.selectedPositionId
+
+        val backCard = settingsHandler.readValue(Configuration.CARD_BACK.value)!!
+        for (line in listOf("1", "2", "3", "4")) {
+            val deckImageId = resources.getIdentifier("subDeck$line", "id", this.packageName)
+            if (subDeckMap[line]?.isNotEmpty() == true) {
+                setBackDeckCard(backCard, line)
+            } else {
+                setImage(deckImageId, "zero")
+            }
+        }
+
+        for ((position, cards) in cardTableMap) {
+            val imageViewId = resources.getIdentifier("subDeck$position", "id", this.packageName)
+            if (cards.isNotEmpty()) {
+                setImage(imageViewId, cards.last())
+            }
+            if (!isEndDeckClick(position)) {
+                setNumberOfCards(cards, position)
+            }
+        }
+
+        for ((line, card) in endDeckList) {
+            val endDeckId = resources.getIdentifier("subDeck${line}4", "id", this.packageName)
+            setImage(endDeckId, card)
+        }
+
+        if (selectedPositionId != null) {
+            setSelected(selectedPositionId)
+        }
+
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isEnabled = playList.isNotEmpty()
+        updateBackgroundTint(resetButton)
+
+        if (gameViewModel.gameLost) {
+            showYouLostRestoredUI()
+            isTimerPaused = false
+        }
+
+        isInitializing = false
+    }
+
+    private fun showYouLostRestoredUI() {
+        val resetButton = findViewById<Button>(R.id.resetButton)
+        resetButton.isInvisible = true
+        updateBackgroundTint(resetButton)
+        findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
+        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
+        findViewById<TextView>(R.id.lostTextView).isInvisible = false
+        findViewById<Button>(R.id.retryButton).isInvisible = false
+        findViewById<Button>(R.id.newGameButton).isInvisible = false
+    }
+
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
@@ -696,6 +787,9 @@ class GameActivity : AppCompatActivity() {
         super.onStop()
         if (::timerRunnable.isInitialized && !isFinishing) {
             pauseTimer()
+        }
+        if (!isFinishing && gameViewModel.hasActiveGame) {
+            snapshotToViewModel()
         }
     }
 

@@ -1,7 +1,6 @@
 package com.bottazzini.trasloco // Assicurati che il package sia corretto
 
 // import com.bottazzini.trasloco.R // Se non usi ViewBinding
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -16,6 +15,7 @@ import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.TimeUtils
+import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class RecordActivity : AppCompatActivity() {
 
@@ -32,6 +32,7 @@ class RecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_record)
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsConstraintLayout))
         supportActionBar?.hide()
 
         textViewBestTimeValue = findViewById(R.id.textViewBestTimeValue)
@@ -39,8 +40,6 @@ class RecordActivity : AppCompatActivity() {
         textViewNoRecords = findViewById(R.id.textViewNoRecords)
         textViewBestTimeLabel = findViewById(R.id.textViewBestTimeLabel)
         textViewConsecutiveWinsLabel = findViewById(R.id.textViewConsecutiveWinsLabel)
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         recordsHandler = RecordsHandler(applicationContext)
         settingsHandler = SettingsHandler(applicationContext)

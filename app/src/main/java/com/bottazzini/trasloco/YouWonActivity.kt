@@ -1,7 +1,6 @@
 package com.bottazzini.trasloco
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
@@ -41,7 +40,6 @@ class YouWonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         hideSystemBars()
         setContentView(R.layout.activity_you_won)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         imageViewPartyGif = findViewById(R.id.imageViewPartyGif)
         buttonNewGame = findViewById(R.id.buttonNewGameYouWon)
