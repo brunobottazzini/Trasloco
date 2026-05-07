@@ -30,9 +30,11 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[AUTO]** `GameInteractionTest.gameStartsWithSubDecksAndDealtCards`
 - **[AUTO]** `GameInteractionTest.gameEndDeckSlotsStartEmpty`
 - **[AUTO]** `GameInteractionTest.gameUndoDisabledOnFreshGame`
-- **[AUTO]** `GameInteractionTest.subDeckClick_dealsCardToFirstEmptySlot`
+- **[AUTO]** `GameInteractionTest.gameTable_isFullyDealtAtStart`
 - **[AUTO]** `GameInteractionTest.cardClick_setsSelectionForeground`
-- **[AUTO]** `GameInteractionTest.secondClickOnEmptySlot_doesNothing`
+- **[AUTO]** `GameInteractionTest.firstClickOnEndDeckSlot_doesNotSelect`
+- **[AUTO]** `GameInteractionTest.pileCounters_areInvisibleAtGameStart`
+- **[AUTO]** `GameInteractionTest.pileCounter_displaysSizeAndBecomesVisibleWhenStackGrows`
 - **[MANUAL]** Catena card → end deck (sequenza A→2→3...→10) per ogni seme
 - **[MANUAL]** Fast Deal abilitato: dopo carta in end deck, la successiva sale auto
 - **[MANUAL]** Win condition (4× 10 in end deck) → naviga a YouWonActivity
