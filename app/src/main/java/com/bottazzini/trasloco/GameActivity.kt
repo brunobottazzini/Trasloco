@@ -291,8 +291,10 @@ class GameActivity : AppCompatActivity() {
         val textView = findViewById<TextView>(getTextViewByName(position))
         if (cardsList.size > 1) {
             textView.text = cardsList.size.toString()
+            textView.visibility = View.VISIBLE
         } else {
             textView.text = ""
+            textView.visibility = View.INVISIBLE
         }
     }
 
@@ -622,6 +624,7 @@ class GameActivity : AppCompatActivity() {
                 if (!isEndDeckClick(position)) {
                     val textView = findViewById<TextView>(getTextViewByName(position))
                     textView.text = ""
+                    textView.visibility = View.INVISIBLE
                 }
             }
         }
