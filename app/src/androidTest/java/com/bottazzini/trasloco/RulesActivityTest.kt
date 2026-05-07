@@ -36,6 +36,13 @@ class RulesActivityTest {
     fun rulesActivity_gotItButtonFinishesActivity() {
         val scenario = ActivityScenario.launch(RulesActivity::class.java)
         onView(withId(R.id.buttonGotIt)).perform(click())
+        // finish() is async — poll until destroyed or timeout
+        val deadline = System.currentTimeMillis() + 5_000
+        while (scenario.state != Lifecycle.State.DESTROYED &&
+            System.currentTimeMillis() < deadline
+        ) {
+            Thread.sleep(50)
+        }
         assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 }

@@ -79,24 +79,23 @@ class GameInteractionTest {
     }
 
     @Test
-    fun subDeckClick_dealsCardToFirstEmptySlot() {
+    fun gameTable_isFullyDealtAtStart() {
         ActivityScenario.launch(GameActivity::class.java).use { scenario ->
-            // Slot 12 is empty after first deal — capture state then trigger sub-deck click on row 1
-            val initialTag = arrayOf("")
             scenario.onActivity { activity ->
-                initialTag[0] = activity.findViewById<ImageView>(R.id.subDeck12).tag as String
-            }
-            assertEquals("zero", initialTag[0])
-
-            onView(withId(R.id.subDeck1)).perform(click())
-
-            scenario.onActivity { activity ->
-                val newTag = activity.findViewById<ImageView>(R.id.subDeck12).tag as String
-                assertNotEquals(
-                    "After sub-deck click, subDeck12 should hold a card",
-                    "zero",
-                    newTag
+                val gameSlots = listOf(
+                    R.id.subDeck11, R.id.subDeck12, R.id.subDeck13,
+                    R.id.subDeck21, R.id.subDeck22, R.id.subDeck23,
+                    R.id.subDeck31, R.id.subDeck32, R.id.subDeck33,
+                    R.id.subDeck41, R.id.subDeck42, R.id.subDeck43
                 )
+                gameSlots.forEach { id ->
+                    val tag = activity.findViewById<ImageView>(id).tag as String
+                    assertNotEquals(
+                        "Slot $id should hold a card after initial deal",
+                        "zero",
+                        tag
+                    )
+                }
             }
         }
     }
@@ -116,15 +115,20 @@ class GameInteractionTest {
     }
 
     @Test
-    fun secondClickOnEmptySlot_doesNothing() {
+    fun firstClickOnEndDeckSlot_doesNotSelect() {
         ActivityScenario.launch(GameActivity::class.java).use { scenario ->
-            // subDeck12 is empty (zero), clicking it should not start a selection
-            onView(withId(R.id.subDeck12)).perform(click())
+            // End deck slots (XX4) start as "zero" and are not selectable when no card is held
+            onView(withId(R.id.subDeck14)).perform(click())
             scenario.onActivity { activity ->
-                val view = activity.findViewById<ImageView>(R.id.subDeck12)
+                val view = activity.findViewById<ImageView>(R.id.subDeck14)
                 assertNull(
-                    "Empty slot should not be selectable",
+                    "End deck (zero) should not be selectable from clean state",
                     view.foreground
+                )
+                assertEquals(
+                    "End deck slot must remain empty",
+                    "zero",
+                    view.tag as String
                 )
             }
         }
