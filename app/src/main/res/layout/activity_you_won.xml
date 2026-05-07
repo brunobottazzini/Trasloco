@@ -1,100 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/youWonScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/gameConstraintLayout"
-    android:padding="16dp"
-    tools:context=".YouWonActivity">
+    android:fillViewport="true">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonExitYouWon"
-        style="@style/CardGameButton"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gameConstraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/exit_button_label"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:padding="16dp"
+        tools:context=".YouWonActivity">
 
-    <!-- Testo Tempo Impiegato, sopra l'ImageView e sotto textConcurrentWin -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonExitYouWon"
+            style="@style/CardGameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/exit_button_label"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Pulsanti in basso -->
+        <TextView
+            android:id="@+id/textViewYouWon"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginEnd="16dp"
+            android:autoSizeMaxTextSize="60sp"
+            android:autoSizeMinTextSize="28sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/hai_vinto"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewYouWon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:text="@string/hai_vinto"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textConcurrentWin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
+            tools:text="Vittorie Consecutive: X (Record: Y)" />
 
-    <ImageView
-        android:id="@+id/imageViewPartyGif"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/buttonNewGameYouWon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-        app:layout_constraintVertical_bias="0.747"
-        tools:srcCompat="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/textViewTimeTaken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textConcurrentWin"
+            tools:text="@string/time_taken" />
 
-    <TextView
-        android:id="@+id/textConcurrentWin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/textViewTimeTaken"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Vittorie Consecutive: X (Record: Y)" />
+        <ImageView
+            android:id="@+id/imageViewPartyGif"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTimeTaken"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/textViewTimeTaken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/imageViewPartyGif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/time_taken" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNewGameYouWon"
+            style="@style/CardGameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/nuova_partita"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPartyGif" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonNewGameYouWon"
-        style="@style/CardGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="@string/nuova_partita"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/buttonMenuYouWon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMenuYouWon"
+            style="@style/CardGameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/menu_button_label"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonNewGameYouWon" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonMenuYouWon" style="@style/CardGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/menu_button_label"
-        android:textSize="20sp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

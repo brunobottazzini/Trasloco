@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
-        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.mainConstraintLayout))
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.mainScrollView))
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()

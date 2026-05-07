@@ -609,7 +609,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/lostTextView"
         android:visibility="invisible"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"

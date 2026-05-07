@@ -1,115 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainConstraintLayout"
+    android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".MainActivity">
+    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/verticalGuideline"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainConstraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50" />
+        android:minHeight="0dp"
+        tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:autoSizeMaxTextSize="56sp"
-        android:autoSizeMinTextSize="24sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/trasloco"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextViewEdits" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50" />
 
-    <ImageView
-        android:id="@+id/c4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
-        app:layout_constraintHeight_percent="0.45"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName"
-        app:layout_constraintVertical_bias="0"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        <TextView
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:autoSizeMaxTextSize="56sp"
+            android:autoSizeMinTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/trasloco"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextViewEdits" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonStart"
-        style="@style/CardGameButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:onClick="startGame"
-        android:text="@string/start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/verticalGuideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.4" />
+        <ImageView
+            android:id="@+id/c4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextTextPersonName"
+            app:layout_constraintVertical_bias="0"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonShowRecords"
-        style="@style/CardGameButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="showRecords"
-        android:text="@string/title_activity_records"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/verticalGuideline"
-        app:layout_constraintTop_toBottomOf="@id/buttonStart"
-        app:layout_constraintWidth_percent="0.4" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonStart"
+            style="@style/CardGameButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="startGame"
+            android:text="@string/start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.4" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonSetting"
-        style="@style/CardGameButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="openSettings"
-        android:text="@string/impostazioni"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/verticalGuideline"
-        app:layout_constraintTop_toBottomOf="@id/buttonShowRecords"
-        app:layout_constraintWidth_percent="0.4" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonShowRecords"
+            style="@style/CardGameButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="showRecords"
+            android:text="@string/title_activity_records"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+            app:layout_constraintTop_toBottomOf="@id/buttonStart"
+            app:layout_constraintWidth_percent="0.4" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonTopRightRules"
-        style="@style/CardGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:onClick="showRules"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="@string/title_activity_rules"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSetting"
+            style="@style/CardGameButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="openSettings"
+            android:text="@string/impostazioni"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+            app:layout_constraintTop_toBottomOf="@id/buttonShowRecords"
+            app:layout_constraintWidth_percent="0.4" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonTopRightRules"
+            style="@style/CardGameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:onClick="showRules"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/title_activity_rules"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonSetting"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

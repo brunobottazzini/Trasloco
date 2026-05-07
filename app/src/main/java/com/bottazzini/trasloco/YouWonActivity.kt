@@ -3,6 +3,7 @@ package com.bottazzini.trasloco
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -104,8 +105,11 @@ class YouWonActivity : AppCompatActivity() {
         val settingsHandler = SettingsHandler(applicationContext)
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
-        val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
-        layout.background = ContextCompat.getDrawable(this, drawable)
+        // Portrait wraps the layout in a ScrollView (id youWonScrollView); landscape keeps
+        // the ConstraintLayout as root. Apply the background to whichever exists.
+        val rootView: View = findViewById(R.id.youWonScrollView)
+            ?: findViewById(R.id.gameConstraintLayout)
+        rootView.background = ContextCompat.getDrawable(this, drawable)
 
         try {
             mediaPlayer = MediaPlayer.create(this, R.raw.youwin) // Sostituisci con il nome del tuo file
