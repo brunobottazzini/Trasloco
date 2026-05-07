@@ -1,6 +1,7 @@
 package com.bottazzini.trasloco
 
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -103,6 +104,37 @@ class RotationStateTest {
                     "subDeck12 should keep the picked card after recreate",
                     tagAfterPick[0],
                     tagAfterRecreate
+                )
+            }
+        }
+    }
+
+    @Test
+    fun gameTimer_doesNotResetAfterRecreation() {
+        ActivityScenario.launch(GameActivity::class.java).use { scenario ->
+            // Wait for at least one timer tick (timer updates every 1000ms)
+            Thread.sleep(1_500)
+            var beforeRotation = ""
+            scenario.onActivity { activity ->
+                beforeRotation =
+                    activity.findViewById<TextView>(R.id.textViewGameTimer).text.toString()
+            }
+            assertNotEquals(
+                "Timer should have ticked at least once before rotation",
+                "00:00",
+                beforeRotation
+            )
+
+            scenario.recreate()
+            Thread.sleep(1_500) // give timer time to resume and tick after recreate
+
+            scenario.onActivity { activity ->
+                val afterRotation =
+                    activity.findViewById<TextView>(R.id.textViewGameTimer).text.toString()
+                assertNotEquals(
+                    "Timer must not reset to 00:00 after rotation (ViewModel preserves gameStartTimeMillis)",
+                    "00:00",
+                    afterRotation
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.bottazzini.trasloco
 
+import android.widget.LinearLayout
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -10,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bottazzini.trasloco.util.TestHelpers
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,6 +31,21 @@ class RulesActivityTest {
             onView(withId(R.id.textViewRulesScreenTitle)).check(matches(isDisplayed()))
             onView(withId(R.id.linearLayoutRulesContainer)).check(matches(isDisplayed()))
             onView(withId(R.id.buttonGotIt)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun rulesActivity_loadsRulesIntoContainer() {
+        ActivityScenario.launch(RulesActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val container =
+                    activity.findViewById<LinearLayout>(R.id.linearLayoutRulesContainer)
+                // Container has a static title TextView in XML + dynamically added rule TextViews
+                assertTrue(
+                    "Rules container must contain static title + dynamic rule rows (>=2 children)",
+                    container.childCount >= 2
+                )
+            }
         }
     }
 

@@ -56,6 +56,10 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[MANUAL]** Vittoria → consecutiveWins +1 e "Nuovo record" se supera
 - **[MANUAL]** Sconfitta → consecutiveWins corrente azzerato
 - **[MANUAL]** Format del tempo (mm:ss) corretto
+- **[AUTO]** `RecordActivityTest.recordActivity_showsRecordsWhenPopulated`
+- **[AUTO]** `RecordActivityTest.recordActivity_showsOnlyConsecutiveWhenTimeMissing`
+- **[AUTO]** `YouWonActivityTest.youWonActivity_displaysAllRequiredViews`
+- **[AUTO]** `YouWonActivityTest.youWonActivity_displaysNonEmptyTimeAndConsecutiveText`
 
 ## 5 · Edge-to-edge & insets
 
@@ -72,11 +76,14 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[AUTO]** `RotationStateTest.selection_survivesActivityRecreation`
 - **[AUTO]** `RotationStateTest.subDeckPick_survivesActivityRecreation`
 - **[AUTO]** `RotationStateTest.multipleRecreations_doNotCorruptState`
+- **[AUTO]** `RotationStateTest.gameTimer_doesNotResetAfterRecreation`
+- **[AUTO]** `YouWonActivityTest.youWonActivity_timeTextSurvivesRecreation` (regression: previously DB was reset to 0)
+- **[AUTO]** `YouWonActivityTest.youWonActivity_consecutiveTextSurvivesRecreation`
+- **[AUTO]** `YouWonActivityTest.youWonActivity_buttonsClickableAfterRecreation`
 - **[AUTO]** `RulesActivityTest.rulesActivity_gotItButtonFinishesActivity`
-- **[MANUAL]** Layout `layout-land/game.xml` caricato in landscape (verifica visiva)
-- **[MANUAL]** Timer riprende dal valore corretto post-rotazione (non resetta a 00:00)
+- **[AUTO]** `RulesActivityTest.rulesActivity_loadsRulesIntoContainer`
+- **[MANUAL]** Layout `layout-land/game.xml` e `layout-land/activity_you_won.xml` caricati in landscape (verifica visiva)
 - **[MANUAL]** Stato "Hai perso" preservato post-rotazione, timer non riparte
-- **[MANUAL]** YouWonActivity in landscape: GIF + bottoni leggibili e cliccabili
 
 ## 7 · Ciclo di vita
 

@@ -60,7 +60,6 @@ class YouWonActivity : AppCompatActivity() {
                 text = text + "\n" + getString(R.string.new_record)
             }
             textViewGameTimeTaken.text = text
-            recordsHandler.update(Type.TIME, millisPassed, 0L, false)
         } else {
             textViewGameTimeTaken.text = ""
         }
