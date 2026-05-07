@@ -1,6 +1,7 @@
 package com.bottazzini.trasloco
 
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -10,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bottazzini.trasloco.util.TestHelpers
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -116,6 +118,32 @@ class YouWonActivityTest {
             onView(withId(R.id.buttonNewGameYouWon)).check(matches(isClickable()))
             onView(withId(R.id.buttonMenuYouWon)).check(matches(isClickable()))
             onView(withId(R.id.buttonExitYouWon)).check(matches(isClickable()))
+        }
+    }
+
+    @Test
+    fun youWonActivity_gifUrlSurvivesRecreation() {
+        ActivityScenario.launch(YouWonActivity::class.java).use { scenario ->
+            var urlBefore: String? = null
+            scenario.onActivity { activity ->
+                val vm = ViewModelProvider(activity).get(YouWonViewModel::class.java)
+                urlBefore = vm.gifUrl
+            }
+            assertNotNull(
+                "ViewModel must hold a GIF URL after first load",
+                urlBefore
+            )
+
+            scenario.recreate()
+
+            scenario.onActivity { activity ->
+                val vm = ViewModelProvider(activity).get(YouWonViewModel::class.java)
+                assertEquals(
+                    "GIF URL must survive rotation (no random reload)",
+                    urlBefore,
+                    vm.gifUrl
+                )
+            }
         }
     }
 }

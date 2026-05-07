@@ -82,6 +82,7 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[AUTO]** `YouWonActivityTest.youWonActivity_timeTextSurvivesRecreation` (regression: previously DB was reset to 0)
 - **[AUTO]** `YouWonActivityTest.youWonActivity_consecutiveTextSurvivesRecreation`
 - **[AUTO]** `YouWonActivityTest.youWonActivity_buttonsClickableAfterRecreation`
+- **[AUTO]** `YouWonActivityTest.youWonActivity_gifUrlSurvivesRecreation` (regression: previously a new random GIF was picked on each rotation)
 - **[AUTO]** `RulesActivityTest.rulesActivity_gotItButtonFinishesActivity`
 - **[AUTO]** `RulesActivityTest.rulesActivity_loadsRulesIntoContainer`
 - **[MANUAL]** Layout `layout-land/game.xml` e `layout-land/activity_you_won.xml` caricati in landscape (verifica visiva)

@@ -15,33 +15,20 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonTopRightRules"
-        style="@style/CardGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:onClick="showRules"
-        android:text="@string/title_activity_rules"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/editTextTextPersonName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="64sp"
-        android:autoSizeMinTextSize="24sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:autoSizeMaxTextSize="72sp"
+        android:autoSizeMinTextSize="28sp"
         android:autoSizeTextType="uniform"
         android:ems="10"
         android:gravity="center"
         android:inputType="textPersonName"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:maxLines="1"
         android:text="@string/trasloco"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
@@ -71,22 +58,23 @@
         style="@style/CardGameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:onClick="startGame"
         android:text="@string/start"
         app:layout_constraintBottom_toTopOf="@id/buttonShowRecords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/verticalGuideline"
-        app:layout_constraintTop_toBottomOf="@id/buttonTopRightRules"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintWidth_percent="0.42" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonShowRecords"
         style="@style/CardGameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:onClick="showRecords"
         android:text="@string/title_activity_records"
         app:layout_constraintBottom_toTopOf="@id/buttonSetting"
@@ -94,22 +82,37 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/verticalGuideline"
         app:layout_constraintTop_toBottomOf="@id/buttonStart"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintWidth_percent="0.42" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSetting"
         style="@style/CardGameButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
         android:onClick="openSettings"
         android:text="@string/impostazioni"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonTopRightRules"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/verticalGuideline"
         app:layout_constraintTop_toBottomOf="@id/buttonShowRecords"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintWidth_percent="0.42" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonTopRightRules"
+        style="@style/CardGameButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="showRules"
+        android:text="@string/title_activity_rules"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+        app:layout_constraintTop_toBottomOf="@id/buttonSetting"
+        app:layout_constraintWidth_percent="0.42" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

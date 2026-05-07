@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
@@ -35,6 +36,9 @@ class YouWonActivity : AppCompatActivity() {
     private lateinit var textViewGameTimeTaken: TextView
     private lateinit var victoryInARow: TextView
     private var mediaPlayer: MediaPlayer? = null
+    private val youWonViewModel: YouWonViewModel by lazy {
+        ViewModelProvider(this).get(YouWonViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,16 +130,21 @@ class YouWonActivity : AppCompatActivity() {
     }
 
     private fun loadRandomPartyGifFromUrl() {
-        if (partyGifUrls.isNotEmpty()) {
-            val randomGifUrl = partyGifUrls[Random().nextInt(partyGifUrls.size)]
-            Glide.with(this)
-                .asGif()
-                .load(randomGifUrl)
-                .placeholder(R.drawable.loading) // Optional: placeholder while loading
-                .error(R.drawable.you_won_no_internet) // Optional: image to show if loading fails
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) // Optional: Caching strategy
-                .into(imageViewPartyGif)
+        if (partyGifUrls.isEmpty()) return
+
+        val gifUrl = youWonViewModel.gifUrl ?: run {
+            val picked = partyGifUrls[Random().nextInt(partyGifUrls.size)]
+            youWonViewModel.gifUrl = picked
+            picked
         }
+
+        Glide.with(this)
+            .asGif()
+            .load(gifUrl)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.you_won_no_internet)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .into(imageViewPartyGif)
     }
 
 
