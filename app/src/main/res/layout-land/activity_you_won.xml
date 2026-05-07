@@ -21,10 +21,10 @@
     <TextView
         android:id="@+id/textViewYouWon"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:layout_marginEnd="8dp"
-        android:autoSizeMaxTextSize="60sp"
-        android:autoSizeMinTextSize="32sp"
+        android:autoSizeMaxTextSize="56sp"
+        android:autoSizeMinTextSize="24sp"
         android:autoSizeTextType="uniform"
         android:gravity="start|center_vertical"
         android:maxLines="1"
