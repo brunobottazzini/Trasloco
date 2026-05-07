@@ -26,8 +26,11 @@
 
     <ImageView
             android:id="@+id/c4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.35"
+            app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -38,11 +41,14 @@
 
         <TextView
             android:id="@+id/editTextTextPersonName"
-            android:layout_width="200dp"
-            android:layout_height="64dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_percent="0.6"
             android:ems="10"
             android:gravity="center"
             android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="14sp"
+            android:autoSizeMaxTextSize="32sp"
             android:inputType="textPersonName"
             android:text="@string/trasloco"
             android:textColor="#FFFFFF"
@@ -58,8 +64,9 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonStart"
             style="@style/CardGameButton"
-            android:layout_width="197dp"
-            android:layout_height="65dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_percent="0.55"
             android:text="@string/start"
             android:onClick="startGame"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,8 +85,9 @@
             app:layout_constraintEnd_toEndOf="@id/buttonStart"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="197dp"
-            android:layout_height="65dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_percent="0.55"
             app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
@@ -91,7 +99,8 @@
         app:layout_constraintStart_toStartOf="@id/buttonShowRecords"
         app:layout_constraintEnd_toEndOf="@id/buttonShowRecords"
         android:layout_marginTop="16dp"
-        android:layout_width="197dp"
-        android:layout_height="65dp" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.55" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
