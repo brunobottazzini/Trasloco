@@ -32,7 +32,7 @@ class RecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_record)
-        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsConstraintLayout))
+        WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.recordsScrollView))
         supportActionBar?.hide()
 
         textViewBestTimeValue = findViewById(R.id.textViewBestTimeValue)
@@ -89,8 +89,8 @@ class RecordActivity : AppCompatActivity() {
     private fun changeBackGround(settingsHandler: SettingsHandler) {
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)!!
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
-        val layout = findViewById<ConstraintLayout>(R.id.settingsConstraintLayout)
-        layout.background = ContextCompat.getDrawable(this, drawable)
+        val root = findViewById<View>(R.id.recordsScrollView)
+        root.background = ContextCompat.getDrawable(this, drawable)
     }
 
     override fun onDestroy() {
