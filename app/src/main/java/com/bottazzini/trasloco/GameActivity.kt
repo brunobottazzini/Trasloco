@@ -1,5 +1,6 @@
 package com.bottazzini.trasloco
 
+import android.content.ClipData
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -7,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.DragEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -68,6 +70,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         processSettings()
+        setupDragAndDrop()
         if (gameViewModel.hasActiveGame) {
             restoreGameFromViewModel()
         } else {
@@ -139,6 +142,8 @@ class GameActivity : AppCompatActivity() {
             dealCard(line)
             if (getSubDeckListConcurrentSafely(line).isEmpty()) {
                 setImage(cardPosition, "zero")
+                imageView.foreground = null
+                imageView.isClickable = false
             }
         }
 
@@ -167,57 +172,70 @@ class GameActivity : AppCompatActivity() {
             selectedCard = cardName
             selectedPositionId = view.id
             setSelected(selectedPositionId)
-        } else {
-            if (canBeInserted(cardName, selectedCard!!, isEndDeckClick(desiredPosition))) {
-                moveCard(cardPosition, desiredPosition, selectedCard!!, selectedPositionId!!)
-                if (!isEndDeckClick(desiredPosition)) {
-                    newPlayList()
-                    playList[selectedCard!!] = linkedListOf(cardPosition, selectedPositionId!!)
-                } else {
-                    val line = desiredPosition.first()
-                    endDeckList[line.toString()] = selectedCard!!
-                    clearUndoButton()
+            return
+        }
 
-                    if (enabledFastEndDeckClick) {
-                        val selectedPositionName =
-                            resources.getResourceEntryName(selectedPositionId!!).split("subDeck")[1]
-
-                        if (cardTableMap[selectedPositionName]!!.isNotEmpty()) {
-                            forceCardsEndDeck(
-                                selectedPositionId!!,
-                                selectedPositionName,
-                                cardPosition,
-                                line.toString()
-                            )
-                        }
-                    }
-                }
-
-                if (hasReachedWonConditions()) {
-                    showYouWon()
-                    return
-                } else if (hasReachedLostConditions()) {
-                    showYouLost()
-                    return
-                }
-            } else {
-                if (selectedPositionId == cardPosition) {
-                    return
-                }
-
-                if (isEndDeckClick(desiredPosition)) {
-                    return
-                }
-
-                clearCardSelection()
-                selectedPositionId = cardPosition
-                selectedCard = cardName
-                setSelected(cardPosition)
-                textView.text = resources.getString(R.string.invaild_move)
+        val sourceView = findViewById<ImageView>(selectedPositionId!!)
+        val moved = tryMove(sourceView, view)
+        if (moved) {
+            if (hasReachedWonConditions()) {
+                showYouWon()
+                return
+            } else if (hasReachedLostConditions()) {
+                showYouLost()
                 return
             }
-
             clearCardSelection()
+        } else {
+            if (selectedPositionId == cardPosition) {
+                return
+            }
+            if (isEndDeckClick(desiredPosition)) {
+                return
+            }
+            clearCardSelection()
+            selectedPositionId = cardPosition
+            selectedCard = cardName
+            setSelected(cardPosition)
+            textView.text = resources.getString(R.string.invaild_move)
+        }
+    }
+
+    private fun tryMove(sourceView: View, targetView: View): Boolean {
+        val sourceCard = sourceView.tag as String
+        val sourcePositionId = sourceView.id
+        val targetCard = targetView.tag as String
+        val targetPositionId = targetView.id
+        val targetPosition =
+            resources.getResourceEntryName(targetPositionId).split("subDeck")[1]
+
+        if (!canBeInserted(targetCard, sourceCard, isEndDeckClick(targetPosition))) {
+            return false
+        }
+
+        moveCard(targetPositionId, targetPosition, sourceCard, sourcePositionId)
+
+        if (!isEndDeckClick(targetPosition)) {
+            newPlayList()
+            playList[sourceCard] = linkedListOf(targetPositionId, sourcePositionId)
+        } else {
+            val line = targetPosition.first()
+            endDeckList[line.toString()] = sourceCard
+            clearUndoButton()
+
+            if (enabledFastEndDeckClick) {
+                val sourcePositionName =
+                    resources.getResourceEntryName(sourcePositionId).split("subDeck")[1]
+
+                if (cardTableMap[sourcePositionName]!!.isNotEmpty()) {
+                    forceCardsEndDeck(
+                        sourcePositionId,
+                        sourcePositionName,
+                        targetPositionId,
+                        line.toString()
+                    )
+                }
+            }
         }
 
         val resetButton = findViewById<Button>(R.id.resetButton)
@@ -225,6 +243,8 @@ class GameActivity : AppCompatActivity() {
         if (resetButton.isEnabled) {
             updateBackgroundTint(resetButton)
         }
+
+        return true
     }
 
     private fun updateBackgroundTint(resetButton: Button) {
@@ -668,6 +688,9 @@ class GameActivity : AppCompatActivity() {
                 imageName
             )
         )
+        imageView.foreground =
+            ContextCompat.getDrawable(this, R.drawable.subdeck_background_selector)
+        imageView.isClickable = true
     }
 
     private fun linkedListOf(val1: Int, val2: Int): LinkedList<Int> {
@@ -698,6 +721,82 @@ class GameActivity : AppCompatActivity() {
 
     private fun newPlayList() {
         playList = HashMap()
+    }
+
+    private fun setupDragAndDrop() {
+        val gameSlots = listOf(
+            R.id.subDeck11, R.id.subDeck12, R.id.subDeck13, R.id.subDeck14,
+            R.id.subDeck21, R.id.subDeck22, R.id.subDeck23, R.id.subDeck24,
+            R.id.subDeck31, R.id.subDeck32, R.id.subDeck33, R.id.subDeck34,
+            R.id.subDeck41, R.id.subDeck42, R.id.subDeck43, R.id.subDeck44
+        )
+        gameSlots.forEach { id ->
+            val view = findViewById<ImageView>(id)
+            view.setOnLongClickListener { v -> onCardLongPress(v) }
+            view.setOnDragListener { dest, event -> onCardDrag(dest, event) }
+        }
+    }
+
+    private fun onCardLongPress(v: View): Boolean {
+        val cardName = (v.tag as? String) ?: return false
+        if (cardName == "zero") return false
+        val positionName = resources.getResourceEntryName(v.id).split("subDeck")[1]
+        if (isEndDeckClick(positionName)) return false
+
+        // Cancel any tap-based selection so visuals don't conflict with the drag
+        clearCardSelection()
+
+        val clip = ClipData.newPlainText("trasloco-card", cardName)
+        val shadow = View.DragShadowBuilder(v)
+        return v.startDragAndDrop(clip, shadow, v, 0)
+    }
+
+    private fun onCardDrag(target: View, event: DragEvent): Boolean {
+        when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> return true
+
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                val sourceView = event.localState as? View
+                if (sourceView != null && sourceView != target) {
+                    target.foreground =
+                        ContextCompat.getDrawable(this, R.drawable.selected_border)
+                }
+                return true
+            }
+
+            DragEvent.ACTION_DRAG_EXITED -> {
+                val sourceView = event.localState as? View
+                if (sourceView != target) {
+                    target.foreground = null
+                }
+                return true
+            }
+
+            DragEvent.ACTION_DROP -> {
+                target.foreground = null
+                val sourceView = (event.localState as? View) ?: return false
+                if (sourceView == target) return false
+
+                val moved = tryMove(sourceView, target)
+                if (moved) {
+                    if (hasReachedWonConditions()) {
+                        showYouWon()
+                    } else if (hasReachedLostConditions()) {
+                        showYouLost()
+                    }
+                } else {
+                    findViewById<TextView>(R.id.selectedCardTextView).text =
+                        resources.getString(R.string.invaild_move)
+                }
+                return true
+            }
+
+            DragEvent.ACTION_DRAG_ENDED -> {
+                target.foreground = null
+                return true
+            }
+        }
+        return false
     }
 
     private fun snapshotToViewModel() {
@@ -736,6 +835,9 @@ class GameActivity : AppCompatActivity() {
                 setBackDeckCard(backCard, line)
             } else {
                 setImage(deckImageId, "zero")
+                val deckView = findViewById<ImageView>(deckImageId)
+                deckView.foreground = null
+                deckView.isClickable = false
             }
         }
 

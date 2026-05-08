@@ -41,6 +41,11 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[MANUAL]** Lost condition → mostra "Hai perso" + Riprova + Nuova partita
 - **[MANUAL]** Undo ripristina ultima mossa
 - **[MANUAL]** Retry ridistribuisce le stesse carte dell'inizio partita
+- **[MANUAL]** Drag-and-drop: long-press carta game → trascina su slot valido → mossa eseguita
+- **[MANUAL]** Drag-and-drop: long-press su slot vuoto / end deck → niente drag avviato
+- **[MANUAL]** Drag-and-drop: target valido evidenziato col bordo durante il drag (`ACTION_DRAG_ENTERED`)
+- **[MANUAL]** Drag-and-drop: drop su target invalido → niente movimento + testo "mossa non valida"
+- **[MANUAL]** Drag-and-drop: drop su end deck con sequenza valida (A,2,3,...,10) → carta accettata, fast deal reagisce
 
 ## 3 · Impostazioni
 
