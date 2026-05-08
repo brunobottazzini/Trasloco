@@ -96,4 +96,36 @@ class SettingsPersistenceTest {
             }
         }
     }
+
+    @Test
+    fun cardTypeDefaultIsPiacentine() {
+        ActivityScenario.launch(SettingsActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val rb = activity.findViewById<RadioButton>(R.id.rbPiacentine)
+                assertEquals(
+                    "On a fresh install, default card type must be Piacentine",
+                    true,
+                    rb.isChecked
+                )
+            }
+        }
+    }
+
+    @Test
+    fun cardTypeSelection_persistsAcrossActivityRestart() {
+        ActivityScenario.launch(SettingsActivity::class.java).use {
+            onView(withId(R.id.rbFrancesi)).perform(click())
+        }
+
+        ActivityScenario.launch(SettingsActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val rb = activity.findViewById<RadioButton>(R.id.rbFrancesi)
+                assertEquals(
+                    "Selected card type (rbFrancesi) should remain checked after restart",
+                    true,
+                    rb.isChecked
+                )
+            }
+        }
+    }
 }

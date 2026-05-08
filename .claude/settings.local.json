@@ -2,7 +2,28 @@
   "permissions": {
     "allow": [
       "Bash(./gradlew assembleDebug)",
-      "Bash(./gradlew compileDebugKotlin --offline)"
+      "Bash(./gradlew compileDebugKotlin --offline)",
+      "Bash(grep -E \"^\\(b|c|d|s\\)\\([0-9]+\\)\\\\.png$\")",
+      "WebSearch",
+      "Bash(magick montage *)",
+      "Bash(magick \\\\\\( piacentine_d1.png piacentine_c1.png piacentine_b1.png piacentine_s1.png +append \\\\\\) verify_aces.png)",
+      "Bash(magick identify *)",
+      "Bash(curl -sL \"https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:Naples_deck&cmlimit=100&cmtype=file&format=json\")",
+      "Bash(magick *)",
+      "Bash(grep -E \"^File:\\(Ace|[2-9]|10\\)_of_\\(clubs|hearts|diamonds|spades\\)\\\\.svg$\" all_titles.txt)",
+      "Bash(grep -E \"^File:\\(Ace|[2-9]|10\\) of \\(clubs|hearts|diamonds|spades\\)\\\\.svg$\" all_titles.txt)",
+      "Bash(sort wc *)",
+      "Bash(curl -sLI \"https://upload.wikimedia.org/wikipedia/commons/6/61/Ace_of_clubs.svg\" -A \"TraslocoAssetFetcher/1.0\")",
+      "Bash(curl -L -o francesi_b1.svg -A \"TraslocoAssetFetcher/1.0 \\(mailto:bottazzini@gmail.com\\)\" \"https://upload.wikimedia.org/wikipedia/commons/6/61/Ace_of_clubs.svg\")",
+      "Bash(brew install *)",
+      "Bash(rsvg-convert --version)",
+      "Bash(rm /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-v24/b*.png)",
+      "Bash(rm /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-v24/c*.png)",
+      "Bash(rm /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-v24/d*.png)",
+      "Bash(rm /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-v24/s*.png)",
+      "Bash(git checkout *)",
+      "Bash(awk ' *)",
+      "Bash(git status *)"
     ]
   }
 }

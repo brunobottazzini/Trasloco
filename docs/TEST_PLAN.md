@@ -52,6 +52,10 @@ Run automated suite: `./gradlew connectedAndroidTest`
 - **[AUTO]** `SettingsPersistenceTest.fastDealToggle_persistsAcrossActivityRestart`
 - **[AUTO]** `SettingsPersistenceTest.cardBackSelectionPersists_AcrossActivityRestart`
 - **[AUTO]** `SettingsPersistenceTest.backgroundSelection_persistsAcrossActivityRestart`
+- **[AUTO]** `SettingsPersistenceTest.cardTypeDefaultIsPiacentine` (regression: default Piacentine)
+- **[AUTO]** `SettingsPersistenceTest.cardTypeSelection_persistsAcrossActivityRestart`
+- **[MANUAL]** Cambio "Tipo di carte" → torna in gioco → carte mostrate con il nuovo set (piacentine/napoletane/francesi)
+- **[MANUAL]** Verifica visiva delle 40 carte di ciascun set (no carte mancanti, mapping seme/numero corretto)
 - **[AUTO]** `SettingsPersistenceTest.selectingBackgroundInRow2_clearsRow1Selection`
 - **[MANUAL]** Sfondo applicato visivamente nelle altre activity (escluso Game/YouWon)
 

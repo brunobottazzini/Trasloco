@@ -44,4 +44,9 @@
         <item>Nota: Questo gioco utilizza le carte Piacentine. Ogni seme (Denari, Coppe, Spade, Bastoni) ha 10 carte: Asso (1), dal 2 al 7, Fante, Cavallo e Re. L’ordine è dall’Asso al Re. Impara a riconoscere i semi e le figure prima di giocare.</item>
     </string-array>
     <string name="choose_backcard">Scegli Dorso Carta</string>
+    <string name="card_type_label">Tipo di carte</string>
+    <string name="card_type_piacentine">Piacentine</string>
+    <string name="card_type_napoletane">Napoletane</string>
+    <string name="card_type_francesi">Francesi</string>
+    <string name="credits_text">Grafica carte: Piacentine (Public Domain) · Napoletane (Wikimedia, CC0/CC-BY-SA) · Francesi di Byron Knoll (CC-BY-SA)</string>
 </resources>

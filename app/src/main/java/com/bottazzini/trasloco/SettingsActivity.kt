@@ -20,6 +20,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var settingsHandler: SettingsHandler
     private lateinit var radioGroupBackgroundRow1: RadioGroup
     private lateinit var radioGroupBackgroundRow2: RadioGroup
+    private lateinit var radioGroupCardType: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,15 @@ class SettingsActivity : AppCompatActivity() {
 
         radioGroupBackgroundRow1 = findViewById(R.id.radioGroupBackgroundRow1)
         radioGroupBackgroundRow2 = findViewById(R.id.radioGroupBackgroundRow2)
+        radioGroupCardType = findViewById(R.id.radioGroupCardType)
+
+        radioGroupCardType.setOnCheckedChangeListener { group, checkedId ->
+            val rb = group.findViewById<RadioButton>(checkedId)
+            if (checkedId != -1 && rb != null && rb.isChecked) {
+                val selectedTag = rb.tag?.toString() ?: "piacentine"
+                settingsHandler.updateSetting(Configuration.CARD_TYPE.value, selectedTag)
+            }
+        }
 
         radioGroupBackgroundRow1.setOnCheckedChangeListener { group, checkedId ->
             val currentlyCheckedRadioButton = group.findViewById<RadioButton>(checkedId)
@@ -96,6 +106,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)!!
         findRadioButtonFromTag(backgroundConf).isChecked = true
+
+        val cardTypeValue = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
+        findRadioButtonFromTag(cardTypeValue).isChecked = true
 
         changeBackGround()
     }

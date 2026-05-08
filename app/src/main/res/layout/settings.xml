@@ -187,6 +187,71 @@
                 android:textColor="@color/white" />
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/textViewCardTypeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/card_type_label"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupBackgroundRow2" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupCardType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewCardTypeLabel">
+
+            <RadioButton
+                android:id="@+id/rbPiacentine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:tag="piacentine"
+                android:text="@string/card_type_piacentine"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbNapoletane"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tag="napoletane"
+                android:text="@string/card_type_napoletane"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rbFrancesi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:tag="francesi"
+                android:text="@string/card_type_francesi"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textViewCredits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="@string/credits_text"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupCardType" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

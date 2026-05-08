@@ -44,4 +44,9 @@
         <item>Nota: Este jogo usa cartas Piacentine. Cada naipe (Ouros, Copas, Espadas, Paus) tem 10 cartas: Ás (1), do 2 ao 7, Valete (Fante), Cavalo (Cavallo) e Rei (Re). A ordem é do Ás ao Rei. Aprenda a reconhecer os naipes e figuras antes de jogar.</item>
     </string-array>
     <string name="choose_backcard">Escolhe o verso da carta</string>
+    <string name="card_type_label">Tipo de baralho</string>
+    <string name="card_type_piacentine">Piacentine</string>
+    <string name="card_type_napoletane">Napolitanas</string>
+    <string name="card_type_francesi">Francesas</string>
+    <string name="credits_text">Arte das cartas: Piacentine (Domínio Público) · Napolitanas (Wikimedia, CC0/CC-BY-SA) · Francesas por Byron Knoll (CC-BY-SA)</string>
 </resources>

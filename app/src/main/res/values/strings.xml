@@ -43,4 +43,9 @@
         <item>Note: This game uses Piacentine cards. Each suit (Coins, Cups, Swords, Clubs) has 10 cards: Ace (1), 2–7, Knave (Fante), Knight (Cavallo), and King (Re). The order is Ace to King. Learn to recognize the suits and court cards before playing.</item>
     </string-array>
     <string name="choose_backcard">Choose Card Back</string>
+    <string name="card_type_label">Card type</string>
+    <string name="card_type_piacentine">Piacentine</string>
+    <string name="card_type_napoletane">Neapolitan</string>
+    <string name="card_type_francesi">French</string>
+    <string name="credits_text">Card art: Piacentine (Public Domain) · Neapolitan (Wikimedia, CC0/CC-BY-SA) · French by Byron Knoll (CC-BY-SA)</string>
 </resources>

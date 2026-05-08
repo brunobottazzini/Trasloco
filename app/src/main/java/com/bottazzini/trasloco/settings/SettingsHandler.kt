@@ -8,7 +8,8 @@ import com.bottazzini.trasloco.db.columns.SettingsBaseColumns.SettingEntry
 enum class Configuration(val value: String) {
     FAST_DEAL("fastDeal"),
     CARD_BACK("cardBack"),
-    BACKGROUND("background")
+    BACKGROUND("background"),
+    CARD_TYPE("cardType")
 }
 
 class SettingsHandler(context: Context) {
@@ -19,6 +20,7 @@ class SettingsHandler(context: Context) {
         setDefaultSetting(Configuration.FAST_DEAL.value, "disabled")
         setDefaultSetting(Configuration.CARD_BACK.value, "bg2")
         setDefaultSetting(Configuration.BACKGROUND.value, "tappeto")
+        setDefaultSetting(Configuration.CARD_TYPE.value, "piacentine")
     }
 
     fun close() {

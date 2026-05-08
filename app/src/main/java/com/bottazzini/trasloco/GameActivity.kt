@@ -48,6 +48,7 @@ class GameActivity : AppCompatActivity() {
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
     private var enabledFastEndDeckClick = true
+    private var cardType: String = "piacentine"
     private val timerHandler = Handler(Looper.getMainLooper())
     private lateinit var timerRunnable: Runnable
     private var mediaPlayerAtomic: MediaPlayer? = null
@@ -505,7 +506,10 @@ class GameActivity : AppCompatActivity() {
 
     private fun setImage(position: Int, imageName: String) {
         val imageView = findViewById<ImageView>(position)
-        val id = ResourceUtils.getDrawableByName(resources, this.packageName, imageName)
+        // Drawable prefisso per le carte di gioco (b/c/d/s + numero); "zero" e back card
+        // restano universali condivisi tra i tipi.
+        val resourceName = if (imageName == "zero") imageName else "${cardType}_${imageName}"
+        val id = ResourceUtils.getDrawableByName(resources, this.packageName, resourceName)
         imageView.setImageResource(id)
         imageView.tag = imageName
     }
@@ -660,6 +664,8 @@ class GameActivity : AppCompatActivity() {
     private fun processSettings() {
         val fastDealValue = settingsHandler.readValue(Configuration.FAST_DEAL.value)
         if (fastDealValue != "enabled") enabledFastEndDeckClick = false
+
+        cardType = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
 
         val backCardValue = settingsHandler.readValue(Configuration.CARD_BACK.value)
         setBackCards(backCardValue!!)
