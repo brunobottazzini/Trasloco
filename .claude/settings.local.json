@@ -34,7 +34,28 @@
       "Bash(identify test_topleft.png)",
       "Bash(identify test_d1_trim50.png)",
       "Bash(identify preview_row.png)",
-      "Bash(identify test_d5_trimmed.png test_d8_trimmed.png)"
+      "Bash(identify test_d5_trimmed.png test_d8_trimmed.png)",
+      "WebFetch(domain:mattiafrega.it)",
+      "Bash(gh api *)",
+      "Bash(curl -s \"https://api.github.com/repos/FrancescoPinto/BriscolaAndroidApp/contents\")",
+      "Bash(python3 -c \"import json,sys; [print\\(x['name'], x['type']\\) for x in json.load\\(sys.stdin\\)]\")",
+      "Bash(curl -s \"https://api.github.com/repos/FrancescoPinto/BriscolaAndroidApp/contents/app/src/main/res\")",
+      "Bash(curl -s \"https://api.github.com/repos/FrancescoPinto/BriscolaAndroidApp/contents/app/src/main/res/drawable-xxhdpi\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(x['name']\\) for x in data if 'piacent' in x['name'].lower\\(\\) or x['name'].startswith\\(\\('a', 'b', 'c', 'd', 's'\\)\\) and x['name'].endswith\\(\\('.png','.jpg'\\)\\)]\")",
+      "Bash(curl -s \"https://api.github.com/repos/simonediberardino/BriscolaPlusAndroid/contents\")",
+      "Bash(curl -s \"https://api.github.com/repos/simonediberardino/BriscolaPlusAndroid/contents/app/src/main/res\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(x['name']\\) for x in d]\")",
+      "Bash(curl -s \"https://api.github.com/repos/simonediberardino/BriscolaPlusAndroid/contents/app/src/main/res/drawable\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); names=[x['name'] for x in d]; print\\('total:', len\\(names\\)\\); [print\\(n\\) for n in names if 'piacent' in n.lower\\(\\) or 'napol' in n.lower\\(\\) or 'card' in n.lower\\(\\)][:30]\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); names=[x['name'] for x in d]; piac=[n for n in names if 'piacent' in n.lower\\(\\)]; print\\('piacentine count:', len\\(piac\\)\\); [print\\(n\\) for n in piac]\")",
+      "Bash(curl -s \"https://api.github.com/repos/simonediberardino/BriscolaPlusAndroid\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('license:', d.get\\('license'\\)\\); print\\('description:', d.get\\('description'\\)\\)\")",
+      "Bash(mkdir -p /tmp/briscola_sample)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_3_spade.png\" -o /tmp/briscola_sample/sample_s3.png)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_1_denara.png\" -o /tmp/briscola_sample/sample_d1.png)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_5_denara.png\" -o /tmp/briscola_sample/sample_d5.png)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_10_bastoni.png\" -o /tmp/briscola_sample/sample_b10.png)",
+      "Bash(awk '{print $5, $NF}')"
     ]
   }
 }
