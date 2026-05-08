@@ -28,7 +28,12 @@
       "Bash(echo \"Photo: $\\(magick identify piacentine_full.jpg\\)\")",
       "WebFetch(domain:commons.wikimedia.org)",
       "Bash(\\\\rm -f piacentine_*.png)",
-      "Bash(curl -sL -A \"TraslocoAssets/1.0 \\(mailto:bottazzini@gmail.com\\)\" -o piacentine_full.jpg \"https://upload.wikimedia.org/wikipedia/commons/4/4a/Carte_piacentine_al_completo.jpg\")"
+      "Bash(curl -sL -A \"TraslocoAssets/1.0 \\(mailto:bottazzini@gmail.com\\)\" -o piacentine_full.jpg \"https://upload.wikimedia.org/wikipedia/commons/4/4a/Carte_piacentine_al_completo.jpg\")",
+      "Bash(identify piacentine_full.jpg)",
+      "Bash(identify piacentine_d1.png piacentine_b1.png piacentine_d10.png)",
+      "Bash(identify test_topleft.png)",
+      "Bash(identify test_d1_trim50.png)",
+      "Bash(identify preview_row.png)"
     ]
   }
 }
