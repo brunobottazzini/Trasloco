@@ -55,7 +55,11 @@
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_1_denara.png\" -o /tmp/briscola_sample/sample_d1.png)",
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_5_denara.png\" -o /tmp/briscola_sample/sample_d5.png)",
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_10_bastoni.png\" -o /tmp/briscola_sample/sample_b10.png)",
-      "Bash(awk '{print $5, $NF}')"
+      "Bash(awk '{print $5, $NF}')",
+      "Bash(git -C /Users/bottazzini/Documents/Trasloco log --oneline -50)",
+      "Bash(git -C /Users/bottazzini/Documents/Trasloco log --all --oneline --pretty=\"%h %s\" -- app/build.gradle)",
+      "Bash(git -C /Users/bottazzini/Documents/Trasloco show 0f6975a -- app/build.gradle)",
+      "Bash(git *)"
     ]
   }
 }
