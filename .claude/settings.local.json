@@ -33,7 +33,8 @@
       "Bash(identify piacentine_d1.png piacentine_b1.png piacentine_d10.png)",
       "Bash(identify test_topleft.png)",
       "Bash(identify test_d1_trim50.png)",
-      "Bash(identify preview_row.png)"
+      "Bash(identify preview_row.png)",
+      "Bash(identify test_d5_trimmed.png test_d8_trimmed.png)"
     ]
   }
 }
