@@ -33,5 +33,29 @@ class DeckSetup {
             deck.shuffle()
             randomDeck = deck
         }
+
+        /**
+         * Shuffles until a solvable deal is found. Falls back to last shuffle
+         * if no solvable deal is reached within maxAttempts × timeBudgetPerAttemptMs.
+         * Returns true if a verified-solvable deal was set, false on fallback.
+         */
+        fun shuffleSolvable(
+            maxAttempts: Int = 10,
+            timeBudgetPerAttemptMs: Long = 500
+        ): Boolean {
+            val solver = TraslocoSolver()
+            var lastDeck: ArrayList<String>? = null
+            repeat(maxAttempts) {
+                val deck = (getOrderedDeck() as ArrayList)
+                deck.shuffle()
+                lastDeck = deck
+                if (solver.isSolvable(deck, timeBudgetPerAttemptMs)) {
+                    randomDeck = deck
+                    return true
+                }
+            }
+            randomDeck = lastDeck ?: (getOrderedDeck() as ArrayList).also { it.shuffle() }
+            return false
+        }
     }
 }
