@@ -23,7 +23,10 @@
       "Bash(rm /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-v24/s*.png)",
       "Bash(git checkout *)",
       "Bash(awk ' *)",
-      "Bash(git status *)"
+      "Bash(git status *)",
+      "Bash(curl -sL -A \"TraslocoAssets/1.0\" -o piacentine_full.jpg \"https://upload.wikimedia.org/wikipedia/commons/4/4a/Carte_piacentine_al_completo.jpg\")",
+      "Bash(echo \"Photo: $\\(magick identify piacentine_full.jpg\\)\")",
+      "WebFetch(domain:commons.wikimedia.org)"
     ]
   }
 }
