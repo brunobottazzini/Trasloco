@@ -26,7 +26,9 @@
       "Bash(git status *)",
       "Bash(curl -sL -A \"TraslocoAssets/1.0\" -o piacentine_full.jpg \"https://upload.wikimedia.org/wikipedia/commons/4/4a/Carte_piacentine_al_completo.jpg\")",
       "Bash(echo \"Photo: $\\(magick identify piacentine_full.jpg\\)\")",
-      "WebFetch(domain:commons.wikimedia.org)"
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(\\\\rm -f piacentine_*.png)",
+      "Bash(curl -sL -A \"TraslocoAssets/1.0 \\(mailto:bottazzini@gmail.com\\)\" -o piacentine_full.jpg \"https://upload.wikimedia.org/wikipedia/commons/4/4a/Carte_piacentine_al_completo.jpg\")"
     ]
   }
 }
