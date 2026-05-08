@@ -1,6 +1,6 @@
 package com.bottazzini.trasloco
 
-import android.content.ClipData
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,8 +8,9 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.DragEvent
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -57,6 +58,20 @@ class GameActivity : AppCompatActivity() {
     private val gameViewModel: GameViewModel by lazy {
         ViewModelProvider(this).get(GameViewModel::class.java)
     }
+    private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
+    private var dragTouchStartX: Float = 0f
+    private var dragTouchStartY: Float = 0f
+    private var dragTouchView: View? = null
+    private var dragGhost: ImageView? = null
+    private var dragSourceView: View? = null
+    private var dragHoverTarget: View? = null
+    private var dragRoot: ConstraintLayout? = null
+    private val dragSlotIds = listOf(
+        R.id.subDeck11, R.id.subDeck12, R.id.subDeck13, R.id.subDeck14,
+        R.id.subDeck21, R.id.subDeck22, R.id.subDeck23, R.id.subDeck24,
+        R.id.subDeck31, R.id.subDeck32, R.id.subDeck33, R.id.subDeck34,
+        R.id.subDeck41, R.id.subDeck42, R.id.subDeck43, R.id.subDeck44
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -729,80 +744,158 @@ class GameActivity : AppCompatActivity() {
         playList = HashMap()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupDragAndDrop() {
-        val gameSlots = listOf(
-            R.id.subDeck11, R.id.subDeck12, R.id.subDeck13, R.id.subDeck14,
-            R.id.subDeck21, R.id.subDeck22, R.id.subDeck23, R.id.subDeck24,
-            R.id.subDeck31, R.id.subDeck32, R.id.subDeck33, R.id.subDeck34,
-            R.id.subDeck41, R.id.subDeck42, R.id.subDeck43, R.id.subDeck44
-        )
-        gameSlots.forEach { id ->
+        dragSlotIds.forEach { id ->
             val view = findViewById<ImageView>(id)
-            view.setOnLongClickListener { v -> onCardLongPress(v) }
-            view.setOnDragListener { dest, event -> onCardDrag(dest, event) }
+            view.setOnTouchListener { v, event -> onCardTouch(v, event) }
         }
     }
 
-    private fun onCardLongPress(v: View): Boolean {
+    private fun onCardTouch(v: View, event: MotionEvent): Boolean {
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                dragTouchStartX = event.rawX
+                dragTouchStartY = event.rawY
+                dragTouchView = v
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (dragSourceView != null) {
+                    updateManualDrag(event.rawX, event.rawY)
+                    return true
+                }
+                if (dragTouchView == v) {
+                    val dx = event.rawX - dragTouchStartX
+                    val dy = event.rawY - dragTouchStartY
+                    if (dx * dx + dy * dy > touchSlop * touchSlop) {
+                        if (startManualDrag(v)) {
+                            updateManualDrag(event.rawX, event.rawY)
+                            return true
+                        }
+                        dragTouchView = null
+                    }
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (dragSourceView != null) {
+                    finishManualDrag(event.rawX, event.rawY)
+                    return true
+                }
+                dragTouchView = null
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                if (dragSourceView != null) {
+                    cancelManualDrag()
+                    return true
+                }
+                dragTouchView = null
+            }
+        }
+        return false
+    }
+
+    private fun startManualDrag(v: View): Boolean {
         val cardName = (v.tag as? String) ?: return false
         if (cardName == "zero") return false
         val positionName = resources.getResourceEntryName(v.id).split("subDeck")[1]
         if (isEndDeckClick(positionName)) return false
 
-        // Cancel any tap-based selection so visuals don't conflict with the drag
         clearCardSelection()
 
-        val clip = ClipData.newPlainText("trasloco-card", cardName)
-        val shadow = View.DragShadowBuilder(v)
-        return v.startDragAndDrop(clip, shadow, v, 0)
+        val root = findViewById<ConstraintLayout>(R.id.gameConstraintLayout) ?: return false
+        val ghost = ImageView(this).apply {
+            setImageDrawable((v as ImageView).drawable)
+            scaleType = (v as ImageView).scaleType
+            alpha = 0.85f
+            elevation = 16f
+            layoutParams = ConstraintLayout.LayoutParams(v.width, v.height)
+        }
+        root.addView(ghost)
+
+        v.alpha = 0.3f
+
+        dragGhost = ghost
+        dragSourceView = v
+        dragRoot = root
+        dragHoverTarget = null
+        return true
     }
 
-    private fun onCardDrag(target: View, event: DragEvent): Boolean {
-        when (event.action) {
-            DragEvent.ACTION_DRAG_STARTED -> return true
+    private fun updateManualDrag(rawX: Float, rawY: Float) {
+        val ghost = dragGhost ?: return
+        val root = dragRoot ?: return
 
-            DragEvent.ACTION_DRAG_ENTERED -> {
-                val sourceView = event.localState as? View
-                if (sourceView != null && sourceView != target) {
-                    target.foreground =
-                        ContextCompat.getDrawable(this, R.drawable.selected_border)
-                }
-                return true
+        val rootLoc = IntArray(2)
+        root.getLocationOnScreen(rootLoc)
+        ghost.translationX = rawX - rootLoc[0] - ghost.width / 2f
+        ghost.translationY = rawY - rootLoc[1] - ghost.height / 2f
+
+        val target = findSlotUnder(rawX.toInt(), rawY.toInt())
+        if (target !== dragHoverTarget) {
+            dragHoverTarget?.foreground = null
+            if (target != null && target !== dragSourceView) {
+                target.foreground = ContextCompat.getDrawable(this, R.drawable.selected_border)
             }
+            dragHoverTarget = target
+        }
+    }
 
-            DragEvent.ACTION_DRAG_EXITED -> {
-                val sourceView = event.localState as? View
-                if (sourceView != target) {
-                    target.foreground = null
+    private fun finishManualDrag(rawX: Float, rawY: Float) {
+        val source = dragSourceView
+        val target = findSlotUnder(rawX.toInt(), rawY.toInt())
+
+        dragHoverTarget?.foreground = null
+        target?.foreground = null
+        dragGhost?.let { dragRoot?.removeView(it) }
+        source?.alpha = 1f
+
+        dragGhost = null
+        dragSourceView = null
+        dragHoverTarget = null
+        dragRoot = null
+        dragTouchView = null
+
+        if (source != null && target != null && source !== target) {
+            val moved = tryMove(source, target)
+            if (moved) {
+                if (hasReachedWonConditions()) {
+                    showYouWon()
+                } else if (hasReachedLostConditions()) {
+                    showYouLost()
                 }
-                return true
-            }
-
-            DragEvent.ACTION_DROP -> {
-                target.foreground = null
-                val sourceView = (event.localState as? View) ?: return false
-                if (sourceView == target) return false
-
-                val moved = tryMove(sourceView, target)
-                if (moved) {
-                    if (hasReachedWonConditions()) {
-                        showYouWon()
-                    } else if (hasReachedLostConditions()) {
-                        showYouLost()
-                    }
-                } else {
-                    findViewById<TextView>(R.id.selectedCardTextView).text =
-                        resources.getString(R.string.invaild_move)
-                }
-                return true
-            }
-
-            DragEvent.ACTION_DRAG_ENDED -> {
-                target.foreground = null
-                return true
+            } else {
+                findViewById<TextView>(R.id.selectedCardTextView).text =
+                    resources.getString(R.string.invaild_move)
             }
         }
-        return false
+    }
+
+    private fun cancelManualDrag() {
+        dragHoverTarget?.foreground = null
+        dragGhost?.let { dragRoot?.removeView(it) }
+        dragSourceView?.alpha = 1f
+
+        dragGhost = null
+        dragSourceView = null
+        dragHoverTarget = null
+        dragRoot = null
+        dragTouchView = null
+    }
+
+    private fun findSlotUnder(rawX: Int, rawY: Int): View? {
+        val loc = IntArray(2)
+        for (id in dragSlotIds) {
+            val view = findViewById<View>(id) ?: continue
+            view.getLocationOnScreen(loc)
+            val left = loc[0]
+            val top = loc[1]
+            val right = left + view.width
+            val bottom = top + view.height
+            if (rawX in left..right && rawY in top..bottom) {
+                return view
+            }
+        }
+        return null
     }
 
     private fun snapshotToViewModel() {
