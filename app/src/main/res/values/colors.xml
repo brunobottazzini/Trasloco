@@ -27,4 +27,6 @@
     <color name="casino_gold_alpha_08">#14D4AF37</color>
     <color name="casino_gold_alpha_25">#40D4AF37</color>
     <color name="casino_gold_alpha_50">#80D4AF37</color>
+    <!-- Overlay backgrounds -->
+    <color name="casino_overlay_dark">#80000000</color>
 </resources>
