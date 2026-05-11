@@ -191,7 +191,7 @@ class GameActivity : AppCompatActivity() {
         val banner = findViewById<View>(R.id.tutorialBanner)
         banner.visibility = View.VISIBLE
         findViewById<View>(R.id.tutorialNextButton).setOnClickListener { onTutorialNext() }
-        findViewById<View>(R.id.tutorialExitButton).setOnClickListener { /* wired in Task 11 */ }
+        findViewById<View>(R.id.tutorialExitButton).setOnClickListener { showTutorialExitDialog() }
 
         renderTutorialStep()
         isInitializing = false
@@ -231,6 +231,14 @@ class GameActivity : AppCompatActivity() {
         } else {
             renderTutorialStep()
         }
+    }
+
+    private fun showTutorialExitDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.tutorial_exit_title)
+            .setPositiveButton(R.string.tutorial_exit_confirm) { _, _ -> finish() }
+            .setNegativeButton(R.string.tutorial_exit_cancel) { d, _ -> d.dismiss() }
+            .show()
     }
 
     fun retryGame(view: View) {
@@ -1243,6 +1251,15 @@ class GameActivity : AppCompatActivity() {
 
     fun onClickBack(view: View) {
         finish()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (isTutorialMode) {
+            showTutorialExitDialog()
+            return
+        }
+        super.onBackPressed()
     }
 
     fun onClickPause(view: View) {
