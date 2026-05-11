@@ -2,8 +2,6 @@ package com.bottazzini.trasloco
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -17,10 +15,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isInvisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
@@ -84,6 +84,14 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         hideSystemBars()
         setContentView(R.layout.game)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.topBar)) { view, insets ->
+            val top = maxOf(
+                insets.getInsets(WindowInsetsCompat.Type.statusBars()).top,
+                insets.getInsets(WindowInsetsCompat.Type.displayCutout()).top
+            )
+            view.updatePadding(top = top)
+            insets
+        }
         textViewGameTimer = findViewById(R.id.textViewGameTimer)
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
@@ -280,24 +288,10 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
-        if (resetButton.isEnabled) {
-            updateBackgroundTint(resetButton)
-        }
 
         return true
-    }
-
-    private fun updateBackgroundTint(resetButton: Button) {
-        val materialResetButton = resetButton as? com.google.android.material.button.MaterialButton
-
-        if (resetButton.isEnabled) {
-            val enabledColor = ContextCompat.getColor(this, R.color.blu_savoia)
-            materialResetButton?.backgroundTintList = ColorStateList.valueOf(enabledColor)
-            return
-        }
-        materialResetButton?.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
     }
 
     private fun clearCardSelection() {
@@ -561,16 +555,14 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun clearUndoButton() {
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isEnabled = false
-        updateBackgroundTint(resetButton)
         newPlayList()
     }
 
     private fun prepareTextAndButtonForNewGame() {
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = false
-        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = false
         findViewById<TextView>(R.id.lostTextView).isInvisible = true
         findViewById<Button>(R.id.retryButton).isInvisible = true
@@ -581,9 +573,8 @@ class GameActivity : AppCompatActivity() {
         shouldPersistOnPause = false
         gameStateRepo.clear()
         clearCardSelection()
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
-        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
@@ -639,9 +630,8 @@ class GameActivity : AppCompatActivity() {
         shouldPersistOnPause = false
         gameStateRepo.clear()
         clearCardSelection()
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
-        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<Button>(R.id.retryButton).isInvisible = true
         stopTimer()
@@ -1037,9 +1027,8 @@ class GameActivity : AppCompatActivity() {
             setSelected(selectedPositionId)
         }
 
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
-        updateBackgroundTint(resetButton)
 
         if (gameViewModel.gameLost) {
             showYouLostRestoredUI()
@@ -1050,9 +1039,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouLostRestoredUI() {
-        val resetButton = findViewById<Button>(R.id.resetButton)
+        val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
-        updateBackgroundTint(resetButton)
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
         findViewById<TextView>(R.id.lostTextView).isInvisible = false
@@ -1089,7 +1077,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (::timerRunnable.isInitialized && !isFinishing) {
+        if (::timerRunnable.isInitialized) {
             pauseTimer()
         }
         if (shouldPersistOnPause && gameViewModel.hasActiveGame && !gameViewModel.gameLost) {
@@ -1212,8 +1200,8 @@ class GameActivity : AppCompatActivity() {
         animTarget.start()
         timerHandler.postDelayed({
             if (!isFinishing) {
-                sourceView.background = null
-                targetView.background = null
+                sourceView.setBackgroundResource(R.drawable.casino_slot_frame)
+                targetView.setBackgroundResource(R.drawable.casino_slot_frame)
             }
         }, 1500)
     }
