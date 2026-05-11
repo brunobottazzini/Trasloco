@@ -36,6 +36,9 @@ class GameActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
     private lateinit var recordsHandler: RecordsHandler
+    private lateinit var gameStateRepo: com.bottazzini.trasloco.settings.GameStateRepository
+    private var resumeMode: Boolean = false
+    private var shouldPersistOnPause: Boolean = true
     private lateinit var textViewGameTimer: TextView
     private var timerPausedTimeMillis: Long = 0L
     private var isTimerPaused: Boolean = false
@@ -81,12 +84,22 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
+        gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
+        resumeMode = intent.getBooleanExtra("resume", false)
         if (recordsHandler.readValue(Type.CONSECUTIVE) != null) {
             consecutiveWins = recordsHandler.readValue(Type.CONSECUTIVE)!!
         }
 
         processSettings()
         setupDragAndDrop()
+        if (resumeMode) {
+            val loaded = gameStateRepo.load()
+            if (loaded != null) {
+                restoreFromSavedState(loaded)
+                return
+            }
+            resumeMode = false
+        }
         if (gameViewModel.hasActiveGame) {
             restoreGameFromViewModel()
         } else {
@@ -100,6 +113,11 @@ class GameActivity : AppCompatActivity() {
 
     fun startNewGame() {
         isInitializing = true
+        // Starting a fresh game invalidates any previously saved snapshot.
+        shouldPersistOnPause = true
+        if (::gameStateRepo.isInitialized) {
+            gameStateRepo.clear()
+        }
         gameViewModel.hasActiveGame = true
         gameViewModel.gameLost = false
         playSound(R.raw.shuffle)
@@ -119,6 +137,9 @@ class GameActivity : AppCompatActivity() {
 
     fun retryGame(view: View) {
         isInitializing = true
+        // Re-enable persistence: a retried game should also be resumable.
+        shouldPersistOnPause = true
+        gameViewModel.hasActiveGame = true
         gameViewModel.gameLost = false
         playSound(R.raw.shuffle)
         stopTimer()
@@ -552,6 +573,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouLost() {
+        shouldPersistOnPause = false
+        gameStateRepo.clear()
         clearCardSelection()
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.isInvisible = true
@@ -608,6 +631,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouWon() {
+        shouldPersistOnPause = false
+        gameStateRepo.clear()
         clearCardSelection()
         val resetButton = findViewById<Button>(R.id.resetButton)
         resetButton.isInvisible = true
@@ -911,6 +936,38 @@ class GameActivity : AppCompatActivity() {
         gameViewModel.selectedPositionId = selectedPositionId
     }
 
+    private fun restoreFromSavedState(state: com.bottazzini.trasloco.settings.GameStateSnapshot) {
+        // Restore activity fields
+        gameStartTimeMillis = state.gameStartTimeMillis
+        timerPausedTimeMillis = state.timerPausedTimeMillis
+        isTimerPaused = state.isTimerPaused
+        coppiedSubDeckMap = HashMap(state.coppiedSubDeckMap)
+        subDeckMap = HashMap(state.subDeckMap)
+        cardTableMap = HashMap(state.cardTableMap)
+        endDeckList = HashMap(state.endDeckList)
+        playList = HashMap(state.playList)
+        cardType = state.cardType
+
+        // Push to ViewModel so config-change survives
+        gameViewModel.gameStartTimeMillis = state.gameStartTimeMillis
+        gameViewModel.timerPausedTimeMillis = state.timerPausedTimeMillis
+        gameViewModel.isTimerPaused = state.isTimerPaused
+        gameViewModel.coppiedSubDeckMap = HashMap(state.coppiedSubDeckMap)
+        gameViewModel.subDeckMap = HashMap(state.subDeckMap)
+        gameViewModel.cardTableMap = HashMap(state.cardTableMap)
+        gameViewModel.endDeckList = HashMap(state.endDeckList)
+        gameViewModel.playList = HashMap(state.playList)
+        gameViewModel.hasActiveGame = state.hasActiveGame
+        gameViewModel.gameLost = state.gameLost
+        gameViewModel.selectedCard = null
+        gameViewModel.selectedPositionId = null
+
+        // Reuse existing render-from-ViewModel pipeline so the visible board
+        // (deck backs, table cards, end-deck cards, counters, reset button)
+        // is reconstructed from the loaded maps.
+        restoreGameFromViewModel()
+    }
+
     private fun restoreGameFromViewModel() {
         isInitializing = true
 
@@ -983,6 +1040,9 @@ class GameActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        if (::gameStateRepo.isInitialized) {
+            gameStateRepo.close()
+        }
         settingsHandler.close()
         super.onDestroy()
     }
@@ -1008,6 +1068,23 @@ class GameActivity : AppCompatActivity() {
         super.onPause()
         if (::timerRunnable.isInitialized && !isFinishing) {
             pauseTimer()
+        }
+        if (shouldPersistOnPause && gameViewModel.hasActiveGame && !gameViewModel.gameLost) {
+            val snapshot = com.bottazzini.trasloco.settings.GameStateSnapshot(
+                version = com.bottazzini.trasloco.settings.GameStateRepository.CURRENT_VERSION,
+                hasActiveGame = gameViewModel.hasActiveGame,
+                gameLost = gameViewModel.gameLost,
+                gameStartTimeMillis = gameStartTimeMillis,
+                timerPausedTimeMillis = timerPausedTimeMillis,
+                isTimerPaused = isTimerPaused,
+                cardType = cardType,
+                subDeckMap = subDeckMap,
+                cardTableMap = cardTableMap,
+                coppiedSubDeckMap = coppiedSubDeckMap,
+                endDeckList = endDeckList,
+                playList = playList
+            )
+            gameStateRepo.save(snapshot)
         }
     }
     private fun hideSystemBars() {
