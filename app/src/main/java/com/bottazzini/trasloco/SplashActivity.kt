@@ -60,6 +60,24 @@ class SplashActivity : AppCompatActivity() {
             shuffleCard(card3, -60f, 60f, -15f)
             shuffleCard(card4, 200f, -80f, 35f)
         }, 600L)
+
+        // Phase 3 (1.4s - 2.0s): fan deal-out + title reveal
+        handler.postDelayed({
+            dealCard(card1, -240f, 100f, -30f)
+            dealCard(card2, -80f, 100f, -10f)
+            dealCard(card3, 80f, 100f, 10f)
+            dealCard(card4, 240f, 100f, 30f)
+
+            val title = findViewById<TextView>(R.id.splashTitle)
+            title.alpha = 0f
+            title.translationY = -40f
+            title.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(600)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }, 1400L)
     }
 
     private fun shuffleCard(card: ImageView, dx: Float, dy: Float, rot: Float) {
@@ -70,6 +88,19 @@ class SplashActivity : AppCompatActivity() {
                 ObjectAnimator.ofFloat(card, "rotation", card.rotation, rot, 0f)
             )
             duration = 800
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+    }
+
+    private fun dealCard(card: ImageView, finalX: Float, finalY: Float, finalRot: Float) {
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(card, "translationX", card.translationX, finalX),
+                ObjectAnimator.ofFloat(card, "translationY", card.translationY, finalY),
+                ObjectAnimator.ofFloat(card, "rotation", card.rotation, finalRot)
+            )
+            duration = 600
             interpolator = AccelerateDecelerateInterpolator()
             start()
         }
