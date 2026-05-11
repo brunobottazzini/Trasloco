@@ -50,4 +50,11 @@
     <string name="card_type_francesi">Francesas</string>
     <string name="credits_text">Arte das cartas: Piacentine adaptadas de BriscolaPlusAndroid de S. Di Berardino (arte clássica em Domínio Público) · Napolitanas (Wikimedia, CC0/CC-BY-SA) · Francesas por Byron Knoll (CC-BY-SA)</string>
     <string name="bordeaux">Bordeaux</string>
+    <string name="subtitle_card_game">~ JOGO DE CARTAS ~</string>
+    <string name="riprendi_partita">Continuar</string>
+    <string name="nuova_partita_label">Novo\nJogo</string>
+    <string name="riprendi_label">Continuar</string>
+    <string name="records_label">Recordes</string>
+    <string name="impostazioni_label">Definições</string>
+    <string name="rules_corner_label">📜 Regras</string>
 </resources>
