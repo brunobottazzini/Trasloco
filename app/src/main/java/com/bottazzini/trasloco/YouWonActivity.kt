@@ -64,8 +64,8 @@ class YouWonActivity : AppCompatActivity() {
             if (isNewRecord) View.VISIBLE else View.GONE
 
         val settingsHandler = SettingsHandler(applicationContext)
-        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
-        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "tappeto"
+        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
         val rootView: View = findViewById(R.id.youWonScrollView)
         rootView.background = ContextCompat.getDrawable(this, drawable)
 
@@ -73,7 +73,6 @@ class YouWonActivity : AppCompatActivity() {
 
         try {
             mediaPlayer = MediaPlayer.create(this, R.raw.youwin)
-            mediaPlayer?.setOnCompletionListener { releaseMediaPlayer() }
             mediaPlayer?.start()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -121,18 +120,23 @@ class YouWonActivity : AppCompatActivity() {
     private fun hideSystemBars() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val controller = androidx.core.view.WindowInsetsControllerCompat(window, window.decorView)
-        if (controller != null) {
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        releaseMediaPlayer()
     }
 
     override fun onDestroy() {
-        mediaPlayer?.release()
-        recordsHandler.close()
-        super.onDestroy()
+        releaseMediaPlayer()
+        try {
+            recordsHandler.close()
+        } finally {
+            super.onDestroy()
+        }
     }
 
     private fun releaseMediaPlayer() {
