@@ -12,246 +12,406 @@
         android:id="@+id/settingsConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
         android:paddingBottom="24dp"
         tools:context=".SettingsActivity">
 
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="0dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:autoSizeMaxTextSize="40sp"
-            android:autoSizeMinTextSize="24sp"
-            android:autoSizeTextType="uniform"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/impostazioni"
-            android:textColor="@color/white"
-            android:textStyle="bold"
+            android:text="@string/settings_title_decorated"
+            android:textSize="28sp"
+            style="@style/CasinoTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Hero preview container -->
+        <FrameLayout
+            android:id="@+id/heroPreview"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/casino_hero_preview_frame"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle">
+
+            <TextView
+                android:id="@+id/heroPreviewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text="@string/settings_label_preview"
+                style="@style/CasinoSubtitle" />
+
+            <ImageView
+                android:id="@+id/heroBackgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="18dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/heroCardRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/heroCard1"
+                    android:layout_width="36dp"
+                    android:layout_height="54dp"
+                    android:layout_marginEnd="4dp"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:id="@+id/heroCard2"
+                    android:layout_width="36dp"
+                    android:layout_height="54dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:id="@+id/heroCard3"
+                    android:layout_width="36dp"
+                    android:layout_height="54dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:id="@+id/heroCardBack"
+                    android:layout_width="36dp"
+                    android:layout_height="54dp"
+                    android:layout_marginStart="4dp"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Card Deck section -->
         <TextView
-            android:id="@+id/textViewCardBackLabel"
+            android:id="@+id/labelCardDeck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/choose_backcard"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/settings_label_card_deck"
+            style="@style/CasinoSectionLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+            app:layout_constraintTop_toBottomOf="@id/heroPreview" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupCardBack"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/cardTypeRow"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewCardBackLabel">
+            app:layout_constraintTop_toBottomOf="@id/labelCardDeck">
 
-            <RadioButton
-                android:id="@+id/rbCardBack1"
+            <FrameLayout
+                android:id="@+id/cardTypePiacentine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:drawableEnd="@drawable/bg"
-                android:onClick="setBackCard"
-                android:tag="bg" />
-
-            <RadioButton
-                android:id="@+id/rbCardBack2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:drawableEnd="@drawable/bg2"
-                android:onClick="setBackCard"
-                android:tag="bg2" />
-
-            <RadioButton
-                android:id="@+id/rbCardBack3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:drawableEnd="@drawable/bg3"
-                android:onClick="setBackCard"
-                android:tag="bg3" />
-        </RadioGroup>
-
-        <Switch
-            android:id="@+id/switchFastDeal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:minWidth="238dp"
-            android:minHeight="55dp"
-            android:onClick="changeFastDeal"
-            android:text="@string/fast_deal"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupCardBack" />
-
-        <TextView
-            android:id="@+id/textViewBackgroundLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/sfondo"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/switchFastDeal" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupBackgroundRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewBackgroundLabel">
-
-            <RadioButton
-                android:id="@+id/rbPanno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:tag="panno"
-                android:text="@string/panno"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rbLegno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:tag="legno"
-                android:text="@string/legno"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rbSabbia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:tag="sabbia"
-                android:text="@string/sabbia"
-                android:textColor="@color/white" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/radioGroupBackgroundRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupBackgroundRow1">
-
-            <RadioButton
-                android:id="@+id/rbTappeto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:tag="tappeto"
-                android:text="@string/tappeto"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rbTavolo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:tag="tavolo"
-                android:text="@string/tavolo"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rbVerde"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:tag="verde"
-                android:text="@string/verde"
-                android:textColor="@color/white" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textViewCardTypeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/card_type_label"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupBackgroundRow2" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupCardType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewCardTypeLabel">
-
-            <RadioButton
-                android:id="@+id/rbPiacentine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
                 android:tag="piacentine"
-                android:text="@string/card_type_piacentine"
-                android:textColor="@color/white" />
+                android:onClick="selectCardType"
+                android:clickable="true"
+                android:focusable="true">
 
-            <RadioButton
-                android:id="@+id/rbNapoletane"
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/piacentine_b1"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTypeNapoletane"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
                 android:tag="napoletane"
-                android:text="@string/card_type_napoletane"
-                android:textColor="@color/white" />
+                android:onClick="selectCardType"
+                android:clickable="true"
+                android:focusable="true">
 
-            <RadioButton
-                android:id="@+id/rbFrancesi"
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/napoletane_b1"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTypeFrancesi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
                 android:tag="francesi"
-                android:text="@string/card_type_francesi"
-                android:textColor="@color/white" />
-        </RadioGroup>
+                android:onClick="selectCardType"
+                android:clickable="true"
+                android:focusable="true">
 
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/francesi_b1"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Card Back section -->
+        <TextView
+            android:id="@+id/labelCardBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/settings_label_card_back"
+            style="@style/CasinoSectionLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTypeRow" />
+
+        <LinearLayout
+            android:id="@+id/cardBackRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelCardBack">
+
+            <FrameLayout
+                android:id="@+id/cardBackBg1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="bg"
+                android:onClick="selectCardBack"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/bg"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardBackBg2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="bg2"
+                android:onClick="selectCardBack"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/bg2"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardBackBg3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="bg3"
+                android:onClick="selectCardBack"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/bg3"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Background section -->
+        <TextView
+            android:id="@+id/labelBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/settings_label_background"
+            style="@style/CasinoSectionLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardBackRow" />
+
+        <LinearLayout
+            android:id="@+id/backgroundRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelBackground">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="verde"
+                android:onClick="selectBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/verde" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="bordeaux"
+                android:onClick="selectBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bordeaux" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="tappeto"
+                android:onClick="selectBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/tappeto"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="legno"
+                android:onClick="selectBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/legno"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:padding="3dp"
+                android:background="@drawable/casino_card_tile_selectable"
+                android:tag="panno"
+                android:onClick="selectBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/panno"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Fast deal switch -->
+        <LinearLayout
+            android:id="@+id/fastDealRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:background="@drawable/casino_tile_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/backgroundRow">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fast_deal_with_icon"
+                style="@style/CasinoBodyText" />
+
+            <Switch
+                android:id="@+id/switchFastDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/casino_gold_switch_thumb"
+                android:track="@drawable/casino_gold_switch_track"
+                android:onClick="changeFastDeal" />
+        </LinearLayout>
+
+        <!-- Credits -->
         <TextView
             android:id="@+id/textViewCredits"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/credits_text"
-            android:textColor="@color/white"
-            android:textSize="11sp"
+            android:textColor="@color/casino_gold_alpha_50"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupCardType" />
+            app:layout_constraintTop_toBottomOf="@id/fastDealRow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
