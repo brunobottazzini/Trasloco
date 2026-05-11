@@ -264,6 +264,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun subDeckClick(view: View) {
+        if (isTutorialMode) return
         val cardPosition = view.id
         val cardName = getCardName(cardPosition)
         if (cardName == "zero") {
@@ -345,6 +346,14 @@ class GameActivity : AppCompatActivity() {
         val targetPosition =
             resources.getResourceEntryName(targetPositionId).split("subDeck")[1]
 
+        if (isTutorialMode) {
+            val engine = tutorialEngine ?: return false
+            val tutorialTarget = if (isEndDeckClick(targetPosition)) "endDeck1" else targetCard
+            if (!engine.isMoveAllowed(sourceCard, tutorialTarget)) {
+                return false
+            }
+        }
+
         if (!canBeInserted(targetCard, sourceCard, isEndDeckClick(targetPosition))) {
             return false
         }
@@ -376,6 +385,12 @@ class GameActivity : AppCompatActivity() {
 
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isEnabled = playList.isNotEmpty()
+
+        if (isTutorialMode) {
+            val tutorialTarget = if (isEndDeckClick(targetPosition)) "endDeck1" else targetCard
+            tutorialEngine?.onMoveExecuted(sourceCard, tutorialTarget)
+            renderTutorialStep()
+        }
 
         return true
     }
@@ -654,6 +669,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouLost() {
+        if (isTutorialMode) return
         shouldPersistOnPause = false
         gameStateRepo.clear()
         clearCardSelection()
@@ -708,6 +724,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showYouWon() {
+        if (isTutorialMode) return
         shouldPersistOnPause = false
         gameStateRepo.clear()
         clearCardSelection()
@@ -1284,6 +1301,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun triggerAutoMoveCycle() {
+        if (isTutorialMode) return
         if (!autoMoveEnabled) return
         val move = findUniquelyPlaceableCard() ?: return
         val (tablePos, endDeckKey) = move
