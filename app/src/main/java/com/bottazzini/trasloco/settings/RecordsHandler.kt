@@ -120,7 +120,7 @@ class RecordsHandler(context: Context) {
     fun maybeUpdateBestTime(newTime: Long): Boolean {
         val current = getBestTime()
         return if (current == null || newTime < current) {
-            update(Type.TIME, newTime, newTime, current != null)
+            update(Type.TIME, newTime, newTime, current == null)
             true
         } else {
             false
