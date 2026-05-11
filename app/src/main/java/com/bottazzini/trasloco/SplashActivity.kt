@@ -3,6 +3,7 @@ package com.bottazzini.trasloco
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var skipEnabled = false
     private var hasNavigated = false
+    private var mediaPlayer: MediaPlayer? = null
 
     private val skipEnableDelayMs = 500L
     private val totalDurationMs = 2000L
@@ -35,6 +37,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startAnimation() {
+        try {
+            mediaPlayer = MediaPlayer.create(this, R.raw.shuffle)
+            mediaPlayer?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         val card1 = findViewById<ImageView>(R.id.splashCard1)
         val card2 = findViewById<ImageView>(R.id.splashCard2)
         val card3 = findViewById<ImageView>(R.id.splashCard3)
@@ -118,6 +127,8 @@ class SplashActivity : AppCompatActivity() {
         if (hasNavigated) return
         hasNavigated = true
         handler.removeCallbacksAndMessages(null)
+        mediaPlayer?.release()
+        mediaPlayer = null
         startActivity(Intent(this, MainActivity::class.java))
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -125,6 +136,8 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
+        mediaPlayer?.release()
+        mediaPlayer = null
         super.onDestroy()
     }
 }
