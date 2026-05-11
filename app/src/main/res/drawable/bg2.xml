@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Green base gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:gradientRadius="100"
+                android:startColor="@color/casino_green"
+                android:endColor="@color/casino_green_dark" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <!-- Outer gold frame -->
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="@color/casino_gold" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <!-- Inner gold frame -->
+    <item android:left="6dp" android:top="6dp" android:right="6dp" android:bottom="6dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="1dp" android:color="@color/casino_gold_dark" />
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <!-- Rhombus 1 - 45° rotation -->
+    <item android:left="18dp" android:top="36dp" android:right="18dp" android:bottom="36dp">
+        <rotate android:fromDegrees="45" android:toDegrees="45" android:pivotX="50%" android:pivotY="50%">
+            <shape android:shape="rectangle">
+                <stroke android:width="1.5dp" android:color="@color/casino_gold" />
+                <solid android:color="@android:color/transparent" />
+            </shape>
+        </rotate>
+    </item>
+    <!-- Rhombus 2 - 0° (square inside the rotated one) -->
+    <item android:left="26dp" android:top="44dp" android:right="26dp" android:bottom="44dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="1dp" android:color="@color/casino_gold_light" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>
