@@ -183,7 +183,7 @@
             android:onClick="openSettings"
             android:clickable="true"
             android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textViewWatermark"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tileRecords"
@@ -208,6 +208,21 @@
                 android:fontFamily="serif"
                 android:textColor="@color/casino_gold_light" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewWatermark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/watermark_studio"
+            android:textSize="9sp"
+            android:fontFamily="serif"
+            android:textStyle="italic"
+            android:textColor="@color/casino_gold_alpha_25"
+            android:alpha="0.6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
