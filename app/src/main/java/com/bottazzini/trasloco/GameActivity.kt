@@ -497,48 +497,9 @@ class GameActivity : AppCompatActivity() {
         sourceCard: String,
         movingCard: String,
         endClickDeck: Boolean
-    ): Boolean {
-        val sourceSeme = sourceCard.substring(0, 1)
-        val movingSeme = movingCard.substring(0, 1)
-        val movingNumber = movingCard.substring(1, movingCard.length).toInt()
-        if (endClickDeck) {
-            return canBeInsertedEndDeck(
-                sourceCard = sourceCard,
-                sourceSeme = sourceSeme,
-                movingSeme = movingSeme,
-                movingNumber = movingNumber
-            )
-        } else {
-            if (sourceSeme == movingSeme) {
-                val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
-                if (sourceNumber - 1 == movingNumber) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    private fun canBeInsertedEndDeck(
-        sourceCard: String,
-        sourceSeme: String,
-        movingSeme: String,
-        movingNumber: Int
-    ): Boolean {
-        if (sourceCard == "zero") {
-            return movingNumber == 1
-        }
-
-        val sourceNumber = sourceCard.substring(1, sourceCard.length).toInt()
-        if (sourceSeme == movingSeme) {
-            if (sourceNumber == movingNumber - 1) {
-                return true
-            }
-        }
-
-        return false
-    }
+    ): Boolean = com.bottazzini.trasloco.utils.CardMoveValidator.canBeInserted(
+        sourceCard, movingCard, endClickDeck
+    )
 
     private fun getTextViewByName(textName: String) =
         resources.getIdentifier("textView$textName", "id", this.packageName)
@@ -1348,6 +1309,14 @@ class GameActivity : AppCompatActivity() {
     private fun triggerAutoMoveCycle() {
         if (isTutorialMode) return
         if (!autoMoveEnabled) return
+        if (dragSourceView != null) {
+            // Manual drag in progress: don't steal the dragged card. Retry shortly so the
+            // auto-move chain stays alive even if the drag ends with an invalid drop.
+            autoMoveRunnable = Runnable { triggerAutoMoveCycle() }.also {
+                timerHandler.postDelayed(it, 350)
+            }
+            return
+        }
         val move = findUniquelyPlaceableCard() ?: return
         val (tablePos, endDeckKey) = move
         val endDeckPos = "${endDeckKey}4"
