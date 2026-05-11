@@ -10,13 +10,8 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
-import com.bottazzini.trasloco.utils.DeckSetup
-import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class MainActivity : AppCompatActivity() {
