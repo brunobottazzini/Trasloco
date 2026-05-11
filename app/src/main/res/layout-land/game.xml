@@ -809,4 +809,55 @@
         </LinearLayout>
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/tutorialBanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/casino_pause_overlay_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tutorialBannerText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:textColor="@color/casino_gold"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            tools:text="Tutorial instruction text goes here..." />
+
+        <Button
+            android:id="@+id/tutorialNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/casino_tile_bg_primary"
+            android:fontFamily="serif"
+            android:minWidth="100dp"
+            android:padding="10dp"
+            android:text="@string/tutorial_next"
+            android:textColor="@color/casino_gold"
+            android:textSize="14sp"
+            android:textStyle="italic|bold"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/tutorialExitButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/tutorial_exit_title"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/casino_gold" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
