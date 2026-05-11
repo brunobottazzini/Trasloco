@@ -202,6 +202,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_1"
         app:layout_constraintTop_toTopOf="@id/guideline_row_1"
         app:srcCompat="@drawable/zero" />
@@ -215,6 +216,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_2"
         app:layout_constraintTop_toTopOf="@id/guideline_row_1"
         app:srcCompat="@drawable/zero" />
@@ -228,6 +230,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_3"
         app:layout_constraintTop_toTopOf="@id/guideline_row_1"
         app:srcCompat="@drawable/zero" />
@@ -241,7 +244,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
-        android:background="@drawable/final_stack_border"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_4"
         app:layout_constraintTop_toTopOf="@id/guideline_row_1"
         app:srcCompat="@drawable/zero" />
@@ -273,6 +276,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_1"
         app:layout_constraintTop_toTopOf="@id/guideline_row_2"
         app:srcCompat="@drawable/zero" />
@@ -286,6 +290,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_2"
         app:layout_constraintTop_toTopOf="@id/guideline_row_2"
         app:srcCompat="@drawable/zero" />
@@ -299,6 +304,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_3"
         app:layout_constraintTop_toTopOf="@id/guideline_row_2"
         app:srcCompat="@drawable/zero" />
@@ -312,7 +318,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
-        android:background="@drawable/final_stack_border"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_4"
         app:layout_constraintTop_toTopOf="@id/guideline_row_2"
         app:srcCompat="@drawable/zero" />
@@ -344,6 +350,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_1"
         app:layout_constraintTop_toTopOf="@id/guideline_row_3"
         app:srcCompat="@drawable/zero" />
@@ -357,6 +364,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_2"
         app:layout_constraintTop_toTopOf="@id/guideline_row_3"
         app:srcCompat="@drawable/zero" />
@@ -370,6 +378,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_3"
         app:layout_constraintTop_toTopOf="@id/guideline_row_3"
         app:srcCompat="@drawable/zero" />
@@ -383,7 +392,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
-        android:background="@drawable/final_stack_border"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_4"
         app:layout_constraintTop_toTopOf="@id/guideline_row_3"
         app:srcCompat="@drawable/zero" />
@@ -415,6 +424,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_1"
         app:layout_constraintTop_toTopOf="@id/guideline_row_4"
         app:srcCompat="@drawable/zero" />
@@ -428,6 +438,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_2"
         app:layout_constraintTop_toTopOf="@id/guideline_row_4"
         app:srcCompat="@drawable/zero" />
@@ -441,6 +452,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_3"
         app:layout_constraintTop_toTopOf="@id/guideline_row_4"
         app:srcCompat="@drawable/zero" />
@@ -454,7 +466,7 @@
         android:scaleType="centerCrop"
         android:onClick="gameCardClick"
         android:tag="zero"
-        android:background="@drawable/final_stack_border"
+        android:background="@drawable/casino_slot_frame"
         app:layout_constraintStart_toStartOf="@id/guideline_col_4"
         app:layout_constraintTop_toTopOf="@id/guideline_row_4"
         app:srcCompat="@drawable/zero" />
