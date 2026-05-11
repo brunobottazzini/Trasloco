@@ -44,7 +44,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startGame(view: View) {
+        if (!isTutorialSeen()) {
+            showTutorialPromptDialog()
+        } else {
+            launchGameActivity(tutorial = false)
+        }
+    }
+
+    fun showTutorial(view: View) {
+        playSound(R.raw.change_activity)
+        launchGameActivity(tutorial = true)
+    }
+
+    private fun isTutorialSeen(): Boolean {
+        val prefs = getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
+        return prefs.getBoolean("tutorial_seen", false)
+    }
+
+    private fun markTutorialSeen() {
+        val prefs = getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
+        prefs.edit().putBoolean("tutorial_seen", true).apply()
+    }
+
+    private fun showTutorialPromptDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.tutorial_prompt_title)
+            .setMessage(R.string.tutorial_prompt_message)
+            .setCancelable(false)
+            .setPositiveButton(R.string.tutorial_prompt_yes) { _, _ ->
+                markTutorialSeen()
+                launchGameActivity(tutorial = true)
+            }
+            .setNegativeButton(R.string.tutorial_prompt_no) { _, _ ->
+                markTutorialSeen()
+                launchGameActivity(tutorial = false)
+            }
+            .show()
+    }
+
+    private fun launchGameActivity(tutorial: Boolean) {
         val intent = Intent(this, GameActivity::class.java)
+        if (tutorial) {
+            intent.putExtra(GameActivity.EXTRA_TUTORIAL_MODE, true)
+        }
         startActivity(intent)
     }
 
