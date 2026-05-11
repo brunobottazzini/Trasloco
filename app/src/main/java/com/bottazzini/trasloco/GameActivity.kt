@@ -63,6 +63,7 @@ class GameActivity : AppCompatActivity() {
     }
     private lateinit var hintEngine: HintEngine
     private var hintEnabled: Boolean = true
+    private var autoMoveEnabled: Boolean = false
     private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
     private var dragTouchStartX: Float = 0f
     private var dragTouchStartY: Float = 0f
@@ -225,6 +226,7 @@ class GameActivity : AppCompatActivity() {
                 return
             }
             clearCardSelection()
+            triggerAutoMoveCycle()
         } else {
             if (selectedPositionId == cardPosition) {
                 return
@@ -721,6 +723,8 @@ class GameActivity : AppCompatActivity() {
         if (!::hintEngine.isInitialized) {
             hintEngine = HintEngine(this)
         }
+
+        autoMoveEnabled = settingsHandler.readValue(Configuration.AUTO_MOVE.value) == "enabled"
     }
 
     private fun setBackCards(imageName: String) {
@@ -901,6 +905,8 @@ class GameActivity : AppCompatActivity() {
                     showYouWon()
                 } else if (hasReachedLostConditions()) {
                     showYouLost()
+                } else {
+                    triggerAutoMoveCycle()
                 }
             } else {
                 findViewById<TextView>(R.id.selectedCardTextView).text =
@@ -1208,5 +1214,80 @@ class GameActivity : AppCompatActivity() {
                 targetView.background = null
             }
         }, 1500)
+    }
+
+    private fun triggerAutoMoveCycle() {
+        if (!autoMoveEnabled) return
+        val move = findUniquelyPlaceableCard() ?: return
+        val (tablePos, endDeckKey) = move
+        val endDeckPos = "${endDeckKey}4"
+        val sourceId = resources.getIdentifier("subDeck$tablePos", "id", packageName)
+        val targetId = resources.getIdentifier("subDeck$endDeckPos", "id", packageName)
+        val sourceView = findViewById<android.widget.ImageView>(sourceId) ?: return
+        val targetView = findViewById<android.widget.ImageView>(targetId) ?: return
+
+        val moved = tryMove(sourceView, targetView)
+        if (moved) {
+            if (hasReachedWonConditions()) {
+                showYouWon()
+                return
+            } else if (hasReachedLostConditions()) {
+                showYouLost()
+                return
+            }
+            // Continue cycle after short delay (350ms for visual feedback)
+            timerHandler.postDelayed({ triggerAutoMoveCycle() }, 350)
+        }
+    }
+
+    private fun findUniquelyPlaceableCard(): Pair<String, String>? {
+        for (endDeckKey in listOf("1", "2", "3", "4")) {
+            val currentTop = endDeckList[endDeckKey] ?: continue
+            if (currentTop == "zero") {
+                // Look for an ace on top of any table slot; use this empty endDeck as target
+                val aceCard = findAceOnTop() ?: continue
+                val tablePos = findCardOnTop(aceCard) ?: continue
+                return Pair(tablePos, endDeckKey)
+            } else {
+                val seme = currentTop.substring(0, 1)
+                val number = currentTop.substring(1).toInt()
+                if (number >= 10) continue  // Full, skip
+                val expectedCard = "$seme${number + 1}"
+                val tablePos = findCardOnTop(expectedCard) ?: continue
+                return Pair(tablePos, endDeckKey)
+            }
+        }
+        return null
+    }
+
+    private fun findAceOnTop(): String? {
+        // Returns the ace card name if any ace is on top of a table slot, null otherwise
+        for (row in 1..4) {
+            for (col in 1..3) {
+                val pos = "$row$col"
+                val cards = cardTableMap[pos]
+                if (!cards.isNullOrEmpty() && cards.last() != "zero") {
+                    val card = cards.last()
+                    if (card.length > 1 && card.substring(1).toInt() == 1) {
+                        return card
+                    }
+                }
+            }
+        }
+        return null
+    }
+
+    private fun findCardOnTop(card: String): String? {
+        // Returns the table position key (e.g., "11") where card is on top, or null
+        for (row in 1..4) {
+            for (col in 1..3) {
+                val pos = "$row$col"
+                val cards = cardTableMap[pos]
+                if (!cards.isNullOrEmpty() && cards.last() == card) {
+                    return pos
+                }
+            }
+        }
+        return null
     }
 }
