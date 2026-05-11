@@ -35,6 +35,10 @@ import java.util.LinkedList
 
 class GameActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_TUTORIAL_MODE = "tutorial_mode"
+    }
+
     private lateinit var settingsHandler: SettingsHandler
     private lateinit var recordsHandler: RecordsHandler
     private lateinit var gameStateRepo: com.bottazzini.trasloco.settings.GameStateRepository
@@ -52,6 +56,8 @@ class GameActivity : AppCompatActivity() {
     private var playList = HashMap<String, LinkedList<Int>>()
     private var selectedCard: String? = null
     private var selectedPositionId: Int? = null
+    private var isTutorialMode: Boolean = false
+    private var tutorialEngine: com.bottazzini.trasloco.utils.TutorialEngine? = null
     private var enabledFastEndDeckClick = true
     private var cardType: String = "piacentine"
     private val timerHandler = Handler(Looper.getMainLooper())
@@ -99,12 +105,17 @@ class GameActivity : AppCompatActivity() {
         recordsHandler = RecordsHandler(applicationContext)
         gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
         resumeMode = intent.getBooleanExtra("resume", false)
+        isTutorialMode = intent.getBooleanExtra(EXTRA_TUTORIAL_MODE, false)
         if (recordsHandler.readValue(Type.CONSECUTIVE) != null) {
             consecutiveWins = recordsHandler.readValue(Type.CONSECUTIVE)!!
         }
 
         processSettings()
         setupDragAndDrop()
+        if (isTutorialMode) {
+            startTutorial()
+            return
+        }
         if (resumeMode) {
             val loaded = gameStateRepo.load()
             if (loaded != null) {
@@ -155,6 +166,71 @@ class GameActivity : AppCompatActivity() {
                 findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
             }
         }.start()
+    }
+
+    private fun startTutorial() {
+        isInitializing = true
+        shouldPersistOnPause = false
+        gameStateRepo.clear()
+        clearCardSelection()
+
+        // Hide game chrome that doesn't belong in tutorial mode.
+        findViewById<View>(R.id.topBar).visibility = View.GONE
+
+        // Deterministic deck → table.
+        com.bottazzini.trasloco.utils.DeckSetup.setTutorialDeck()
+        com.bottazzini.trasloco.utils.DeckSetup.prepareSubDecks()
+        subDeckMap = com.bottazzini.trasloco.utils.DeckSetup.getSubDeckMap()
+        coppiedSubDeckMap = HashMap(subDeckMap)
+        prepareTable()
+
+        // Init engine + banner.
+        tutorialEngine = com.bottazzini.trasloco.utils.TutorialEngine(
+            com.bottazzini.trasloco.utils.TutorialSteps.build()
+        )
+        val banner = findViewById<View>(R.id.tutorialBanner)
+        banner.visibility = View.VISIBLE
+        findViewById<View>(R.id.tutorialNextButton).setOnClickListener { onTutorialNext() }
+        findViewById<View>(R.id.tutorialExitButton).setOnClickListener { /* wired in Task 11 */ }
+
+        renderTutorialStep()
+        isInitializing = false
+    }
+
+    private fun renderTutorialStep() {
+        val engine = tutorialEngine ?: return
+        if (engine.isComplete()) {
+            finish()
+            return
+        }
+        val step = engine.currentStep()
+        val moveCompleted = step.requiredMove != null && engine.isCurrentStepComplete()
+
+        // Banner text: confirmation if move just done, instruction otherwise.
+        val textResId = if (moveCompleted && step.confirmationResId != null) {
+            step.confirmationResId
+        } else {
+            step.instructionResId
+        }
+        findViewById<TextView>(R.id.tutorialBannerText).text = getString(textResId)
+
+        // Next button visibility:
+        //  - intro/outro (no requiredMove): always visible
+        //  - move-step before the move: hidden
+        //  - move-step after the move: visible
+        val nextBtn = findViewById<Button>(R.id.tutorialNextButton)
+        nextBtn.visibility = if (step.requiredMove == null || moveCompleted) View.VISIBLE else View.GONE
+        nextBtn.text = if (step.label == "outro") getString(R.string.tutorial_finish) else getString(R.string.tutorial_next)
+    }
+
+    private fun onTutorialNext() {
+        val engine = tutorialEngine ?: return
+        engine.advanceToNext()
+        if (engine.isComplete()) {
+            finish()
+        } else {
+            renderTutorialStep()
+        }
     }
 
     fun retryGame(view: View) {
