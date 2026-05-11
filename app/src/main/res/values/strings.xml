@@ -73,4 +73,15 @@
     <string name="cd_hint">Hint</string>
     <string name="hint_with_icon">💡 Hints</string>
     <string name="auto_move_with_icon">🎯 Auto-move to final deck</string>
+    <string name="win_title">Victory!</string>
+    <string name="win_stat_time">⏱ Time</string>
+    <string name="win_stat_best">🏅 Best time</string>
+    <string name="win_stat_streak">🔥 Streak</string>
+    <string name="win_stat_total">📊 Total wins</string>
+    <string name="win_new_record">New record! ✨</string>
+    <string name="win_button_new">▶ New game</string>
+    <string name="win_button_menu">← Menu</string>
+    <string name="lose_title">You lost...</string>
+    <string name="lose_button_retry">↻ Retry</string>
+    <string name="streak_format">%1$s in a row</string>
 </resources>
