@@ -68,7 +68,18 @@
       "Bash(./gradlew assembleDebug --info)",
       "Bash(./gradlew clean *)",
       "Bash(xargs ls *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(./gradlew :app:testDebugUnitTest *)",
+      "Bash(xargs cat *)",
+      "Bash(python3 *)",
+      "Bash(./gradlew assembleDebug -q)",
+      "Bash(xmllint --noout -)",
+      "Bash(./gradlew compileDebugKotlin *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(./gradlew processDebugResources *)",
+      "Bash(./gradlew :app:compileDebugKotlin -q)",
+      "Bash(echo \"EXIT_CODE: $?\")",
+      "Bash(grep -v \"^+$\")"
     ]
   }
 }
