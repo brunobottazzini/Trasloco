@@ -69,6 +69,18 @@ class SettingsActivity : AppCompatActivity() {
         settingsHandler.updateSetting(Configuration.FAST_DEAL.value, value)
     }
 
+    fun changeHintEnabled(view: View) {
+        val switch = view as Switch
+        val value = if (switch.isChecked) "enabled" else "disabled"
+        settingsHandler.updateSetting(Configuration.HINT_ENABLED.value, value)
+    }
+
+    fun changeAutoMove(view: View) {
+        val switch = view as Switch
+        val value = if (switch.isChecked) "enabled" else "disabled"
+        settingsHandler.updateSetting(Configuration.AUTO_MOVE.value, value)
+    }
+
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
@@ -134,6 +146,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val background = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "verde"
         updateSelection(backgroundTileIds, background)
+
+        val hint = settingsHandler.readValue(Configuration.HINT_ENABLED.value) ?: "enabled"
+        findViewById<Switch>(R.id.switchHint).isChecked = (hint == "enabled")
+
+        val autoMove = settingsHandler.readValue(Configuration.AUTO_MOVE.value) ?: "disabled"
+        findViewById<Switch>(R.id.switchAutoMove).isChecked = (autoMove == "enabled")
 
         applyScreenBackground(background)
         updateHeroPreview()

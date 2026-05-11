@@ -399,6 +399,66 @@
                 android:onClick="changeFastDeal" />
         </LinearLayout>
 
+        <!-- Hints switch -->
+        <LinearLayout
+            android:id="@+id/hintRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:background="@drawable/casino_tile_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fastDealRow">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hint_with_icon"
+                style="@style/CasinoBodyText" />
+
+            <Switch
+                android:id="@+id/switchHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/casino_gold_switch_thumb"
+                android:track="@drawable/casino_gold_switch_track"
+                android:onClick="changeHintEnabled" />
+        </LinearLayout>
+
+        <!-- Auto-move switch -->
+        <LinearLayout
+            android:id="@+id/autoMoveRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:background="@drawable/casino_tile_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hintRow">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/auto_move_with_icon"
+                style="@style/CasinoBodyText" />
+
+            <Switch
+                android:id="@+id/switchAutoMove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/casino_gold_switch_thumb"
+                android:track="@drawable/casino_gold_switch_track"
+                android:onClick="changeAutoMove" />
+        </LinearLayout>
+
         <!-- Credits -->
         <TextView
             android:id="@+id/textViewCredits"
@@ -411,7 +471,7 @@
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fastDealRow" />
+            app:layout_constraintTop_toBottomOf="@id/autoMoveRow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
