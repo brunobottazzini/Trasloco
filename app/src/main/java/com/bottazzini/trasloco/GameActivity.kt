@@ -64,6 +64,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var hintEngine: HintEngine
     private var hintEnabled: Boolean = true
     private var autoMoveEnabled: Boolean = false
+    private var autoMoveRunnable: Runnable? = null
     private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
     private var dragTouchStartX: Float = 0f
     private var dragTouchStartY: Float = 0f
@@ -1061,6 +1062,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         stopTimer()
+        autoMoveRunnable?.let { timerHandler.removeCallbacks(it) }
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
         }
@@ -1236,7 +1238,9 @@ class GameActivity : AppCompatActivity() {
                 return
             }
             // Continue cycle after short delay (350ms for visual feedback)
-            timerHandler.postDelayed({ triggerAutoMoveCycle() }, 350)
+            autoMoveRunnable = Runnable { triggerAutoMoveCycle() }.also {
+                timerHandler.postDelayed(it, 350)
+            }
         }
     }
 
