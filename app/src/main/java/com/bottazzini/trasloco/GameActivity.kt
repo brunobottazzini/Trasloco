@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
@@ -573,9 +574,7 @@ class GameActivity : AppCompatActivity() {
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = false
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = false
-        findViewById<TextView>(R.id.lostTextView).isInvisible = true
-        findViewById<Button>(R.id.retryButton).isInvisible = true
-        findViewById<Button>(R.id.newGameButton).isInvisible = true
+        findViewById<View>(R.id.lostOverlay).isGone = true
     }
 
     private fun showYouLost() {
@@ -585,10 +584,7 @@ class GameActivity : AppCompatActivity() {
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
-        findViewById<TextView>(R.id.lostTextView).isInvisible = false
-        findViewById<Button>(R.id.retryButton).isInvisible = false
-        findViewById<Button>(R.id.newGameButton).isInvisible = false
+        findViewById<View>(R.id.lostOverlay).isGone = false
         stopTimer()
         val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
         if (consecutive != null) {
@@ -642,7 +638,6 @@ class GameActivity : AppCompatActivity() {
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<Button>(R.id.retryButton).isInvisible = true
         stopTimer()
         val previousTime = recordsHandler.readValue(Type.TIME)
         val millisPassed = System.currentTimeMillis() - gameStartTimeMillis
@@ -1051,10 +1046,7 @@ class GameActivity : AppCompatActivity() {
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isInvisible = true
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
-        findViewById<TextView>(R.id.lostTextView).text = resources.getString(R.string.hai_perso)
-        findViewById<TextView>(R.id.lostTextView).isInvisible = false
-        findViewById<Button>(R.id.retryButton).isInvisible = false
-        findViewById<Button>(R.id.newGameButton).isInvisible = false
+        findViewById<View>(R.id.lostOverlay).isGone = false
     }
 
     override fun onDestroy() {
