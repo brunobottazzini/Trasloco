@@ -203,8 +203,20 @@ class GameActivity : AppCompatActivity() {
             finish()
             return
         }
+
         val step = engine.currentStep()
         val moveCompleted = step.requiredMove != null && engine.isCurrentStepComplete()
+
+        // Highlight management: clear all slots, then apply pulse on targets for the current step.
+        // After the move is complete, drop the highlights (the new state speaks for itself).
+        for (id in dragSlotIds) {
+            findViewById<View>(id).setBackgroundResource(R.drawable.casino_slot_frame)
+        }
+        if (!moveCompleted) {
+            for (target in step.highlightTargets) {
+                findTutorialViewForTarget(target)?.setBackgroundResource(R.drawable.hint_pulse)
+            }
+        }
 
         // Banner text: confirmation if move just done, instruction otherwise.
         val textResId = if (moveCompleted && step.confirmationResId != null) {
@@ -221,6 +233,19 @@ class GameActivity : AppCompatActivity() {
         val nextBtn = findViewById<Button>(R.id.tutorialNextButton)
         nextBtn.visibility = if (step.requiredMove == null || moveCompleted) View.VISIBLE else View.GONE
         nextBtn.text = if (step.label == "outro") getString(R.string.tutorial_finish) else getString(R.string.tutorial_next)
+    }
+
+    private fun findTutorialViewForTarget(target: String): View? {
+        if (target == "endDeck1") {
+            return findViewById(R.id.subDeck14)
+        }
+        for ((position, cards) in cardTableMap) {
+            if (cards.isNotEmpty() && cards.last() == target) {
+                val id = resources.getIdentifier("subDeck$position", "id", this.packageName)
+                if (id != 0) return findViewById(id)
+            }
+        }
+        return null
     }
 
     private fun onTutorialNext() {
