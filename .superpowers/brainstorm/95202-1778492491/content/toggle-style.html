@@ -1,0 +1,107 @@
+<h2>Stile dei toggle ON/OFF</h2>
+<p class="subtitle">Per i settings booleani (Distribuzione veloce, Suggerimenti, Auto-spostamento end deck...). 3 opzioni in mood casinò.</p>
+
+<style>
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.4); border-radius: 6px; margin-bottom: 10px; font-family: Georgia, serif; }
+  .toggle-row-label { color: #f5e6b3; font-size: 13px; }
+
+  /* Switch dorato */
+  .gold-switch { position: relative; width: 56px; height: 28px; border-radius: 14px; border: 1px solid #d4af37; }
+  .gold-switch-on { background: linear-gradient(180deg, #d4af37 0%, #8b7129 100%); box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 0 8px rgba(212,175,55,0.5); }
+  .gold-switch-off { background: linear-gradient(180deg, #1a1a1a 0%, #0a3520 100%); box-shadow: inset 0 1px 3px rgba(0,0,0,0.6); }
+  .gold-switch-knob { position: absolute; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff5d0 0%, #d4af37 50%, #8b7129 100%); border: 1px solid #5a4513; transition: left 0.2s; }
+  .gold-switch-knob-on { left: 31px; }
+  .gold-switch-knob-off { left: 2px; background: radial-gradient(circle at 30% 30%, #888 0%, #555 50%, #222 100%); }
+
+  /* Lampada vintage */
+  .lamp { display: flex; align-items: center; gap: 10px; }
+  .bulb { width: 24px; height: 30px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; border: 1.5px solid #5a4513; position: relative; }
+  .bulb-on { background: radial-gradient(circle at 50% 30%, #fff5b3 0%, #d4af37 60%, #8b7129 100%); box-shadow: 0 0 16px rgba(255,215,0,0.7), 0 0 4px rgba(255,255,200,0.9); }
+  .bulb-off { background: radial-gradient(circle at 50% 30%, #555 0%, #333 60%, #111 100%); }
+  .bulb-base { width: 14px; height: 6px; background: #5a4513; margin: -1px auto 0; border-radius: 0 0 3px 3px; }
+  .lamp-status { font-family: Georgia, serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .lamp-on .lamp-status { color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,0.6); }
+  .lamp-off .lamp-status { color: #555; }
+
+  /* Carta girata */
+  .card-toggle { width: 44px; height: 60px; border-radius: 4px; position: relative; }
+  .card-toggle-up { background: linear-gradient(135deg, #f5e9d3 0%, #e8d4b0 100%); border: 2px solid #d4af37; box-shadow: 0 0 10px rgba(212,175,55,0.5); display: flex; align-items: center; justify-content: center; }
+  .card-toggle-up::after { content: "✓"; font-size: 22px; color: #8b0000; font-family: Georgia, serif; font-weight: bold; }
+  .card-toggle-down { background: repeating-linear-gradient(45deg, #5a3a1c 0px, #5a3a1c 4px, #4a2f17 4px, #4a2f17 8px); border: 2px solid #8b7129; }
+</style>
+
+<div class="cards">
+
+  <!-- Style 1: Switch dorato -->
+  <div class="card" data-choice="t1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 14px; background: #1a1a2e;">
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">⚡ Distribuzione rapida</span>
+        <div class="gold-switch gold-switch-on">
+          <div class="gold-switch-knob gold-switch-knob-on"></div>
+        </div>
+      </div>
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">💡 Suggerimenti</span>
+        <div class="gold-switch gold-switch-off">
+          <div class="gold-switch-knob gold-switch-knob-off"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>T1 — Switch dorato</h3>
+      <p>Interruttore "classico" con knob dorato lucido e binario gold/dark. Familiare (chiunque sa cos'è), ma riveste lo standard mobile con il mood dell'app. Sicuro, leggibile, low-risk.</p>
+    </div>
+  </div>
+
+  <!-- Style 2: Lampada -->
+  <div class="card" data-choice="t2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 14px; background: #1a1a2e;">
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">⚡ Distribuzione rapida</span>
+        <div class="lamp lamp-on">
+          <div>
+            <div class="bulb bulb-on"></div>
+            <div class="bulb-base"></div>
+          </div>
+          <span class="lamp-status">ON</span>
+        </div>
+      </div>
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">💡 Suggerimenti</span>
+        <div class="lamp lamp-off">
+          <div>
+            <div class="bulb bulb-off"></div>
+            <div class="bulb-base"></div>
+          </div>
+          <span class="lamp-status">OFF</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>T2 — Lampada vintage</h3>
+      <p>Lampadina che si accende/spegne con glow giallo. Molto tematizzato, evoca le insegne luminose del casinò. Memorabile e divertente. Animazione "accensione" facile da fare.</p>
+    </div>
+  </div>
+
+  <!-- Style 3: Carta girata -->
+  <div class="card" data-choice="t3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 14px; background: #1a1a2e;">
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">⚡ Distribuzione rapida</span>
+        <div class="card-toggle card-toggle-up"></div>
+      </div>
+      <div class="toggle-row" style="background:#0a3520">
+        <span class="toggle-row-label">💡 Suggerimenti</span>
+        <div class="card-toggle card-toggle-down"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>T3 — Carta girata</h3>
+      <p>Mini-carta: scoperta con ✓ = ON, coperta (retro) = OFF. Coerentissimo con l'identità dell'app (è un gioco di carte!). Animazione "flip" naturale. <strong>Contro</strong>: la metafora "scoperta/coperta = on/off" richiede mezzo secondo di apprendimento.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">La mia raccomandazione: <strong>T3 — Carta girata</strong>. È l'unico che è *intrinseco al gioco*: trasforma un controllo banale in un piccolo dettaglio di identità. E l'animazione flip diventa parte del feel "professional". T1 è la scelta sicura se vuoi familiarità massima.</p>

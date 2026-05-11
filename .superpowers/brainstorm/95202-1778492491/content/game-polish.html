@@ -1,0 +1,124 @@
+<h2>Polish del tavolo di gioco</h2>
+<p class="subtitle">Mood del tavolo durante la partita. Tutte le opzioni mostrano lo stesso layout (4 subdeck + 4 endDeck + carta selezionata + zona "scarta") ma con livello di decorazione diverso.</p>
+
+<style>
+  .board { padding: 14px; background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%); border-radius: 8px; min-height: 280px; position: relative; }
+  .slot-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+  .slot-label { text-align: center; font-family: Georgia, serif; font-size: 9px; color: rgba(212,175,55,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .slot { width: 36px; height: 54px; border-radius: 3px; background: rgba(0,0,0,0.25); position: relative; }
+  .game-card { width: 36px; height: 54px; border-radius: 3px; background: linear-gradient(135deg, #f5e9d3, #e8d4b0); position: relative; }
+  .game-card-text { position: absolute; top: 3px; left: 4px; font-family: Georgia, serif; font-size: 10px; font-weight: bold; color: #8b0000; line-height: 1; }
+  .game-card-suit { position: absolute; top: 14px; left: 4px; font-size: 9px; color: #5a3a1c; }
+  .timer { position: absolute; top: 8px; left: 14px; font-family: Georgia, serif; font-size: 11px; }
+
+  /* === Variant 1: Subtle === */
+  .v1 .slot { border: 1px solid rgba(212,175,55,0.35); }
+  .v1 .game-card { border: 1px solid #888; }
+  .v1 .selected { box-shadow: 0 0 6px rgba(212,175,55,0.7); border-color: #d4af37; }
+  .v1 .timer { color: #d4af37; }
+
+  /* === Variant 2: Standard === */
+  .v2 .slot { border: 1.5px solid #8b7129; box-shadow: inset 0 0 0 1px rgba(212,175,55,0.2); }
+  .v2 .game-card { border: 1px solid #5a4513; }
+  .v2 .selected { box-shadow: 0 0 14px rgba(212,175,55,0.8), 0 4px 8px rgba(0,0,0,0.4); transform: translateY(-2px); border: 1.5px solid #d4af37; }
+  .v2 .valid-drop { box-shadow: inset 0 0 12px rgba(212,175,55,0.5); border-color: #d4af37; }
+  .v2 .timer { color: #d4af37; background: rgba(0,0,0,0.4); padding: 3px 9px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.4); }
+  .v2 .end-deck-zone { border: 1px dashed rgba(212,175,55,0.4); border-radius: 6px; padding: 6px; }
+
+  /* === Variant 3: Ornate === */
+  .v3 { background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%), repeating-linear-gradient(45deg, transparent 0px, transparent 20px, rgba(212,175,55,0.02) 20px, rgba(212,175,55,0.02) 22px); }
+  .v3 .slot { border: 2px solid #d4af37; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4), inset 0 0 0 2px rgba(212,175,55,0.5), 0 0 4px rgba(0,0,0,0.5); position: relative; }
+  .v3 .slot::before { content: ""; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; border: 1px solid rgba(212,175,55,0.25); border-radius: 4px; pointer-events: none; }
+  .v3 .game-card { border: 1.5px solid #5a4513; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .v3 .selected { box-shadow: 0 0 22px rgba(212,175,55,0.9), 0 6px 10px rgba(0,0,0,0.5); transform: translateY(-4px) scale(1.05); border: 2px solid #d4af37; }
+  .v3 .valid-drop { box-shadow: inset 0 0 18px rgba(212,175,55,0.7), 0 0 10px rgba(212,175,55,0.5); }
+  .v3 .timer { color: #d4af37; font-style: italic; background: linear-gradient(180deg, rgba(212,175,55,0.2) 0%, rgba(0,0,0,0.4) 100%); padding: 4px 12px; border: 1px solid #d4af37; border-radius: 14px; box-shadow: 0 0 8px rgba(212,175,55,0.3); }
+  .v3 .ornament { color: #d4af37; font-family: Georgia, serif; font-size: 10px; opacity: 0.7; text-align: center; letter-spacing: 4px; }
+
+</style>
+
+<div class="cards">
+
+  <!-- Variant 1: Subtle -->
+  <div class="card" data-choice="g1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="board v1">
+        <div class="timer">02:14</div>
+        <div style="height: 28px"></div>
+        <div class="slot-label">End deck</div>
+        <div class="slot-row">
+          <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
+        </div>
+        <div style="height: 24px"></div>
+        <div class="slot-label">Tavolo</div>
+        <div class="slot-row">
+          <div class="game-card"><div class="game-card-text">7</div><div class="game-card-suit">♥</div></div>
+          <div class="game-card selected"><div class="game-card-text" style="color:#d4af37">K</div><div class="game-card-suit" style="color:#d4af37">♠</div></div>
+          <div class="game-card"><div class="game-card-text">3</div><div class="game-card-suit">♦</div></div>
+          <div class="game-card"><div class="game-card-text">9</div><div class="game-card-suit">♣</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>P1 — Sobrio</h3>
+      <p>Frame sottili dorati semi-trasparenti, carta selezionata con leggero glow. Minimal, non distrae mai dal gameplay. Animazioni: fade morbidi. <strong>Pro</strong>: rapido da fare, evergreen.</p>
+    </div>
+  </div>
+
+  <!-- Variant 2: Standard -->
+  <div class="card" data-choice="g2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="board v2">
+        <div class="timer">02:14</div>
+        <div style="height: 28px"></div>
+        <div class="slot-label">End deck</div>
+        <div class="end-deck-zone">
+          <div class="slot-row" style="margin-bottom:0">
+            <div class="slot"></div><div class="slot"></div><div class="slot valid-drop"></div><div class="slot"></div>
+          </div>
+        </div>
+        <div style="height: 18px"></div>
+        <div class="slot-label">Tavolo</div>
+        <div class="slot-row">
+          <div class="game-card"><div class="game-card-text">7</div><div class="game-card-suit">♥</div></div>
+          <div class="game-card selected"><div class="game-card-text" style="color:#d4af37">K</div><div class="game-card-suit" style="color:#d4af37">♠</div></div>
+          <div class="game-card"><div class="game-card-text">3</div><div class="game-card-suit">♦</div></div>
+          <div class="game-card"><div class="game-card-text">9</div><div class="game-card-suit">♣</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>P2 — Standard ⭐</h3>
+      <p>Frame definiti con doppio bordo dorato, carta selezionata con glow + lift di 2px. Zone "end deck" delimitate da bordo tratteggiato; lo slot bersaglio valido si illumina dall'interno quando trascini. Timer in pill dorata. <strong>Pro</strong>: feedback visivo ricco senza eccessi.</p>
+    </div>
+  </div>
+
+  <!-- Variant 3: Ornate -->
+  <div class="card" data-choice="g3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="board v3">
+        <div class="timer">02:14</div>
+        <div style="height: 28px"></div>
+        <div class="ornament">~ · END DECK · ~</div>
+        <div class="slot-row" style="margin-top:6px">
+          <div class="slot"></div><div class="slot"></div><div class="slot valid-drop"></div><div class="slot"></div>
+        </div>
+        <div style="height: 16px"></div>
+        <div class="ornament">~ · TAVOLO · ~</div>
+        <div class="slot-row" style="margin-top:6px">
+          <div class="game-card"><div class="game-card-text">7</div><div class="game-card-suit">♥</div></div>
+          <div class="game-card selected"><div class="game-card-text" style="color:#d4af37">K</div><div class="game-card-suit" style="color:#d4af37">♠</div></div>
+          <div class="game-card"><div class="game-card-text">3</div><div class="game-card-suit">♦</div></div>
+          <div class="game-card"><div class="game-card-text">9</div><div class="game-card-suit">♣</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>P3 — Ornato</h3>
+      <p>Frame doppi/tripli dorati su ogni slot, texture diagonale sul tavolo, label decorativi "~ · TAVOLO · ~", carta selezionata con sollevamento + scale + glow forte. Timer ornato. <strong>Pro</strong>: massimo "wow". <strong>Contro</strong>: può stancare dopo molte partite, occupa più pixel.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">La mia raccomandazione: <strong>P2 — Standard</strong>. È il punto dolce: feedback chiaro (selezione/dropzone) senza affaticare. P3 è bello in screenshot ma può infastidire in partita. P1 è "safe" ma non si distingue da prima abbastanza.</p>

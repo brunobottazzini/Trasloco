@@ -1,0 +1,123 @@
+<h2>Schermata vittoria</h2>
+<p class="subtitle">Tre direzioni: ognuna mette al centro qualcosa di diverso (estetica vs accomplishment vs continuità). Tutte conservano il mood casinò sobrio.</p>
+
+<style>
+  .win-screen { padding: 0; background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%); min-height: 400px; position: relative; font-family: Georgia, serif; overflow: hidden; }
+  .win-title { text-align: center; color: #d4af37; font-style: italic; letter-spacing: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }
+  .stat-card { background: rgba(0,0,0,0.3); border: 1px solid rgba(212,175,55,0.5); border-radius: 6px; padding: 10px 14px; margin: 8px auto; max-width: 80%; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+  .stat-label { color: rgba(212,175,55,0.7); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .stat-value { color: #f5e6b3; font-size: 14px; font-style: italic; }
+  .win-btn { display: inline-block; padding: 10px 20px; background: rgba(212,175,55,0.12); border: 1.5px solid #d4af37; color: #d4af37; font-style: italic; font-size: 12px; letter-spacing: 2px; border-radius: 22px; margin: 4px; }
+  .win-btn-primary { background: linear-gradient(135deg, #d4af37 0%, #8b7129 100%); color: #0a3520; font-weight: bold; box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+
+  .gif-frame { width: 140px; height: 90px; margin: 0 auto; background: repeating-linear-gradient(45deg, #5a3a1c, #5a3a1c 4px, #6b4528 4px, #6b4528 8px); border: 2px solid #d4af37; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: rgba(245,230,179,0.6); font-size: 9px; letter-spacing: 1px; }
+  .gif-frame-large { width: 180px; height: 130px; }
+  .gif-frame-small { width: 90px; height: 60px; }
+
+  /* Confetti dots */
+  .confetti { position: absolute; width: 6px; height: 6px; border-radius: 50%; }
+
+  /* Trophy */
+  .trophy { font-size: 56px; text-align: center; margin: 8px 0; filter: drop-shadow(0 0 12px rgba(212,175,55,0.6)); }
+</style>
+
+<div class="cards">
+
+  <!-- W1: Elegant restrained -->
+  <div class="card" data-choice="w1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="win-screen">
+        <div style="padding-top: 28px;">
+          <div class="win-title" style="font-size: 28px;">Hai vinto!</div>
+          <div style="text-align:center; color:rgba(212,175,55,0.5); font-size:10px; letter-spacing:6px; margin-top:4px;">~ COMPLIMENTI ~</div>
+        </div>
+        <div style="margin-top: 20px;">
+          <div class="gif-frame">[ gif party ]</div>
+        </div>
+        <div class="stat-card" style="margin-top: 16px;">
+          <div class="stat-row"><span class="stat-label">Tempo</span><span class="stat-value">02:14</span></div>
+          <div class="stat-row"><span class="stat-label">Vittorie consecutive</span><span class="stat-value">3</span></div>
+        </div>
+        <div style="text-align: center; margin-top: 18px;">
+          <div class="win-btn win-btn-primary">▶ Nuova partita</div>
+          <br>
+          <div class="win-btn">← Menu</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>W1 — Elegante e contenuto</h3>
+      <p>Titolo grande "Hai vinto!" + gif party in cornice dorata + statistiche essenziali + 2 bottoni. Niente confetti. <strong>Pro</strong>: coerente con polish sobrio scelto (P1), nessuna distrazione, ritmo veloce per chi rigioca. <strong>Contro</strong>: meno "scenografico".</p>
+    </div>
+  </div>
+
+  <!-- W2: Festive -->
+  <div class="card" data-choice="w2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="win-screen">
+        <!-- Confetti -->
+        <div class="confetti" style="background:#d4af37; top:10%; left:15%;"></div>
+        <div class="confetti" style="background:#8b0000; top:20%; left:80%;"></div>
+        <div class="confetti" style="background:#f5e6b3; top:5%; left:50%;"></div>
+        <div class="confetti" style="background:#d4af37; top:30%; left:8%;"></div>
+        <div class="confetti" style="background:#8b0000; top:25%; left:55%; width:8px; height:8px;"></div>
+        <div class="confetti" style="background:#d4af37; top:40%; left:90%;"></div>
+        <div class="confetti" style="background:#f5e6b3; top:50%; left:20%; width:4px; height:4px;"></div>
+        <div class="confetti" style="background:#d4af37; top:60%; left:75%;"></div>
+        <div class="confetti" style="background:#8b0000; top:8%; left:30%; width:5px; height:5px;"></div>
+        <div class="confetti" style="background:#d4af37; top:35%; left:35%;"></div>
+
+        <div style="padding-top: 22px; position: relative;">
+          <div class="win-title" style="font-size: 32px;">★ Hai vinto! ★</div>
+        </div>
+        <div style="margin-top: 14px;">
+          <div class="gif-frame gif-frame-large">[ gif party LARGE ]</div>
+        </div>
+        <div class="stat-card" style="margin-top: 14px;">
+          <div class="stat-row"><span class="stat-label">⏱ Tempo</span><span class="stat-value">02:14</span></div>
+        </div>
+        <div style="text-align: center; margin-top: 12px;">
+          <div class="win-btn win-btn-primary">▶ Ancora!</div>
+          <div class="win-btn">← Menu</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>W2 — Festoso</h3>
+      <p>Confetti dorati/rossi che cadono in animazione, gif party più grande, titolo decorato con ★, bottone "Ancora!" punchier. Festa vera. <strong>Pro</strong>: gratifica forte, divertente. <strong>Contro</strong>: rompe leggermente la coerenza col polish P1 sobrio.</p>
+    </div>
+  </div>
+
+  <!-- W3: Stats-focused -->
+  <div class="card" data-choice="w3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="win-screen">
+        <div style="padding-top: 18px;">
+          <div class="trophy">🏆</div>
+          <div class="win-title" style="font-size: 22px;">Vittoria!</div>
+        </div>
+        <div class="stat-card" style="margin-top: 12px;">
+          <div class="stat-row"><span class="stat-label">⏱ Tempo</span><span class="stat-value">02:14</span></div>
+          <div class="stat-row"><span class="stat-label">🏅 Miglior tempo</span><span class="stat-value" style="color:#d4af37">01:48</span></div>
+          <div class="stat-row"><span class="stat-label">🔥 Striscia</span><span class="stat-value">3 di fila</span></div>
+          <div class="stat-row"><span class="stat-label">📊 Vittorie totali</span><span class="stat-value">47</span></div>
+        </div>
+        <div style="margin-top: 8px;">
+          <div class="gif-frame gif-frame-small">[ gif party ]</div>
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+          <div class="win-btn win-btn-primary">▶ Nuova partita</div>
+          <div class="win-btn">← Menu</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>W3 — Focus su statistiche</h3>
+      <p>Trofeo in cima, statistiche dettagliate al centro (tempo + best + streak + totali), gif piccola in basso. Più "competitive": chi gioca tanto vuole vedere il progresso. <strong>Pro</strong>: ingaggia chi torna spesso. <strong>Contro</strong>: gif relegata al ruolo decorativo.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">Raccomandazione: <strong>W1 — Elegante</strong> per coerenza con il polish P1 scelto. Se invece gioca tanto e vuoi premiarlo, <strong>W3 — Stats</strong> è la mossa. W2 (festoso) rompe un po' il mood "sobrio" che hai scelto.</p>

@@ -1,0 +1,142 @@
+<h2>Animazione splash screen</h2>
+<p class="subtitle">3 concept, ciascuno con i 3 frame chiave (inizio → metà → fine). Durata target: ~2 secondi. Sfondo verde tappeto + oro.</p>
+
+<style>
+  .frame-row { display: flex; gap: 8px; padding: 12px; background: #1a1a2e; border-radius: 6px; }
+  .frame { flex: 1; aspect-ratio: 9/16; background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%); border: 1px solid #d4af37; border-radius: 6px; position: relative; overflow: hidden; }
+  .frame-num { position: absolute; top: 4px; left: 6px; font-family: Georgia, serif; font-size: 9px; color: rgba(212,175,55,0.5); letter-spacing: 1px; }
+  .frame-time { position: absolute; bottom: 4px; right: 6px; font-family: Georgia, serif; font-size: 9px; color: rgba(212,175,55,0.5); }
+
+  .mini-card-splash { position: absolute; width: 26px; height: 38px; border-radius: 3px; background: linear-gradient(135deg, #f5e9d3, #e8d4b0); border: 1px solid #5a3a1c; }
+  .mini-card-back { background: repeating-linear-gradient(45deg, #8b0000 0px, #8b0000 3px, #6b0000 3px, #6b0000 6px); border: 1px solid #d4af37; }
+
+  .logo-text { font-family: Georgia, serif; font-style: italic; color: #d4af37; text-align: center; letter-spacing: 3px; }
+  .logo-small { font-size: 12px; }
+  .logo-big { font-size: 22px; text-shadow: 0 0 12px rgba(212,175,55,0.8); }
+
+  .frame-label { font-family: Georgia, serif; font-size: 10px; color: #d4af37; text-align: center; margin-top: 6px; opacity: 0.8; }
+</style>
+
+<div class="cards">
+
+  <!-- Concept 1: Shuffle & Deal -->
+  <div class="card" data-choice="s1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="frame-row">
+        <!-- Frame 1: stack -->
+        <div class="frame">
+          <div class="frame-num">1</div>
+          <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+            <div class="mini-card-splash mini-card-back" style="position:relative; transform:rotate(-3deg)"></div>
+            <div class="mini-card-splash mini-card-back" style="position:relative; transform:rotate(2deg) translateY(-36px) translateX(2px)"></div>
+            <div class="mini-card-splash mini-card-back" style="position:relative; transform:rotate(-1deg) translateY(-72px) translateX(-1px)"></div>
+          </div>
+          <div class="frame-time">0.0s</div>
+        </div>
+        <!-- Frame 2: shuffling -->
+        <div class="frame">
+          <div class="frame-num">2</div>
+          <div class="mini-card-splash mini-card-back" style="top:40%; left:10%; transform:rotate(-25deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:30%; left:35%; transform:rotate(15deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:50%; left:60%; transform:rotate(-10deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:35%; left:75%; transform:rotate(30deg)"></div>
+          <div class="mini-card-splash" style="top:60%; left:45%; transform:rotate(5deg)"></div>
+          <div class="frame-time">0.8s</div>
+        </div>
+        <!-- Frame 3: fan + logo -->
+        <div class="frame">
+          <div class="frame-num">3</div>
+          <div class="mini-card-splash" style="bottom:30%; left:18%; transform:rotate(-30deg)"></div>
+          <div class="mini-card-splash" style="bottom:35%; left:32%; transform:rotate(-15deg)"></div>
+          <div class="mini-card-splash" style="bottom:38%; left:46%; transform:rotate(0deg)"></div>
+          <div class="mini-card-splash" style="bottom:35%; left:60%; transform:rotate(15deg)"></div>
+          <div class="mini-card-splash" style="bottom:30%; left:74%; transform:rotate(30deg)"></div>
+          <div style="position:absolute; top:25%; left:0; right:0;" class="logo-text logo-big">Trasloco</div>
+          <div class="frame-time">2.0s</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>S1 — Shuffle & Deal</h3>
+      <p>Pila di carte coperte → si mescolano in aria con motion blur → atterrano scoperte a ventaglio rivelando il titolo "Trasloco" sopra. Iconico, racconta letteralmente "stai per giocare a carte". <strong>Pro</strong>: il più tematico. <strong>Contro</strong>: il più "ricco" da animare.</p>
+    </div>
+  </div>
+
+  <!-- Concept 2: Single big flip -->
+  <div class="card" data-choice="s2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="frame-row">
+        <!-- Frame 1 -->
+        <div class="frame">
+          <div class="frame-num">1</div>
+          <div class="mini-card-splash mini-card-back" style="top:35%; left:30%; width:55px; height:80px;"></div>
+          <div class="frame-time">0.0s</div>
+        </div>
+        <!-- Frame 2: mid flip (narrow) -->
+        <div class="frame">
+          <div class="frame-num">2</div>
+          <div style="position:absolute; top:35%; left:50%; transform:translateX(-50%); width:8px; height:80px; background: linear-gradient(180deg, #d4af37, #8b7129); border:1px solid #5a4513; box-shadow: 0 0 20px rgba(212,175,55,0.8);"></div>
+          <div class="frame-time">1.0s</div>
+        </div>
+        <!-- Frame 3: shown face + logo -->
+        <div class="frame">
+          <div class="frame-num">3</div>
+          <div class="mini-card-splash" style="top:18%; left:30%; width:55px; height:80px; box-shadow: 0 0 18px rgba(212,175,55,0.6);">
+            <div style="text-align:center; padding-top:18px; color:#8b0000; font-family:Georgia,serif; font-size:18px; font-weight:bold;">T</div>
+            <div style="text-align:center; color:#5a3a1c; font-size:14px;">♦</div>
+          </div>
+          <div style="position:absolute; bottom:15%; left:0; right:0;" class="logo-text logo-big">Trasloco</div>
+          <div class="frame-time">2.0s</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>S2 — Big card flip</h3>
+      <p>Una sola carta coperta al centro → flip lento con bagliore al "taglio" → si rivela la carta + il titolo emerge sotto. Minimalista, elegante, premium hotel/cinema-like. <strong>Pro</strong>: il più "professional" e veloce da realizzare. <strong>Contro</strong>: meno spettacolare di S1.</p>
+    </div>
+  </div>
+
+  <!-- Concept 3: Cascading deal -->
+  <div class="card" data-choice="s3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="frame-row">
+        <!-- Frame 1: empty -->
+        <div class="frame">
+          <div class="frame-num">1</div>
+          <div class="mini-card-splash mini-card-back" style="top:-30%; left:45%; opacity:0.6"></div>
+          <div class="frame-time">0.0s</div>
+        </div>
+        <!-- Frame 2: raining -->
+        <div class="frame">
+          <div class="frame-num">2</div>
+          <div class="mini-card-splash mini-card-back" style="top:10%; left:15%; transform:rotate(-12deg); opacity:0.9"></div>
+          <div class="mini-card-splash mini-card-back" style="top:25%; left:55%; transform:rotate(8deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:5%; left:75%; transform:rotate(-5deg); opacity:0.7"></div>
+          <div class="mini-card-splash mini-card-back" style="top:45%; left:30%; transform:rotate(15deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:60%; left:65%; transform:rotate(-8deg)"></div>
+          <div class="mini-card-splash mini-card-back" style="top:75%; left:20%; transform:rotate(3deg)"></div>
+          <div class="frame-time">1.0s</div>
+        </div>
+        <!-- Frame 3: settled grid + logo -->
+        <div class="frame">
+          <div class="frame-num">3</div>
+          <div class="mini-card-splash" style="bottom:5%; left:8%;"></div>
+          <div class="mini-card-splash" style="bottom:5%; left:35%;"></div>
+          <div class="mini-card-splash" style="bottom:5%; left:62%;"></div>
+          <div class="mini-card-splash" style="bottom:48%; left:8%;"></div>
+          <div class="mini-card-splash" style="bottom:48%; left:35%;"></div>
+          <div class="mini-card-splash" style="bottom:48%; left:62%;"></div>
+          <div style="position:absolute; top:8%; left:0; right:0;" class="logo-text logo-big">Trasloco</div>
+          <div class="frame-time">2.0s</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>S3 — Cascata di carte</h3>
+      <p>Carte piovono dall'alto con leggere rotazioni casuali → si organizzano nel layout 3x2 tipico del tavolo di gioco → il logo "Trasloco" appare sopra. <strong>Pro</strong>: anticipa già il layout di gioco, sensazione "trasloco/movimento" (nome dell'app!). <strong>Contro</strong>: serve dare un attimo per leggere il logo.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">La mia raccomandazione: <strong>S3 — Cascata</strong>, perché "Trasloco" significa letteralmente "movimento/spostamento" e quest'animazione lo trasmette nel nome stesso. S2 è la scelta sicura/elegante se preferisci minimal.</p>

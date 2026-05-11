@@ -55,7 +55,22 @@
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_1_denara.png\" -o /tmp/briscola_sample/sample_d1.png)",
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_5_denara.png\" -o /tmp/briscola_sample/sample_d5.png)",
       "Bash(curl -sL \"https://raw.githubusercontent.com/simonediberardino/BriscolaPlusAndroid/master/app/src/main/res/drawable/piacentine_10_bastoni.png\" -o /tmp/briscola_sample/sample_b10.png)",
-      "Bash(awk '{print $5, $NF}')"
+      "Bash(awk '{print $5, $NF}')",
+      "Bash(/Users/bottazzini/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/start-server.sh *)",
+      "Bash(/Users/bottazzini/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/stop-server.sh *)",
+      "Bash(awk -F'_' '{print $1}')",
+      "Bash(git tag *)",
+      "Bash(./gradlew assembleDebug --offline)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'fix\\(build\\): replace deprecated jcenter\\(\\) with mavenCentral\\(\\) *)",
+      "Bash(git commit *)",
+      "Bash(./gradlew assembleRelease)",
+      "Bash(./gradlew assembleDebug --stacktrace)",
+      "Bash(mkdir -p /tmp/aapt_test)",
+      "Bash(/Users/bottazzini/Library/Android/sdk/build-tools/35.0.1/aapt2 compile *)",
+      "Read(//tmp/**)",
+      "Bash(./gradlew assembleDebug --info)",
+      "Bash(./gradlew clean *)"
     ]
   }
 }

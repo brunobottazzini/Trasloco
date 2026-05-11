@@ -1,0 +1,139 @@
+<h2>Controlli in-game</h2>
+<p class="subtitle">Dove mettere Hint, Pausa, Back-to-menu durante la partita. Le mani devono restare libere per il tavolo. Tutti gli stili applicano il polish P1 (sobrio).</p>
+
+<style>
+  .gboard { padding: 0; background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%); min-height: 360px; position: relative; font-family: Georgia, serif; }
+  .gboard-slot { width: 30px; height: 44px; border-radius: 3px; background: rgba(0,0,0,0.25); border: 1px solid rgba(212,175,55,0.35); display: inline-block; margin: 0 2px; vertical-align: middle; }
+  .gboard-card { width: 30px; height: 44px; border-radius: 3px; background: linear-gradient(135deg, #f5e9d3, #e8d4b0); border: 1px solid #888; display: inline-block; margin: 0 2px; vertical-align: middle; }
+  .gboard-card-sel { box-shadow: 0 0 6px rgba(212,175,55,0.7); border-color: #d4af37; }
+  .gboard-content { padding: 50px 6px 20px; }
+  .gboard-row { text-align: center; margin: 6px 0; }
+
+  .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.5); display: inline-flex; align-items: center; justify-content: center; color: #d4af37; font-size: 14px; cursor: pointer; }
+  .icon-btn-active { background: linear-gradient(135deg, rgba(212,175,55,0.3), rgba(212,175,55,0.1)); box-shadow: 0 0 8px rgba(212,175,55,0.4); }
+
+  /* Style 1: top bar */
+  .topbar { position: absolute; top: 0; left: 0; right: 0; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
+  .timer-pill { font-family: Georgia, serif; font-style: italic; font-size: 13px; color: #d4af37; background: rgba(0,0,0,0.3); padding: 4px 12px; border: 1px solid rgba(212,175,55,0.4); border-radius: 14px; }
+
+  /* Style 2: FAB */
+  .fab { position: absolute; bottom: 16px; right: 16px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #d4af37 0%, #8b7129 100%); border: 2px solid #f5e6b3; box-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 0 10px rgba(212,175,55,0.5); display: flex; align-items: center; justify-content: center; color: #0a3520; font-size: 20px; font-weight: bold; }
+  .fab-mini { position: absolute; right: 26px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 1px solid #d4af37; display: flex; align-items: center; justify-content: center; color: #d4af37; font-size: 14px; }
+  .center-timer { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); }
+
+  /* Style 3: bottom bar */
+  .botbar { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 16px; display: flex; align-items: center; justify-content: space-around; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%); border-top: 1px solid rgba(212,175,55,0.3); }
+  .botbar-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(212,175,55,0.8); font-style: italic; font-size: 9px; letter-spacing: 1px; }
+  .botbar-icon { font-size: 18px; color: #d4af37; }
+  .botbar-active { color: #d4af37; }
+  .botbar-active .botbar-icon { text-shadow: 0 0 8px rgba(212,175,55,0.7); }
+</style>
+
+<div class="cards">
+
+  <!-- C1: Top bar -->
+  <div class="card" data-choice="c1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="gboard">
+        <div class="topbar">
+          <div style="display:flex; gap: 6px;">
+            <div class="icon-btn">←</div>
+          </div>
+          <div class="timer-pill">02:14</div>
+          <div style="display:flex; gap: 6px;">
+            <div class="icon-btn">⏸</div>
+            <div class="icon-btn icon-btn-active">💡</div>
+          </div>
+        </div>
+        <div class="gboard-content">
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div style="height: 20px"></div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card gboard-card-sel"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C1 — Top bar</h3>
+      <p>Tre icone tonde in alto: ← (back) a sinistra, timer al centro, pausa + hint a destra. Tutto visibile, mai copre il gioco. <strong>Pro</strong>: standard mobile, scopri tutto al primo sguardo. <strong>Contro</strong>: 4 elementi in cima possono affollare.</p>
+    </div>
+  </div>
+
+  <!-- C2: FAB -->
+  <div class="card" data-choice="c2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="gboard">
+        <div class="center-timer timer-pill">02:14</div>
+        <div class="topbar" style="bottom:auto"><div class="icon-btn">←</div><div></div><div></div></div>
+        <div class="gboard-content">
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div style="height: 20px"></div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card gboard-card-sel"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+        </div>
+        <!-- Mini buttons that emerge when FAB is tapped -->
+        <div class="fab-mini" style="bottom: 78px;">⏸</div>
+        <div class="fab-mini" style="bottom: 122px;">←</div>
+        <div class="fab">💡</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C2 — Bottone flottante (FAB)</h3>
+      <p>Bottone dorato in basso a destra = Hint (la feature più usata). Tap lungo o secondo tap apre menu con Pausa e Back-to-menu. <strong>Pro</strong>: pulizia massima del tavolo, hint sempre a portata di pollice. <strong>Contro</strong>: pausa "nascosta", richiede 1 tap in più; meno scopribile.</p>
+    </div>
+  </div>
+
+  <!-- C3: Bottom bar -->
+  <div class="card" data-choice="c3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="gboard">
+        <div class="center-timer timer-pill">02:14</div>
+        <div class="gboard-content" style="padding-bottom:60px">
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div><div class="gboard-slot"></div>
+          </div>
+          <div style="height: 20px"></div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card gboard-card-sel"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+          <div class="gboard-row">
+            <div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div><div class="gboard-card"></div>
+          </div>
+        </div>
+        <div class="botbar">
+          <div class="botbar-item"><div class="botbar-icon">←</div>MENU</div>
+          <div class="botbar-item"><div class="botbar-icon">⏸</div>PAUSA</div>
+          <div class="botbar-item botbar-active"><div class="botbar-icon">💡</div>HINT</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C3 — Bottom bar</h3>
+      <p>Barra in basso con 3 controlli + label uppercase. Timer in alto isolato. Centrale, simmetrico. Pollice destro/sinistro arriva facilmente. <strong>Pro</strong>: tutto labellato, zero ambiguità. <strong>Contro</strong>: 50px in meno di area di gioco verticale.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">Raccomandazione: <strong>C1 — Top bar</strong>. Sfrutta lo stesso piano del timer (già lì oggi), niente perdita di area di gioco, tutto scopribile. C2 è elegante ma "pausa nascosta" può essere frustrante. C3 ruba spazio verticale.</p>

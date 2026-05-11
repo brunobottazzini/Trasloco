@@ -1,0 +1,119 @@
+<h2>Main menu — schermata principale</h2>
+<p class="subtitle">Voci da includere: Nuova partita, Riprendi partita (G3, condizionale), Records, Regole, Impostazioni. Stile ereditato: verde+oro+serif italico, polish sobrio.</p>
+
+<style>
+  .menu-screen { padding: 0; background: radial-gradient(ellipse at center, #1a6638 0%, #0a3520 100%); min-height: 360px; position: relative; font-family: Georgia, serif; }
+  .menu-title { text-align: center; padding-top: 24px; color: #d4af37; font-style: italic; font-size: 32px; letter-spacing: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .menu-subtitle { text-align: center; color: rgba(212,175,55,0.6); font-size: 10px; letter-spacing: 6px; margin-top: 2px; }
+
+  /* M1: vertical buttons */
+  .m1-btn { display: block; margin: 10px auto; width: 70%; padding: 12px 16px; text-align: center; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.5); color: #f5e6b3; font-family: Georgia, serif; font-style: italic; font-size: 14px; letter-spacing: 2px; border-radius: 4px; }
+  .m1-btn-primary { background: linear-gradient(180deg, rgba(212,175,55,0.3) 0%, rgba(212,175,55,0.1) 100%); border: 1.5px solid #d4af37; color: #d4af37; font-weight: bold; box-shadow: 0 0 12px rgba(212,175,55,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+
+  /* M2: hero card */
+  .hero-card { width: 80%; margin: 16px auto; background: linear-gradient(135deg, #f5e9d3 0%, #e8d4b0 100%); border: 2px solid #d4af37; border-radius: 6px; padding: 16px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.4); position: relative; }
+  .hero-card::before { content: ""; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 1px solid rgba(212,175,55,0.6); border-radius: 3px; pointer-events: none; }
+  .hero-card-title { color: #5a3a1c; font-style: italic; font-size: 24px; letter-spacing: 2px; }
+  .hero-card-suits { color: #8b0000; font-size: 18px; margin-top: 4px; letter-spacing: 6px; }
+  .m2-btn { display: inline-block; margin: 4px; padding: 8px 14px; background: rgba(212,175,55,0.12); border: 1px solid #d4af37; color: #d4af37; font-style: italic; font-size: 11px; letter-spacing: 1px; border-radius: 18px; }
+  .m2-btn-primary { background: linear-gradient(135deg, #d4af37 0%, #8b7129 100%); color: #0a3520; font-weight: bold; box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+
+  /* M3: tile grid */
+  .m3-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 20px; }
+  .m3-tile { background: rgba(212,175,55,0.08); border: 1.5px solid #d4af37; border-radius: 6px; padding: 16px 8px; text-align: center; min-height: 70px; position: relative; }
+  .m3-tile-icon { font-size: 18px; color: #d4af37; margin-bottom: 4px; }
+  .m3-tile-label { color: #f5e6b3; font-style: italic; font-size: 12px; letter-spacing: 1px; }
+  .m3-tile-primary { background: linear-gradient(180deg, rgba(212,175,55,0.3) 0%, rgba(212,175,55,0.08) 100%); border-width: 2px; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+  .m3-tile-primary .m3-tile-label { color: #d4af37; font-weight: bold; }
+  .m3-corner { position: absolute; top: 12px; right: 12px; color: rgba(212,175,55,0.7); font-size: 11px; padding: 4px 8px; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; font-style: italic; }
+
+  .resume-badge { position: absolute; top: -6px; right: -6px; background: #8b0000; color: #f5e6b3; font-size: 8px; padding: 2px 6px; border-radius: 8px; border: 1px solid #d4af37; font-style: normal; letter-spacing: 0; }
+</style>
+
+<div class="cards">
+
+  <!-- M1: vertical buttons -->
+  <div class="card" data-choice="m1" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="menu-screen">
+        <div class="menu-title">Trasloco</div>
+        <div class="menu-subtitle">~ GIOCO DI CARTE ~</div>
+        <div style="margin-top: 20px;">
+          <div class="m1-btn m1-btn-primary" style="position:relative">▶ Nuova Partita</div>
+          <div class="m1-btn">↻ Riprendi <span class="resume-badge">02:14</span></div>
+          <div class="m1-btn">🏆 Records</div>
+          <div class="m1-btn">📜 Regole</div>
+          <div class="m1-btn">⚙ Impostazioni</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>M1 — Lista verticale</h3>
+      <p>Pulsanti centrati uno sotto l'altro. "Nuova Partita" enfatizzato (gold pieno). "Riprendi" appare solo se c'è partita in corso, con badge tempo. Classico, leggibile, ottimo per chi gioca al volo.</p>
+    </div>
+  </div>
+
+  <!-- M2: hero card + buttons -->
+  <div class="card" data-choice="m2" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="menu-screen">
+        <div style="padding-top:10px"></div>
+        <div class="hero-card">
+          <div class="hero-card-title">Trasloco</div>
+          <div class="hero-card-suits">♠ ♥ ♦ ♣</div>
+        </div>
+        <div style="text-align: center; padding: 0 12px;">
+          <div class="m2-btn m2-btn-primary">▶ Nuova Partita</div>
+          <div class="m2-btn">↻ Riprendi · 02:14</div>
+          <br>
+          <div class="m2-btn" style="font-size:10px">🏆 Records</div>
+          <div class="m2-btn" style="font-size:10px">📜 Regole</div>
+          <div class="m2-btn" style="font-size:10px">⚙ Impostazioni</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>M2 — Hero card + bottoni</h3>
+      <p>Una grande carta da gioco al centro fa da logo (titolo + 4 semi). Sotto, bottoni pill: 2 primari (Nuova/Riprendi) + 3 secondari più piccoli (Records/Regole/Impostazioni). Più "branded", molto fotogenico.</p>
+    </div>
+  </div>
+
+  <!-- M3: tile grid -->
+  <div class="card" data-choice="m3" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="menu-screen">
+        <div class="menu-title">Trasloco</div>
+        <div class="menu-subtitle">~ GIOCO DI CARTE ~</div>
+        <span class="m3-corner">📜 Regole</span>
+        <div style="margin-top: 28px;">
+          <div class="m3-grid">
+            <div class="m3-tile m3-tile-primary">
+              <div class="m3-tile-icon">▶</div>
+              <div class="m3-tile-label">Nuova<br>Partita</div>
+            </div>
+            <div class="m3-tile" style="position:relative">
+              <div class="m3-tile-icon">↻</div>
+              <div class="m3-tile-label">Riprendi<br><span style="font-size:9px;opacity:0.7">02:14</span></div>
+              <div class="resume-badge" style="font-style:normal">✦</div>
+            </div>
+            <div class="m3-tile">
+              <div class="m3-tile-icon">🏆</div>
+              <div class="m3-tile-label">Records</div>
+            </div>
+            <div class="m3-tile">
+              <div class="m3-tile-icon">⚙</div>
+              <div class="m3-tile-label">Impostazioni</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>M3 — Tile grid 2×2</h3>
+      <p>Quattro tile grandi cliccabili. Regole spostato in alto a destra come link minore (lo guardi una volta). "Riprendi" appare con bollino dorato ✦ quando c'è una partita salvata. Mobile-first, dito grosso amico.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">Raccomandazione: <strong>M3</strong> — più moderno mobile, area di tap generosa, "Riprendi" si mette in evidenza quando esiste con un badge dorato. M1 è la scelta sicura e tradizionale. M2 è il più "scenografico" ma sacrifica un po' di spazio per la hero card.</p>

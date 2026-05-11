@@ -1,0 +1,108 @@
+<h2>Stile dei selettori (tile)</h2>
+<p class="subtitle">Tre modi di rappresentare una scelta multipla (es. "Piacentine vs Francesi", "scegli tappeto"). Lo stile scelto qui si applica a tutti i selettori dell'app.</p>
+
+<style>
+  .demo-section { padding: 16px; background: #0a3520; border-radius: 8px; border: 1px solid rgba(212,175,55,0.3); }
+  .demo-label { font-family: Georgia, serif; font-size: 11px; letter-spacing: 2px; color: #d4af37; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
+
+  /* Style A — Pill ornato */
+  .pill { display: inline-block; padding: 8px 18px; border-radius: 22px; font-family: Georgia, serif; font-size: 12px; margin: 0 4px; cursor: pointer; }
+  .pill-sel { background: linear-gradient(135deg, #d4af37 0%, #b8932a 100%); color: #0a3520; border: 1px solid #f5e6b3; box-shadow: 0 0 10px rgba(212,175,55,0.5), inset 0 1px 0 rgba(255,255,255,0.4); font-weight: bold; }
+  .pill-un { background: rgba(212,175,55,0.08); color: #c4a64c; border: 1px solid rgba(212,175,55,0.4); }
+
+  /* Style B — Carte illustrate */
+  .card-tile { display: inline-block; width: 70px; height: 100px; vertical-align: middle; margin: 0 5px; border-radius: 6px; position: relative; cursor: pointer; }
+  .card-tile-sel { box-shadow: 0 0 14px rgba(212,175,55,0.7); transform: translateY(-3px); }
+  .card-tile-piac { background: linear-gradient(135deg, #f5e9d3 0%, #e8d4b0 100%); border: 2px solid #d4af37; }
+  .card-tile-piac-inner { padding: 8px; height: 100%; box-sizing: border-box; font-family: Georgia, serif; }
+  .card-tile-fran { background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); border: 1px solid #888; opacity: 0.85; }
+  .card-name-badge { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%); background: #0a3520; color: #d4af37; padding: 2px 8px; font-family: Georgia, serif; font-size: 9px; letter-spacing: 1px; border: 1px solid #d4af37; border-radius: 8px; white-space: nowrap; }
+
+  /* Style C — Chip casinò */
+  .chip { display: inline-block; width: 76px; height: 76px; border-radius: 50%; vertical-align: middle; margin: 0 8px; position: relative; cursor: pointer; }
+  .chip-inner { position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; text-align: center; }
+  .chip-sel { box-shadow: 0 0 18px rgba(212,175,55,0.7); transform: scale(1.05); }
+  .chip-piac { background: repeating-conic-gradient(#8b0000 0deg 30deg, #d4af37 30deg 60deg); }
+  .chip-piac-inner { background: #8b0000; color: #d4af37; border: 2px solid #d4af37; }
+  .chip-fran { background: repeating-conic-gradient(#0a3520 0deg 30deg, #5a4513 30deg 60deg); }
+  .chip-fran-inner { background: #0a3520; color: #8b7129; border: 2px solid #8b7129; }
+</style>
+
+<div class="cards">
+
+  <!-- Style A: Pill ornato -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="demo-section">
+        <div class="demo-label">— Mazzo carte —</div>
+        <div style="text-align: center; padding: 10px 0;">
+          <span class="pill pill-sel">▣ Piacentine</span>
+          <span class="pill pill-un">○ Francesi</span>
+        </div>
+        <div class="demo-label" style="margin-top:14px">— Tappeto —</div>
+        <div style="text-align: center; padding: 10px 0;">
+          <span class="pill pill-sel" style="padding:6px 12px;font-size:10px">● Verde</span>
+          <span class="pill pill-un" style="padding:6px 12px;font-size:10px">● Bordeaux</span>
+          <span class="pill pill-un" style="padding:6px 12px;font-size:10px">● Legno</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Pill ornati</h3>
+      <p>Pulsanti a pillola dorata. Quello selezionato ha gradient oro pieno + glow; gli altri solo bordo dorato. Pulito, scalabile a tante opzioni, ottima leggibilità. <strong>Più rapido da implementare.</strong></p>
+    </div>
+  </div>
+
+  <!-- Style B: Carte tile illustrate -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="demo-section">
+        <div class="demo-label">— Mazzo carte —</div>
+        <div style="text-align: center; padding: 14px 0;">
+          <div class="card-tile card-tile-piac card-tile-sel">
+            <div class="card-tile-piac-inner">
+              <div style="font-size:22px;color:#8b0000;text-align:center;font-weight:bold">7</div>
+              <div style="font-size:16px;color:#5a3a1c;text-align:center">♠</div>
+            </div>
+            <div class="card-name-badge">Piacentine ✓</div>
+          </div>
+          <div class="card-tile card-tile-fran">
+            <div style="padding:8px;font-family:sans-serif">
+              <div style="font-size:14px;color:#b00;text-align:left;font-weight:bold">A</div>
+              <div style="font-size:14px;color:#b00;text-align:left">♥</div>
+            </div>
+            <div class="card-name-badge" style="background:rgba(0,0,0,0.6);color:#999;border-color:#666">Francesi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Carte illustrate</h3>
+      <p>Tap su una mini-carta vera. Selezionata si solleva con glow dorato e un badge "✓ scelta". Massimamente "gameistico" per le scelte di carte/sfondi (vedi quello che scegli). <strong>Contro</strong>: occupa più spazio, ha senso solo per scelte visive.</p>
+    </div>
+  </div>
+
+  <!-- Style C: Chip da casinò -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #1a1a2e;">
+      <div class="demo-section">
+        <div class="demo-label">— Mazzo carte —</div>
+        <div style="text-align: center; padding: 14px 0;">
+          <div class="chip chip-piac chip-sel">
+            <div class="chip-inner chip-piac-inner">PIACE-<br>NTINE</div>
+          </div>
+          <div class="chip chip-fran">
+            <div class="chip-inner chip-fran-inner">FRAN-<br>CESI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Chip da casinò</h3>
+      <p>Fiches da gioco rotonde con texture conica caratteristica. Massimo del mood "tavolo verde". Selezionato scala leggermente con glow. <strong>Pro</strong>: tematizzato al massimo. <strong>Contro</strong>: bello per 2-3 opzioni, scomodo per scelte con tante (es. tappeto tra 6 sfondi diventa una griglia di fiches).</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">La mia raccomandazione: <strong>A per testo/scelte logiche</strong> (fast deal, hint, ecc.) + <strong>B per scelte visive</strong> (carta, retro, tappeto). Si combinano bene. Ma se vuoi un'unica lingua, dimmi quale.</p>
