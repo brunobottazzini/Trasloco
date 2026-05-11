@@ -866,12 +866,14 @@ class GameActivity : AppCompatActivity() {
             dragHoverTarget?.foreground = null
             if (target != null && target !== dragSourceView) {
                 val targetTag = target.tag as? String ?: ""
-                val targetPos = resources.getResourceEntryName(target.id).split("subDeck")[1]
-                if (canBeInserted(targetTag, dragSourceView?.tag as? String ?: "", isEndDeckClick(targetPos))) {
-                    target.foreground = ContextCompat.getDrawable(this, R.drawable.casino_drop_zone_valid)
-                } else {
-                    target.foreground = ContextCompat.getDrawable(this, R.drawable.selected_border)
-                }
+                val sourceTag = dragSourceView?.tag as? String ?: ""
+                val targetPos = resources.getResourceEntryName(target.id).removePrefix("subDeck")
+                val isValidDrop = targetTag.isNotEmpty() && sourceTag.isNotEmpty() &&
+                    canBeInserted(targetTag, sourceTag, isEndDeckClick(targetPos))
+                target.foreground = ContextCompat.getDrawable(
+                    this,
+                    if (isValidDrop) R.drawable.casino_drop_zone_valid else R.drawable.selected_border
+                )
             }
             dragHoverTarget = target
         }
