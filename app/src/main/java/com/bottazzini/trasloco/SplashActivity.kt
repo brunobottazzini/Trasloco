@@ -21,6 +21,9 @@ class SplashActivity : AppCompatActivity() {
     private var hasNavigated = false
     private var mediaPlayer: MediaPlayer? = null
 
+    private val density by lazy { resources.displayMetrics.density }
+    private fun dp(value: Float): Float = value * density
+
     private val skipEnableDelayMs = 500L
     private val totalDurationMs = 2000L
 
@@ -53,7 +56,7 @@ class SplashActivity : AppCompatActivity() {
         val stackCards = listOf(card1, card2, card3, card4)
         stackCards.forEachIndexed { idx, card ->
             card.alpha = 0f
-            card.translationY = -(idx * 2f)
+            card.translationY = -(idx * dp(2f))
             card.rotation = (idx - 1.5f) * 2f
             card.animate()
                 .alpha(1f)
@@ -64,22 +67,22 @@ class SplashActivity : AppCompatActivity() {
 
         // Phase 2 (0.6s - 1.4s): shuffle in air — random rotations + translations
         handler.postDelayed({
-            shuffleCard(card1, -180f, -120f, -40f)
-            shuffleCard(card2, 90f, 100f, 25f)
-            shuffleCard(card3, -60f, 60f, -15f)
-            shuffleCard(card4, 200f, -80f, 35f)
+            shuffleCard(card1, dp(-180f), dp(-120f), -40f)
+            shuffleCard(card2, dp(90f), dp(100f), 25f)
+            shuffleCard(card3, dp(-60f), dp(60f), -15f)
+            shuffleCard(card4, dp(200f), dp(-80f), 35f)
         }, 600L)
 
         // Phase 3 (1.4s - 2.0s): fan deal-out + title reveal
         handler.postDelayed({
-            dealCard(card1, -240f, 100f, -30f)
-            dealCard(card2, -80f, 100f, -10f)
-            dealCard(card3, 80f, 100f, 10f)
-            dealCard(card4, 240f, 100f, 30f)
+            dealCard(card1, dp(-240f), dp(100f), -30f)
+            dealCard(card2, dp(-80f), dp(100f), -10f)
+            dealCard(card3, dp(80f), dp(100f), 10f)
+            dealCard(card4, dp(240f), dp(100f), 30f)
 
             val title = findViewById<TextView>(R.id.splashTitle)
             title.alpha = 0f
-            title.translationY = -40f
+            title.translationY = -dp(40f)
             title.animate()
                 .alpha(1f)
                 .translationY(0f)
