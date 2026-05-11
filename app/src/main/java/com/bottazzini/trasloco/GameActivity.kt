@@ -169,6 +169,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun startTutorial() {
+        // Tutorial state is not persisted across activity recreation; rotation restarts from step 1.
         isInitializing = true
         shouldPersistOnPause = false
         gameStateRepo.clear()
@@ -236,6 +237,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun findTutorialViewForTarget(target: String): View? {
+        // TutorialSteps.FOUNDATION_1 == "endDeck1" maps to the first foundation slot (line 1).
         if (target == "endDeck1") {
             return findViewById(R.id.subDeck14)
         }
@@ -267,6 +269,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun retryGame(view: View) {
+        if (isTutorialMode) return
         isInitializing = true
         // Re-enable persistence: a retried game should also be resumable.
         shouldPersistOnPause = true
