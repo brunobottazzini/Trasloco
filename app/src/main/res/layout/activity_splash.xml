@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splashRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/verde">
+
+    <ImageView
+        android:id="@+id/splashCard1"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:src="@drawable/bg"
+        android:alpha="0" />
+
+    <ImageView
+        android:id="@+id/splashCard2"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:src="@drawable/bg"
+        android:alpha="0" />
+
+    <ImageView
+        android:id="@+id/splashCard3"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:src="@drawable/bg"
+        android:alpha="0" />
+
+    <ImageView
+        android:id="@+id/splashCard4"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:src="@drawable/bg"
+        android:alpha="0" />
+
+    <TextView
+        android:id="@+id/splashTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="120dp"
+        android:text="@string/trasloco"
+        android:textSize="48sp"
+        android:alpha="0"
+        style="@style/CasinoTitle" />
+
+</FrameLayout>
