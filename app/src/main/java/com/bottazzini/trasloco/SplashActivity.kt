@@ -52,6 +52,27 @@ class SplashActivity : AppCompatActivity() {
                 .setStartDelay(idx * 50L)
                 .start()
         }
+
+        // Phase 2 (0.6s - 1.4s): shuffle in air — random rotations + translations
+        handler.postDelayed({
+            shuffleCard(card1, -180f, -120f, -40f)
+            shuffleCard(card2, 90f, 100f, 25f)
+            shuffleCard(card3, -60f, 60f, -15f)
+            shuffleCard(card4, 200f, -80f, 35f)
+        }, 600L)
+    }
+
+    private fun shuffleCard(card: ImageView, dx: Float, dy: Float, rot: Float) {
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(card, "translationX", 0f, dx, 0f),
+                ObjectAnimator.ofFloat(card, "translationY", card.translationY, dy, 0f),
+                ObjectAnimator.ofFloat(card, "rotation", card.rotation, rot, 0f)
+            )
+            duration = 800
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
