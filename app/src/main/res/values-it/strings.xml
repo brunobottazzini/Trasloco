@@ -33,6 +33,26 @@
     <string name="got_it_button">Capito!</string>
     <string name="preparing_game">Preparazione partita…</string>
 
+    <!-- Tutorial -->
+    <string name="tutorial_corner_label">🎓 Tutorial</string>
+    <string name="tutorial_prompt_title">Prima volta?</string>
+    <string name="tutorial_prompt_message">Vuoi una breve guida di 3 mosse o vai dritto al gioco?</string>
+    <string name="tutorial_prompt_yes">🎓 Tutorial</string>
+    <string name="tutorial_prompt_no">▶ Gioca</string>
+    <string name="tutorial_next">Avanti →</string>
+    <string name="tutorial_finish">Fine</string>
+    <string name="tutorial_exit_title">Esci dal tutorial?</string>
+    <string name="tutorial_exit_confirm">Sì, esci</string>
+    <string name="tutorial_exit_cancel">Continua</string>
+    <string name="tutorial_step_intro">Benvenuto al Trasloco. Obiettivo: portare tutte le carte sui 4 mazzetti finali in alto, dall\'Asso al Re, divise per seme. Tocca Avanti.</string>
+    <string name="tutorial_step1_instruction">Tocca il 5 di Coppe, poi tocca il 6 di Coppe per impilarlo sopra. Sulle colonne le carte vanno in ordine decrescente, stesso seme.</string>
+    <string name="tutorial_step1_confirm">✓ Bene. Decrescente, stesso seme.</string>
+    <string name="tutorial_step2_instruction">Porta l\'Asso di Denari su un mazzetto finale vuoto in alto. Ogni mazzetto finale parte da un Asso.</string>
+    <string name="tutorial_step2_confirm">✓ L\'Asso è al posto giusto.</string>
+    <string name="tutorial_step3_instruction">Tocca il 2 di Denari e portalo sul mazzetto finale dell\'Asso. I mazzetti crescono Asso → 2 → … → Re, stesso seme.</string>
+    <string name="tutorial_step3_confirm">✓ Perfetto.</string>
+    <string name="tutorial_step_outro">🎉 Hai imparato il nucleo. Quando giochi davvero, usa il suggerimento (💡) in alto se ti blocchi. Buona partita.</string>
+
     <string-array name="game_rules_array">
         <item>Obiettivo: Spostare tutte le carte, ordinate per seme e in ordine crescente dall’Asso al Re, nell’area finale composta da 4 pile vuote di base.</item>
         <item>Puoi costruire sequenze nelle colonne sul tavolo disponendo le carte in ordine decrescente (es. 6-5-4...) ma solo se sono dello stesso seme.</item>

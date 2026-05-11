@@ -33,6 +33,26 @@
     <string name="got_it_button">Entendi!</string>
     <string name="preparing_game">Preparando jogo…</string>
 
+    <!-- Tutorial -->
+    <string name="tutorial_corner_label">🎓 Tutorial</string>
+    <string name="tutorial_prompt_title">Primeira vez?</string>
+    <string name="tutorial_prompt_message">Quer um guia rápido de 3 jogadas ou prefere ir direto ao jogo?</string>
+    <string name="tutorial_prompt_yes">🎓 Tutorial</string>
+    <string name="tutorial_prompt_no">▶ Jogar</string>
+    <string name="tutorial_next">Próximo →</string>
+    <string name="tutorial_finish">Concluir</string>
+    <string name="tutorial_exit_title">Sair do tutorial?</string>
+    <string name="tutorial_exit_confirm">Sim, sair</string>
+    <string name="tutorial_exit_cancel">Continuar</string>
+    <string name="tutorial_step_intro">Bem-vindo ao Trasloco. Objetivo: mover todas as cartas para os 4 montes finais no topo, do Ás ao Rei, por naipe. Toque em Próximo.</string>
+    <string name="tutorial_step1_instruction">Toque no 5 de Copas e depois no 6 de Copas para empilhá-lo. Nas colunas, as cartas vão em ordem decrescente, mesmo naipe.</string>
+    <string name="tutorial_step1_confirm">✓ Boa. Decrescente, mesmo naipe.</string>
+    <string name="tutorial_step2_instruction">Leve o Ás de Ouros para um monte final vazio. Todo monte final começa com um Ás.</string>
+    <string name="tutorial_step2_confirm">✓ O Ás chegou.</string>
+    <string name="tutorial_step3_instruction">Toque no 2 de Ouros e leve-o ao monte do Ás. Os montes crescem Ás → 2 → … → Rei, mesmo naipe.</string>
+    <string name="tutorial_step3_confirm">✓ Perfeito.</string>
+    <string name="tutorial_step_outro">🎉 Você aprendeu o básico. Durante o jogo, use a dica (💡) no topo se travar. Bom jogo.</string>
+
     <string-array name="game_rules_array">
         <item>Objetivo: Mover todas as cartas, organizadas por naipe e em ordem crescente de Ás até Rei, para a área final composta por 4 pilhas de base vazias.</item>
         <item>Você pode construir sequências nas colunas da mesa colocando cartas em ordem decrescente (ex: 6-5-4...), mas apenas se forem do mesmo naipe.</item>

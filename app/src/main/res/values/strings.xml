@@ -32,6 +32,26 @@
     <string name="got_it_button">Got it!</string>
     <string name="preparing_game">Preparing game…</string>
 
+    <!-- Tutorial -->
+    <string name="tutorial_corner_label">🎓 Tutorial</string>
+    <string name="tutorial_prompt_title">First time?</string>
+    <string name="tutorial_prompt_message">Want a quick 3-move guide or jump straight into the game?</string>
+    <string name="tutorial_prompt_yes">🎓 Tutorial</string>
+    <string name="tutorial_prompt_no">▶ Play</string>
+    <string name="tutorial_next">Next →</string>
+    <string name="tutorial_finish">Done</string>
+    <string name="tutorial_exit_title">Leave tutorial?</string>
+    <string name="tutorial_exit_confirm">Yes, leave</string>
+    <string name="tutorial_exit_cancel">Continue</string>
+    <string name="tutorial_step_intro">Welcome to Trasloco. The goal: move all cards to the 4 foundation piles at the top, in order from Ace to King, by suit. Tap Next.</string>
+    <string name="tutorial_step1_instruction">Tap the 5 of Cups, then tap the 6 of Cups to stack it on top. On columns, cards go in descending order, same suit.</string>
+    <string name="tutorial_step1_confirm">✓ Nice. Descending, same suit.</string>
+    <string name="tutorial_step2_instruction">Move the Ace of Coins onto an empty foundation pile at the top. Every foundation starts with an Ace.</string>
+    <string name="tutorial_step2_confirm">✓ The Ace is home.</string>
+    <string name="tutorial_step3_instruction">Tap the 2 of Coins and move it onto the foundation with the Ace. Foundations grow Ace → 2 → … → King, same suit.</string>
+    <string name="tutorial_step3_confirm">✓ Perfect.</string>
+    <string name="tutorial_step_outro">🎉 You\'ve got the basics. While playing, tap the hint (💡) at the top if you get stuck. Good luck!</string>
+
     <string-array name="game_rules_array">
         <item>Goal: Move all cards, organized by suit and in ascending order from Ace to King, to the final deck area consisting of 4 empty foundation piles.</item>
         <item>You can build sequences within the columns on the table by placing cards in descending order (e.g. 6-5-4...) but only if they are of the same suit.</item>
