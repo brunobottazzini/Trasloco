@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.View
 import android.view.Window
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -42,9 +41,7 @@ class MainActivity : AppCompatActivity() {
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
 
-        val mainImage: ImageView = findViewById(R.id.c4)
-
-        mainImage.setOnClickListener {
+        findViewById<View>(R.id.textViewTitle).setOnClickListener {
             handleTripleTap()
         }
     }
