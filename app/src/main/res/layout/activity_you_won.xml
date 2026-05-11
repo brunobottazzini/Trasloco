@@ -70,22 +70,22 @@
             app:layout_constraintWidth_percent="0.85">
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_time" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_time" style="@style/CasinoSubtitle" android:textSize="13sp" android:maxLines="2" />
                 <TextView android:id="@+id/statTimeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--:--" style="@style/CasinoBodyText" android:textStyle="italic" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_best" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_best" style="@style/CasinoSubtitle" android:textSize="13sp" android:maxLines="2" />
                 <TextView android:id="@+id/statBestValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--:--" style="@style/CasinoBodyText" android:textStyle="italic" android:textColor="@color/casino_gold" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_streak" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_streak" style="@style/CasinoSubtitle" android:textSize="13sp" android:maxLines="2" />
                 <TextView android:id="@+id/statStreakValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" style="@style/CasinoBodyText" android:textStyle="italic" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_total" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_total" style="@style/CasinoSubtitle" android:textSize="13sp" android:maxLines="2" />
                 <TextView android:id="@+id/statTotalValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" style="@style/CasinoBodyText" android:textStyle="italic" />
             </LinearLayout>
         </LinearLayout>

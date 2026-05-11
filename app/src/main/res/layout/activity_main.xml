@@ -85,15 +85,18 @@
                 android:textColor="@color/casino_gold" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:text="@string/nuova_partita_label"
-                android:textSize="14sp"
-                android:textStyle="italic|bold"
+                android:ellipsize="end"
                 android:fontFamily="serif"
-                android:textColor="@color/casino_gold" />
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:text="@string/nuova_partita_label"
+                android:textColor="@color/casino_gold"
+                android:textSize="13sp"
+                android:textStyle="italic|bold" />
         </LinearLayout>
 
         <!-- Tile 2: Riprendi (enabled dynamically by MainActivity.updateRiprendiTile) -->
@@ -121,15 +124,18 @@
                 android:textColor="@color/casino_gold" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:text="@string/riprendi_label"
-                android:textSize="14sp"
-                android:textStyle="italic"
+                android:ellipsize="end"
                 android:fontFamily="serif"
-                android:textColor="@color/casino_gold" />
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:text="@string/riprendi_label"
+                android:textColor="@color/casino_gold"
+                android:textSize="13sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
         <!-- Tile 3: Records -->
@@ -158,15 +164,18 @@
                 android:textSize="28sp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:text="@string/records_label"
-                android:textSize="14sp"
-                android:textStyle="italic"
+                android:ellipsize="end"
                 android:fontFamily="serif"
-                android:textColor="@color/casino_gold_light" />
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:text="@string/records_label"
+                android:textColor="@color/casino_gold_light"
+                android:textSize="13sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
         <!-- Tile 4: Impostazioni -->
@@ -196,15 +205,18 @@
                 android:textColor="@color/casino_gold" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="8dp"
-                android:text="@string/impostazioni_label"
-                android:textSize="14sp"
-                android:textStyle="italic"
+                android:ellipsize="end"
                 android:fontFamily="serif"
-                android:textColor="@color/casino_gold_light" />
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:text="@string/impostazioni_label"
+                android:textColor="@color/casino_gold_light"
+                android:textSize="13sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
         <TextView
