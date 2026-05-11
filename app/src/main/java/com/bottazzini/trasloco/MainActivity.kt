@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
     private lateinit var recordsHandler: RecordsHandler
+    private lateinit var gameStateRepo: com.bottazzini.trasloco.settings.GameStateRepository
     private var mediaPlayer: MediaPlayer? = null
 
     private var tapCount = 0
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()
         settingsHandler.migrateRemovedBackgrounds()
+        gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
 
@@ -67,11 +69,33 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         playSound(R.raw.change_activity)
         super.onResume()
+        updateRiprendiTile()
     }
 
     override fun onDestroy() {
+        if (::gameStateRepo.isInitialized) {
+            gameStateRepo.close()
+        }
         settingsHandler.close()
         super.onDestroy()
+    }
+
+    private fun updateRiprendiTile() {
+        val tile = findViewById<android.view.View>(R.id.tileRiprendi)
+        if (gameStateRepo.hasSavedGame()) {
+            tile.alpha = 1.0f
+            tile.isClickable = true
+        } else {
+            tile.alpha = 0.4f
+            tile.isClickable = false
+        }
+    }
+
+    fun resumeGame(view: View) {
+        playSound(R.raw.change_activity)
+        val intent = Intent(this, GameActivity::class.java)
+        intent.putExtra("resume", true)
+        startActivity(intent)
     }
 
     private fun handleTripleTap() {
