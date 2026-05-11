@@ -8,110 +8,137 @@
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/gameConstraintLayout"
+        android:id="@+id/youWonConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="20dp"
         tools:context=".YouWonActivity">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonExitYouWon"
-            style="@style/CardGameButton"
+        <TextView
+            android:id="@+id/trophyIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/exit_button_label"
-            android:textSize="14sp"
+            android:layout_marginTop="24dp"
+            android:text="🏆"
+            android:textSize="56sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewYouWon"
+            android:id="@+id/winTitle"
             android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="96dp"
-            android:layout_marginEnd="16dp"
-            android:autoSizeMaxTextSize="60sp"
-            android:autoSizeMinTextSize="28sp"
-            android:autoSizeTextType="uniform"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/hai_vinto"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textStyle="bold"
+            android:text="@string/win_title"
+            android:textSize="32sp"
+            style="@style/CasinoTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/trophyIcon" />
 
         <TextView
-            android:id="@+id/textConcurrentWin"
+            android:id="@+id/newRecordBadge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/casino_corner_link"
+            android:text="@string/win_new_record"
+            android:textSize="12sp"
+            android:fontFamily="serif"
+            android:textStyle="italic|bold"
+            android:textColor="@color/casino_gold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewYouWon"
-            tools:text="Vittorie Consecutive: X (Record: Y)" />
+            app:layout_constraintTop_toBottomOf="@id/winTitle" />
 
-        <TextView
-            android:id="@+id/textViewTimeTaken"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/statCard"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/casino_stat_card"
+            android:orientation="vertical"
+            android:padding="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textConcurrentWin"
-            tools:text="@string/time_taken" />
+            app:layout_constraintTop_toBottomOf="@id/newRecordBadge"
+            app:layout_constraintWidth_percent="0.85">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_time" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:id="@+id/statTimeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--:--" style="@style/CasinoBodyText" android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_best" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:id="@+id/statBestValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--:--" style="@style/CasinoBodyText" android:textStyle="italic" android:textColor="@color/casino_gold" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_streak" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:id="@+id/statStreakValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" style="@style/CasinoBodyText" android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="6dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/win_stat_total" style="@style/CasinoSubtitle" android:textSize="11sp" />
+                <TextView android:id="@+id/statTotalValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" style="@style/CasinoBodyText" android:textStyle="italic" />
+            </LinearLayout>
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageViewPartyGif"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="32dp"
+            android:id="@+id/partyGif"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/casino_gif_frame"
+            android:padding="3dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTimeTaken"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@id/statCard"
+            app:layout_constraintWidth_percent="0.5" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonNewGameYouWon"
-            style="@style/CardGameButton"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/buttonNewGame"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/nuova_partita"
-            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/casino_tile_bg_primary"
+            android:fontFamily="serif"
+            android:padding="12dp"
+            android:text="@string/win_button_new"
+            android:textColor="@color/casino_gold"
+            android:textSize="16sp"
+            android:textStyle="italic|bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewPartyGif" />
+            app:layout_constraintTop_toBottomOf="@id/partyGif"
+            app:layout_constraintWidth_percent="0.6" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonMenuYouWon"
-            style="@style/CardGameButton"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/buttonMenu"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:text="@string/menu_button_label"
-            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/casino_tile_bg"
+            android:fontFamily="serif"
+            android:padding="12dp"
+            android:text="@string/win_button_menu"
+            android:textColor="@color/casino_gold"
+            android:textSize="14sp"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonNewGameYouWon" />
+            app:layout_constraintTop_toBottomOf="@id/buttonNewGame"
+            app:layout_constraintWidth_percent="0.6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
