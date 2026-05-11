@@ -12,4 +12,19 @@
     <color name="blu_savoia">#003087</color>
     <color name="card_game_button_text_color">#FFFFFF</color>
     <color name="card_game_button_stroke_color">#001F59</color>
+    <!-- Casino Classico palette -->
+    <color name="casino_green_dark">#FF0A3520</color>
+    <color name="casino_green">#FF1A6638</color>
+    <color name="casino_green_light">#FF2A7A48</color>
+    <color name="casino_gold">#FFD4AF37</color>
+    <color name="casino_gold_light">#FFF5E6B3</color>
+    <color name="casino_gold_dark">#FF8B7129</color>
+    <color name="casino_bordeaux">#FF8B0000</color>
+    <color name="casino_bordeaux_dark">#FF4A0000</color>
+    <color name="casino_brown">#FF5A3A1C</color>
+    <color name="casino_ink">#FF1A1A1A</color>
+    <!-- Alpha-on-gold helper -->
+    <color name="casino_gold_alpha_08">#14D4AF37</color>
+    <color name="casino_gold_alpha_25">#40D4AF37</color>
+    <color name="casino_gold_alpha_50">#80D4AF37</color>
 </resources>
