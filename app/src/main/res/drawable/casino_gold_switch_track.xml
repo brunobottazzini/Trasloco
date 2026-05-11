@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/casino_gold"
+                android:endColor="@color/casino_gold_dark" />
+            <stroke android:width="1dp" android:color="@color/casino_gold" />
+            <corners android:radius="14dp" />
+            <size android:width="56dp" android:height="28dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/casino_ink"
+                android:endColor="@color/casino_green_dark" />
+            <stroke android:width="1dp" android:color="@color/casino_gold" />
+            <corners android:radius="14dp" />
+            <size android:width="56dp" android:height="28dp" />
+        </shape>
+    </item>
+</selector>
