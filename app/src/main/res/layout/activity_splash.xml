@@ -7,6 +7,24 @@
     android:background="@drawable/verde">
 
     <ImageView
+        android:id="@+id/splashBrandStudio"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_gravity="center"
+        android:src="@drawable/app_maker_logo"
+        android:scaleType="fitCenter"
+        android:alpha="0" />
+
+    <ImageView
+        android:id="@+id/splashBrandGame"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="fitCenter"
+        android:alpha="0" />
+
+    <ImageView
         android:id="@+id/splashCard1"
         android:layout_width="80dp"
         android:layout_height="120dp"
