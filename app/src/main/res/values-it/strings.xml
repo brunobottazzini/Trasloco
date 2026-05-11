@@ -64,4 +64,14 @@
     <string name="settings_title_decorated">~  Impostazioni  ~</string>
     <string name="fast_deal_with_icon">⚡ Trasferisci intero mazzo</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
+    <string name="settings_label_hint">Suggerimenti</string>
+    <string name="settings_label_auto_move">Auto-muovi su end deck</string>
+    <string name="hint_no_moves">Nessuna mossa disponibile</string>
+    <string name="game_paused">PAUSATO</string>
+    <string name="tap_to_resume">Tap per riprendere</string>
+    <string name="cd_back">Torna al menu</string>
+    <string name="cd_pause">Pausa/Riprendi</string>
+    <string name="cd_hint">Suggerimento</string>
+    <string name="hint_with_icon">💡 Suggerimenti</string>
+    <string name="auto_move_with_icon">🎯 Auto-muovi su end deck</string>
 </resources>

@@ -64,4 +64,14 @@
     <string name="settings_title_decorated">~  Definições  ~</string>
     <string name="fast_deal_with_icon">⚡ Transferir baralho inteiro</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
+    <string name="settings_label_hint">Dicas</string>
+    <string name="settings_label_auto_move">Auto-mover para baralho final</string>
+    <string name="hint_no_moves">Sem jogadas disponíveis</string>
+    <string name="game_paused">PAUSADO</string>
+    <string name="tap_to_resume">Toque para continuar</string>
+    <string name="cd_back">Voltar ao menu</string>
+    <string name="cd_pause">Pausa/Continuar</string>
+    <string name="cd_hint">Dica</string>
+    <string name="hint_with_icon">💡 Dicas</string>
+    <string name="auto_move_with_icon">🎯 Auto-mover para baralho final</string>
 </resources>

@@ -63,4 +63,14 @@
     <string name="settings_title_decorated">~  Settings  ~</string>
     <string name="fast_deal_with_icon">⚡ Transfer entire deck</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
+    <string name="settings_label_hint">Hints</string>
+    <string name="settings_label_auto_move">Auto-move to final deck</string>
+    <string name="hint_no_moves">No moves available</string>
+    <string name="game_paused">PAUSED</string>
+    <string name="tap_to_resume">Tap to resume</string>
+    <string name="cd_back">Back to menu</string>
+    <string name="cd_pause">Pause/Resume</string>
+    <string name="cd_hint">Hint</string>
+    <string name="hint_with_icon">💡 Hints</string>
+    <string name="auto_move_with_icon">🎯 Auto-move to final deck</string>
 </resources>
