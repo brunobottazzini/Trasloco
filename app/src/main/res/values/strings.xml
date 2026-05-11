@@ -56,4 +56,10 @@
     <string name="records_label">Records</string>
     <string name="impostazioni_label">Settings</string>
     <string name="rules_corner_label">📜 Rules</string>
+    <string name="settings_label_card_deck">Card Deck</string>
+    <string name="settings_label_card_back">Card Back</string>
+    <string name="settings_label_background">Table</string>
+    <string name="settings_label_preview">PREVIEW</string>
+    <string name="settings_title_decorated">~  Settings  ~</string>
+    <string name="fast_deal_with_icon">⚡ Transfer entire deck</string>
 </resources>

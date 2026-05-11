@@ -57,4 +57,10 @@
     <string name="records_label">Record</string>
     <string name="impostazioni_label">Impostazioni</string>
     <string name="rules_corner_label">📜 Regole</string>
+    <string name="settings_label_card_deck">Mazzo carte</string>
+    <string name="settings_label_card_back">Retro carte</string>
+    <string name="settings_label_background">Tappeto</string>
+    <string name="settings_label_preview">ANTEPRIMA</string>
+    <string name="settings_title_decorated">~  Impostazioni  ~</string>
+    <string name="fast_deal_with_icon">⚡ Trasferisci intero mazzo</string>
 </resources>

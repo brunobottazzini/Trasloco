@@ -57,4 +57,10 @@
     <string name="records_label">Recordes</string>
     <string name="impostazioni_label">Definições</string>
     <string name="rules_corner_label">📜 Regras</string>
+    <string name="settings_label_card_deck">Baralho</string>
+    <string name="settings_label_card_back">Verso das cartas</string>
+    <string name="settings_label_background">Tapete</string>
+    <string name="settings_label_preview">PRÉVIA</string>
+    <string name="settings_title_decorated">~  Definições  ~</string>
+    <string name="fast_deal_with_icon">⚡ Transferir baralho inteiro</string>
 </resources>
