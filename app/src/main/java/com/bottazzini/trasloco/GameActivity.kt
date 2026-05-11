@@ -1046,6 +1046,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        stopTimer()
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
         }
@@ -1194,8 +1195,10 @@ class GameActivity : AppCompatActivity() {
         animSource.start()
         animTarget.start()
         timerHandler.postDelayed({
-            sourceView.background = null
-            targetView.background = null
+            if (!isFinishing) {
+                sourceView.background = null
+                targetView.background = null
+            }
         }, 1500)
     }
 }
