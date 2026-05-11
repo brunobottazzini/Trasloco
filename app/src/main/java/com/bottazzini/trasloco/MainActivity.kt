@@ -54,12 +54,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun showRules(view: View) {
-        playSound(R.raw.change_activity)
-        val intent = Intent(this, RulesActivity::class.java)
-        startActivity(intent)
-    }
-
     fun openSettings(view: View) {
         playSound(R.raw.change_activity)
         val intent = Intent(this, SettingsActivity::class.java)
