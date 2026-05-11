@@ -46,19 +46,19 @@ class SplashActivity : AppCompatActivity() {
         brandStudio.animate().alpha(1f).setDuration(150).withEndAction {
             brandStudio.postDelayed({
                 brandStudio.animate().alpha(0f).setDuration(150).start()
-            }, 300L)
+            }, 800L)
         }.start()
 
         // Brand intro Phase B: Game logo (600ms - 1200ms)
-        handler.postDelayed({
-            val brandGame = findViewById<ImageView>(R.id.splashBrandGame)
-            brandGame.alpha = 0f
-            brandGame.animate().alpha(1f).setDuration(150).withEndAction {
-                brandGame.postDelayed({
-                    brandGame.animate().alpha(0f).setDuration(150).start()
-                }, 300L)
-            }.start()
-        }, 600L)
+//        handler.postDelayed({
+//            val brandGame = findViewById<ImageView>(R.id.splashBrandGame)
+//            brandGame.alpha = 0f
+//            brandGame.animate().alpha(1f).setDuration(150).withEndAction {
+//                brandGame.postDelayed({
+//                    brandGame.animate().alpha(0f).setDuration(150).start()
+//                }, 300L)
+//            }.start()
+//        }, 600L)
 
         // Card animation starts at 1200ms — schedule the existing shuffle sound + Phase 1
         handler.postDelayed({
