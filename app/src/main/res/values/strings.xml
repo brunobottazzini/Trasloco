@@ -62,4 +62,5 @@
     <string name="settings_label_preview">PREVIEW</string>
     <string name="settings_title_decorated">~  Settings  ~</string>
     <string name="fast_deal_with_icon">⚡ Transfer entire deck</string>
+    <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
 </resources>

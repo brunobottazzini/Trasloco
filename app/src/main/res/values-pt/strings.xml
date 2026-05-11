@@ -63,4 +63,5 @@
     <string name="settings_label_preview">PRÉVIA</string>
     <string name="settings_title_decorated">~  Definições  ~</string>
     <string name="fast_deal_with_icon">⚡ Transferir baralho inteiro</string>
+    <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
 </resources>
