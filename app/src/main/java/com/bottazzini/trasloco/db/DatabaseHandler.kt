@@ -11,7 +11,7 @@ import com.bottazzini.trasloco.db.columns.SettingsBaseColumns.SettingEntry
 class DatabaseHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
         private const val DATABASE_NAME = "Trasloco.db"
         private const val SQL_CREATE_SETTINGS =
             "CREATE TABLE IF NOT EXISTS ${SettingEntry.TABLE_NAME} (${SettingEntry.COLUMN_NAME} TEXT," +
@@ -30,14 +30,10 @@ class DatabaseHandler(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        Log.w(
-            TAG, "onUpgrade: Upgrading database from version $oldVersion to $newVersion. " +
-                    "This will destroy all old data."
-        )
-
-        db?.execSQL(SQL_DELETE_RECORDS)
-        db?.execSQL(SQL_DELETE_SETTINGS)
-
-        onCreate(db)
+        Log.w(TAG, "onUpgrade: from version $oldVersion to $newVersion")
+        if (oldVersion < 3) {
+            // v3: no schema changes — new records 'total_wins' inserted on-demand.
+            // Existing TIME and CONSECUTIVE rows are preserved.
+        }
     }
 }

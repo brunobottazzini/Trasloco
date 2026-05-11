@@ -7,7 +7,8 @@ import com.bottazzini.trasloco.db.columns.RecordsColumns.RecordEntry
 
 enum class Type(val value: String) {
     TIME("time"),
-    CONSECUTIVE("consecutive")
+    CONSECUTIVE("consecutive"),
+    TOTAL_WINS("total_wins")
 }
 
 class RecordsHandler(context: Context) {
@@ -16,6 +17,7 @@ class RecordsHandler(context: Context) {
     fun insertDefaultSettings() {
         setDefaultSetting(Type.TIME, -1)
         setDefaultSetting(Type.CONSECUTIVE, 0)
+        setDefaultSetting(Type.TOTAL_WINS, 0L)
     }
 
     fun update(type: Type, value: Long, currentValue: Long, isNew: Boolean) {
@@ -105,6 +107,35 @@ class RecordsHandler(context: Context) {
         }
 
         return null
+    }
+
+    // Best time in millis. null if no win has been recorded yet.
+    fun getBestTime(): Long? {
+        val v = readValue(Type.TIME)
+        return if (v == null || v == -1L) null else v
+    }
+
+    // Updates best time if newTime is less than the current best (or none exists yet).
+    // Returns true if it is a new record.
+    fun maybeUpdateBestTime(newTime: Long): Boolean {
+        val current = getBestTime()
+        return if (current == null || newTime < current) {
+            update(Type.TIME, newTime, newTime, current != null)
+            true
+        } else {
+            false
+        }
+    }
+
+    // Total wins (default 0).
+    fun getTotalWins(): Long {
+        return readValue(Type.TOTAL_WINS) ?: 0L
+    }
+
+    fun incrementTotalWins() {
+        val current = getTotalWins()
+        val new = current + 1
+        update(Type.TOTAL_WINS, new, new, false)
     }
 
     fun close() {
