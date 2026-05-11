@@ -31,6 +31,7 @@
     <string name="title_activity_rules">Regras do Jogo</string>
     <string name="game_rules_title">Como Jogar</string>
     <string name="got_it_button">Entendi!</string>
+    <string name="preparing_game">Preparando jogo…</string>
 
     <string-array name="game_rules_array">
         <item>Objetivo: Mover todas as cartas, organizadas por naipe e em ordem crescente de Ás até Rei, para a área final composta por 4 pilhas de base vazias.</item>

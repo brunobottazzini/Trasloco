@@ -31,6 +31,7 @@
     <string name="title_activity_rules">Regole del Gioco</string>
     <string name="game_rules_title">Come Giocare</string>
     <string name="got_it_button">Capito!</string>
+    <string name="preparing_game">Preparazione partita…</string>
 
     <string-array name="game_rules_array">
         <item>Obiettivo: Spostare tutte le carte, ordinate per seme e in ordine crescente dall’Asso al Re, nell’area finale composta da 4 pile vuote di base.</item>

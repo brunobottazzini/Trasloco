@@ -30,6 +30,7 @@
     <string name="title_activity_rules">Game Rules</string>
     <string name="game_rules_title">How to Play</string>
     <string name="got_it_button">Got it!</string>
+    <string name="preparing_game">Preparing game…</string>
 
     <string-array name="game_rules_array">
         <item>Goal: Move all cards, organized by suit and in ascending order from Ace to King, to the final deck area consisting of 4 empty foundation piles.</item>

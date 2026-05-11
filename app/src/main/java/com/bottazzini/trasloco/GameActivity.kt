@@ -135,16 +135,25 @@ class GameActivity : AppCompatActivity() {
         playSound(R.raw.shuffle)
         stopTimer()
         prePrepareTable()
-        DeckSetup.shuffleDeck()
-        DeckSetup.prepareSubDecks()
-        subDeckMap = DeckSetup.getSubDeckMap()
-        coppiedSubDeckMap = HashMap(subDeckMap)
-        prepareTable()
-        if (hasReachedLostConditions()) {
-            startNewGame()
-        }
-        startTimer()
-        isInitializing = false
+
+        findViewById<View>(R.id.loadingOverlay).visibility = View.VISIBLE
+
+        Thread {
+            DeckSetup.shuffleSolvable()
+            runOnUiThread {
+                DeckSetup.prepareSubDecks()
+                subDeckMap = DeckSetup.getSubDeckMap()
+                coppiedSubDeckMap = HashMap(subDeckMap)
+                prepareTable()
+                if (hasReachedLostConditions()) {
+                    startNewGame()
+                    return@runOnUiThread
+                }
+                startTimer()
+                isInitializing = false
+                findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
+            }
+        }.start()
     }
 
     fun retryGame(view: View) {

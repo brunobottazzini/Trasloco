@@ -59,11 +59,7 @@
       "Bash(/Users/bottazzini/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/start-server.sh *)",
       "Bash(/Users/bottazzini/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/stop-server.sh *)",
       "Bash(awk -F'_' '{print $1}')",
-      "Bash(git tag *)",
       "Bash(./gradlew assembleDebug --offline)",
-      "Bash(git add *)",
-      "Bash(git commit -m 'fix\\(build\\): replace deprecated jcenter\\(\\) with mavenCentral\\(\\) *)",
-      "Bash(git commit *)",
       "Bash(./gradlew assembleRelease)",
       "Bash(./gradlew assembleDebug --stacktrace)",
       "Bash(mkdir -p /tmp/aapt_test)",
@@ -71,7 +67,8 @@
       "Read(//tmp/**)",
       "Bash(./gradlew assembleDebug --info)",
       "Bash(./gradlew clean *)",
-      "Bash(xargs ls *)"
+      "Bash(xargs ls *)",
+      "Bash(git *)"
     ]
   }
 }
