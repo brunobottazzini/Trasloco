@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
     private fun dp(value: Float): Float = value * density
 
     private val skipEnableDelayMs = 500L
-    private val totalDurationMs = 2000L
+    private val totalDurationMs = 3200L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,56 +40,79 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startAnimation() {
-        try {
-            mediaPlayer = MediaPlayer.create(this, R.raw.shuffle)
-            mediaPlayer?.start()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        // Brand intro Phase A: Bottazzini Softworks (0ms - 600ms)
+        val brandStudio = findViewById<ImageView>(R.id.splashBrandStudio)
+        brandStudio.alpha = 0f
+        brandStudio.animate().alpha(1f).setDuration(150).withEndAction {
+            brandStudio.postDelayed({
+                brandStudio.animate().alpha(0f).setDuration(150).start()
+            }, 300L)
+        }.start()
 
-        val card1 = findViewById<ImageView>(R.id.splashCard1)
-        val card2 = findViewById<ImageView>(R.id.splashCard2)
-        val card3 = findViewById<ImageView>(R.id.splashCard3)
-        val card4 = findViewById<ImageView>(R.id.splashCard4)
-
-        // Phase 1 (0.0s - 0.6s): stacked cards fade in with slight rotation
-        val stackCards = listOf(card1, card2, card3, card4)
-        stackCards.forEachIndexed { idx, card ->
-            card.alpha = 0f
-            card.translationY = -(idx * dp(2f))
-            card.rotation = (idx - 1.5f) * 2f
-            card.animate()
-                .alpha(1f)
-                .setDuration(400)
-                .setStartDelay(idx * 50L)
-                .start()
-        }
-
-        // Phase 2 (0.6s - 1.4s): shuffle in air — random rotations + translations
+        // Brand intro Phase B: Game logo (600ms - 1200ms)
         handler.postDelayed({
-            shuffleCard(card1, dp(-180f), dp(-120f), -40f)
-            shuffleCard(card2, dp(90f), dp(100f), 25f)
-            shuffleCard(card3, dp(-60f), dp(60f), -15f)
-            shuffleCard(card4, dp(200f), dp(-80f), 35f)
+            val brandGame = findViewById<ImageView>(R.id.splashBrandGame)
+            brandGame.alpha = 0f
+            brandGame.animate().alpha(1f).setDuration(150).withEndAction {
+                brandGame.postDelayed({
+                    brandGame.animate().alpha(0f).setDuration(150).start()
+                }, 300L)
+            }.start()
         }, 600L)
 
-        // Phase 3 (1.4s - 2.0s): fan deal-out + title reveal
+        // Card animation starts at 1200ms — schedule the existing shuffle sound + Phase 1
         handler.postDelayed({
-            dealCard(card1, dp(-240f), dp(100f), -30f)
-            dealCard(card2, dp(-80f), dp(100f), -10f)
-            dealCard(card3, dp(80f), dp(100f), 10f)
-            dealCard(card4, dp(240f), dp(100f), 30f)
+            try {
+                mediaPlayer = MediaPlayer.create(this, R.raw.shuffle)
+                mediaPlayer?.start()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
-            val title = findViewById<TextView>(R.id.splashTitle)
-            title.alpha = 0f
-            title.translationY = -dp(40f)
-            title.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setDuration(600)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .start()
-        }, 1400L)
+            val card1 = findViewById<ImageView>(R.id.splashCard1)
+            val card2 = findViewById<ImageView>(R.id.splashCard2)
+            val card3 = findViewById<ImageView>(R.id.splashCard3)
+            val card4 = findViewById<ImageView>(R.id.splashCard4)
+
+            // Phase 1 (1200ms - 1800ms): stacked cards fade in with slight rotation
+            val stackCards = listOf(card1, card2, card3, card4)
+            stackCards.forEachIndexed { idx, card ->
+                card.alpha = 0f
+                card.translationY = -(idx * dp(2f))
+                card.rotation = (idx - 1.5f) * 2f
+                card.animate()
+                    .alpha(1f)
+                    .setDuration(400)
+                    .setStartDelay(idx * 50L)
+                    .start()
+            }
+
+            // Phase 2 (1800ms - 2600ms): shuffle in air
+            handler.postDelayed({
+                shuffleCard(card1, dp(-180f), dp(-120f), -40f)
+                shuffleCard(card2, dp(90f), dp(100f), 25f)
+                shuffleCard(card3, dp(-60f), dp(60f), -15f)
+                shuffleCard(card4, dp(200f), dp(-80f), 35f)
+            }, 600L)
+
+            // Phase 3 (2600ms - 3200ms): fan deal-out + title reveal
+            handler.postDelayed({
+                dealCard(card1, dp(-240f), dp(100f), -30f)
+                dealCard(card2, dp(-80f), dp(100f), -10f)
+                dealCard(card3, dp(80f), dp(100f), 10f)
+                dealCard(card4, dp(240f), dp(100f), 30f)
+
+                val title = findViewById<TextView>(R.id.splashTitle)
+                title.alpha = 0f
+                title.translationY = -dp(40f)
+                title.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(600)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
+            }, 1400L)
+        }, 1200L)
     }
 
     private fun shuffleCard(card: ImageView, dx: Float, dy: Float, rot: Float) {
