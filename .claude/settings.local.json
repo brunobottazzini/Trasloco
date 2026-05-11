@@ -70,7 +70,8 @@
       "Bash(/Users/bottazzini/Library/Android/sdk/build-tools/35.0.1/aapt2 compile *)",
       "Read(//tmp/**)",
       "Bash(./gradlew assembleDebug --info)",
-      "Bash(./gradlew clean *)"
+      "Bash(./gradlew clean *)",
+      "Bash(xargs ls *)"
     ]
   }
 }

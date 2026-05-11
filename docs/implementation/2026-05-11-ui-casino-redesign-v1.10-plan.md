@@ -1,5 +1,55 @@
 # UI Casino Redesign — v1.10 Implementation Plan
 
+> ⚠️ **STATO: ESEGUITO IL 2026-05-11**. Branch `feature/v1.10-casino-redesign` (43 commit dopo `main`). Vedere sezione "Esecuzione retrospettiva" in cima per cosa è stato realmente fatto vs cosa è ancora pendente. **Le cose ancora aperte sono nel piano successore** `2026-05-11-ui-casino-redesign-v1.11-plan.md`.
+
+---
+
+## Esecuzione retrospettiva (aggiunta dopo l'esecuzione)
+
+### ✅ Tutti i task del piano completati
+Phase 0 (setup) → Phase A (design tokens) → Phase B (background rework) → Phase C (splash) → Phase D (main menu) → Phase E (settings) → Phase F (selected card) → Phase G (version bump).
+
+### 📝 Deviazioni e aggiunte rispetto al piano originale
+
+Durante l'esecuzione sono emerse modifiche non originariamente nel piano. Documentate qui per il prossimo esecutore:
+
+1. **Pre-flight fix** (`50251f4`): `jcenter()` → `mavenCentral()` in `build.gradle`. JCenter spento da marzo 2022, la build falliva con SSL handshake error. Fix obbligatorio per qualunque environment fresh.
+
+2. **Phase D / fix landscape** (`7ac1dda`): rimosso `app/src/main/res/layout-land/activity_main.xml`. Il file conteneva ancora il vecchio menu con riferimenti a `R.id.c4` (logo legacy). Dopo la riscrittura M3 di Phase D, sarebbe stato NPE in landscape. Soluzione: rimuovere il variante; il portrait M3 si adatta a entrambe le orientazioni.
+
+3. **Splash con 3 brand intros** (`181dc35`, `63c178f`): l'utente ha chiesto durante l'esecuzione di anteporre **Bottazzini Softworks logo** (0.0-0.6s) e **logo gioco app icon** (0.6-1.2s) prima dell'animazione carte (1.2-3.2s). Durata totale splash passa da ~2s a ~3.2s.
+
+4. **Post-review fix** (`834798a`, `32b6347`, `81cc115`): final code review ha trovato 3 issue:
+   - SplashActivity con `Theme.App.Starting` (splashscreen parent) ma senza `installSplashScreen()` → potenziale hang su Android 12+. Fix: theme cambiato a `Theme.Trasloco`.
+   - SplashActivity animazioni con valori in px raw (`-240f`) interpretati come pixel non dp → animazione cramped su xxhdpi. Fix: helper `dp(value)` per conversione density-aware.
+   - MainActivity con dead imports dopo riscrittura M3. Fix: rimossi.
+
+5. **Bug critico post-implementazione: MainActivity crash AppCompat** (`26e998c`): dopo la rimozione di `installSplashScreen()` da MainActivity (Phase C.8), MainActivity ereditava il theme app-level (`Theme.App.Starting`, parente di `Theme.SplashScreen` — non AppCompat-compatibile) e crashava su `setContentView`. Fix: aggiunto `android:theme="@style/Theme.Trasloco"` esplicito nel manifest.
+
+6. **Card backs sostituiti** (`ef9b423`): aggiunta non nel piano. L'utente ha chiesto card back nuovi in mood casino. Risultato: 3 PNG (`bg.png`/`bg2.png`/`bg3.png`) sostituiti con XML drawable (`bg.xml` Royal Bordeaux, `bg2.xml` Tavolo Verde, `bg3.xml` Onyx Classico). Nomi preservati per non rompere le scelte utente già salvate nel DB.
+
+7. **Riprendi partita anticipato da v1.12** (`94e2c27`, `74a0af8`, `099cb76`, `d36bc56`): l'utente ha chiesto di anticipare la feature Resume Game. Risultato: `GameStateRepository.kt` con serializzazione JSON, save su `onPause`, restore su `Intent.resume=true`, clear su win/lose, Riprendi tile abilitata condizionalmente in main menu. Riusa la pipeline esistente `restoreGameFromViewModel()` per il rendering.
+
+### ⚠️ Caveat tecnici noti
+
+- **Stale build cache dopo PNG→XML swap**: AAPT può fallire con `error: resource drawable/X not found` dopo aver convertito un asset da PNG a XML mantenendo lo stesso nome. Fix: `./gradlew clean` una volta. Causa: cache incremental merger non invalidata correttamente. Applicabile a future swap asset.
+
+- **`overridePendingTransition` deprecata** dall'API 34. Usata in `SplashActivity.navigateToMain()`. Non bloccante ma da migrare a `overrideActivityTransition` in futuro (richiede min API 34).
+
+- **Warnings Kotlin pre-esistenti**: `GameActivity.kt:1017/1094`, `YouWonActivity.kt:160` — condition is always true. Non introdotti da queste modifiche.
+
+### 📋 Aperto / non eseguito (rimandato al piano successore)
+
+1. **Watermark "Bottazzini Softworks" nel main menu** — discusso durante esecuzione ma mai implementato.
+2. **v1.11 completo** — polish gameplay P1, top bar C1, hint engine, win screen W3, stats DB (best_time, total_wins).
+3. **Auto-move e relativo toggle** (residuo v1.12).
+
+→ Tutto questo è coperto da `2026-05-11-ui-casino-redesign-v1.11-plan.md`.
+
+---
+
+## Piano originale (sotto)
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Implementare il primo release del restyling Casino Classico: nuovi design tokens, asset sfondi, splash animata, main menu tile-grid, settings con hero preview, carta selezionata sempre visibile in-game. Bump versione 1.9.0 → 1.10.0.
