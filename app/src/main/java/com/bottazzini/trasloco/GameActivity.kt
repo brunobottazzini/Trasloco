@@ -61,6 +61,8 @@ class GameActivity : AppCompatActivity() {
     private val gameViewModel: GameViewModel by lazy {
         ViewModelProvider(this).get(GameViewModel::class.java)
     }
+    private lateinit var hintEngine: HintEngine
+    private var hintEnabled: Boolean = true
     private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
     private var dragTouchStartX: Float = 0f
     private var dragTouchStartY: Float = 0f
@@ -715,6 +717,10 @@ class GameActivity : AppCompatActivity() {
         val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
         layout.background = ContextCompat.getDrawable(this, drawable)
 
+        hintEnabled = settingsHandler.readValue(Configuration.HINT_ENABLED.value) == "enabled"
+        if (!::hintEngine.isInitialized) {
+            hintEngine = HintEngine(this)
+        }
     }
 
     private fun setBackCards(imageName: String) {
@@ -1134,5 +1140,62 @@ class GameActivity : AppCompatActivity() {
         if (::timerRunnable.isInitialized) { // Controlla se timerRunnable è stata inizializzata
             timerHandler.removeCallbacks(timerRunnable)
         }
+    }
+
+    fun onClickBack(view: View) {
+        finish()
+    }
+
+    fun onClickPause(view: View) {
+        if (isTimerPaused) {
+            startTimer()
+            findViewById<View>(R.id.pauseOverlay).visibility = View.GONE
+        } else {
+            pauseTimer()
+            findViewById<View>(R.id.pauseOverlay).visibility = View.VISIBLE
+        }
+    }
+
+    fun onClickResumeFromPause(view: View) {
+        if (isTimerPaused) {
+            startTimer()
+            findViewById<View>(R.id.pauseOverlay).visibility = View.GONE
+        }
+    }
+
+    fun onClickHint(view: View) {
+        if (!hintEnabled) {
+            android.widget.Toast.makeText(this, getString(R.string.hint_no_moves), android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        val hint = hintEngine.findFirstValidMove(cardTableMap, endDeckList)
+        if (hint == null) {
+            android.widget.Toast.makeText(this, getString(R.string.hint_no_moves), android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        highlightHintMove(hint)
+    }
+
+    private fun highlightHintMove(hint: HintMove) {
+        val sourceView = findViewById<View>(hint.sourceSlotId) ?: return
+        val targetView = findViewById<View>(hint.targetSlotId) ?: return
+        sourceView.setBackgroundResource(R.drawable.hint_pulse)
+        targetView.setBackgroundResource(R.drawable.hint_pulse)
+        val animSource = android.animation.ObjectAnimator.ofPropertyValuesHolder(
+            sourceView,
+            android.animation.PropertyValuesHolder.ofFloat("scaleX", 1f, 1.1f, 1f),
+            android.animation.PropertyValuesHolder.ofFloat("scaleY", 1f, 1.1f, 1f)
+        ).apply { duration = 500; repeatCount = 2 }
+        val animTarget = android.animation.ObjectAnimator.ofPropertyValuesHolder(
+            targetView,
+            android.animation.PropertyValuesHolder.ofFloat("scaleX", 1f, 1.1f, 1f),
+            android.animation.PropertyValuesHolder.ofFloat("scaleY", 1f, 1.1f, 1f)
+        ).apply { duration = 500; repeatCount = 2 }
+        animSource.start()
+        animTarget.start()
+        timerHandler.postDelayed({
+            sourceView.background = null
+            targetView.background = null
+        }, 1500)
     }
 }
