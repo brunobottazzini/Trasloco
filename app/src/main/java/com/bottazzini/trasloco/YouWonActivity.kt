@@ -9,8 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -30,12 +28,7 @@ import java.util.Random
 class YouWonActivity : AppCompatActivity() {
 
     private lateinit var recordsHandler: RecordsHandler
-    private lateinit var imageViewPartyGif: ImageView
     private lateinit var buttonNewGame: Button
-    private lateinit var buttonMenu: Button
-    private lateinit var buttonExit: Button
-    private lateinit var textViewGameTimeTaken: TextView
-    private lateinit var victoryInARow: TextView
     private var mediaPlayer: MediaPlayer? = null
     private val youWonViewModel: YouWonViewModel by lazy {
         ViewModelProvider(this).get(YouWonViewModel::class.java)
@@ -46,122 +39,100 @@ class YouWonActivity : AppCompatActivity() {
         hideSystemBars()
         setContentView(R.layout.activity_you_won)
 
-        imageViewPartyGif = findViewById(R.id.imageViewPartyGif)
-        buttonNewGame = findViewById(R.id.buttonNewGameYouWon)
-        buttonMenu = findViewById(R.id.buttonMenuYouWon)
-        buttonExit = findViewById(R.id.buttonExitYouWon)
-
         recordsHandler = RecordsHandler(applicationContext)
-        val millisPassed = recordsHandler.readValue(Type.TIME)
-        val currentMillis = recordsHandler.readCurrentValue(Type.TIME)
-        val isNewTime = recordsHandler.readNew(Type.TIME)
-        textViewGameTimeTaken = findViewById(R.id.textViewTimeTaken)
-        victoryInARow = findViewById(R.id.textConcurrentWin)
+        buttonNewGame = findViewById(R.id.buttonNewGame)
 
-        if (millisPassed != null && currentMillis != null) {
-            var text: CharSequence?
-            text = getString(R.string.time_taken, TimeUtils.formatTime(currentMillis), TimeUtils.formatTime(millisPassed))
-            if (isNewTime != null && isNewTime == true) {
-                text = text + "\n" + getString(R.string.new_record)
-            }
-            textViewGameTimeTaken.text = text
-        } else {
-            textViewGameTimeTaken.text = ""
+        if (!youWonViewModel.statsRecorded) {
+            recordsHandler.incrementTotalWins()
+            youWonViewModel.statsRecorded = true
         }
 
-        val victoryInARow = recordsHandler.readValue(Type.CONSECUTIVE)
-        val currentConsecutive = recordsHandler.readCurrentValue(Type.CONSECUTIVE)
-        if (victoryInARow != null) {
-            var text: CharSequence?
-            val isNewinARow = recordsHandler.readNew(Type.CONSECUTIVE)
-             text = getString(R.string.victory_in_a_row, currentConsecutive.toString(), victoryInARow.toString())
-            if (isNewinARow != null && isNewinARow == true) {
-                text = text + "\n" + getString(R.string.new_record)
-            }
+        val currentTimeMillis = recordsHandler.readCurrentValue(Type.TIME) ?: 0L
+        val bestTimeMillis = recordsHandler.getBestTime()
+        val isNewRecord = recordsHandler.readNew(Type.TIME) ?: false
+        val currentStreak = recordsHandler.readCurrentValue(Type.CONSECUTIVE) ?: 0L
+        val totalWins = recordsHandler.getTotalWins()
 
-            this.victoryInARow.text = text
-        }
+        findViewById<TextView>(R.id.statTimeValue).text = TimeUtils.formatTime(currentTimeMillis)
+        findViewById<TextView>(R.id.statBestValue).text =
+            if (bestTimeMillis != null) TimeUtils.formatTime(bestTimeMillis) else "--:--"
+        findViewById<TextView>(R.id.statStreakValue).text =
+            getString(R.string.streak_format, currentStreak.toString())
+        findViewById<TextView>(R.id.statTotalValue).text = totalWins.toString()
 
-        loadRandomPartyGifFromUrl()
-
-        buttonNewGame.setOnClickListener {
-            val intent = Intent(this, GameActivity::class.java) // Or directly GameActivity
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
-
-        buttonMenu.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java) // Or directly GameActivity
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
-
-        buttonExit.setOnClickListener {
-            ActivityCompat.finishAffinity(this)
-        }
+        findViewById<TextView>(R.id.newRecordBadge).visibility =
+            if (isNewRecord) View.VISIBLE else View.GONE
 
         val settingsHandler = SettingsHandler(applicationContext)
         val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
-        // Portrait wraps the layout in a ScrollView (id youWonScrollView); landscape keeps
-        // the ConstraintLayout as root. Apply the background to whichever exists.
         val rootView: View = findViewById(R.id.youWonScrollView)
-            ?: findViewById(R.id.gameConstraintLayout)
         rootView.background = ContextCompat.getDrawable(this, drawable)
 
+        loadRandomPartyGif()
+
         try {
-            mediaPlayer = MediaPlayer.create(this, R.raw.youwin) // Sostituisci con il nome del tuo file
-            mediaPlayer?.setOnCompletionListener {
-                // Rilascia MediaPlayer quando la riproduzione è finita
-                releaseMediaPlayer()
-            }
+            mediaPlayer = MediaPlayer.create(this, R.raw.youwin)
+            mediaPlayer?.setOnCompletionListener { releaseMediaPlayer() }
             mediaPlayer?.start()
         } catch (e: Exception) {
             e.printStackTrace()
-            // Gestisci eventuali errori durante la creazione o l'avvio del MediaPlayer
         }
 
-        // --- NUOVA GESTIONE DEL TASTO INDIETRO ---
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        buttonNewGame.setOnClickListener {
+            startActivity(
+                Intent(this, GameActivity::class.java)
+                    .apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK }
+            )
+            finish()
+        }
+
+        findViewById<Button>(R.id.buttonMenu).setOnClickListener {
+            startActivity(
+                Intent(this, MainActivity::class.java)
+                    .apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK }
+            )
+            finish()
+        }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 buttonNewGame.performClick()
             }
-        }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-        // --- FINE NUOVA GESTIONE DEL TASTO INDIETRO ---
+        })
     }
 
-    private fun loadRandomPartyGifFromUrl() {
+    private fun loadRandomPartyGif() {
         if (partyGifUrls.isEmpty()) return
-
         val gifUrl = youWonViewModel.gifUrl ?: run {
             val picked = partyGifUrls[Random().nextInt(partyGifUrls.size)]
             youWonViewModel.gifUrl = picked
             picked
         }
-
         Glide.with(this)
             .asGif()
             .load(gifUrl)
             .placeholder(R.drawable.loading)
             .error(R.drawable.you_won_no_internet)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-            .into(imageViewPartyGif)
+            .into(findViewById(R.id.partyGif))
     }
 
-
-
     private fun hideSystemBars() {
-        WindowCompat.setDecorFitsSystemWindows(window, false) // Crucial for edge-to-edge
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val controller = androidx.core.view.WindowInsetsControllerCompat(window, window.decorView)
         if (controller != null) {
-            controller.hide(WindowInsetsCompat.Type.systemBars()) // Hides status AND navigation bars
+            controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    override fun onDestroy() {
+        mediaPlayer?.release()
+        recordsHandler.close()
+        super.onDestroy()
     }
 
     private fun releaseMediaPlayer() {
