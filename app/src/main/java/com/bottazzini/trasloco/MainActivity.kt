@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()
+        settingsHandler.migrateRemovedBackgrounds()
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
 

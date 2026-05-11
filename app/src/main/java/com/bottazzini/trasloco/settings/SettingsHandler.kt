@@ -23,6 +23,14 @@ class SettingsHandler(context: Context) {
         setDefaultSetting(Configuration.CARD_TYPE.value, "piacentine")
     }
 
+    fun migrateRemovedBackgrounds() {
+        val current = readValue(Configuration.BACKGROUND.value)
+        val removed = setOf("sabbia", "tavolo")
+        if (current != null && current in removed) {
+            updateSetting(Configuration.BACKGROUND.value, "verde")
+        }
+    }
+
     fun close() {
         dbHandler.readableDatabase.close()
     }
