@@ -56,4 +56,37 @@
         <item name="strokeWidth">2dp</item>
     </style>
 
+    <!-- Casino text styles -->
+    <style name="CasinoTitle">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/casino_gold</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:shadowColor">#80000000</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">8</item>
+    </style>
+
+    <style name="CasinoSubtitle">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textColor">@color/casino_gold_alpha_50</item>
+        <item name="android:letterSpacing">0.3</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="CasinoSectionLabel">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/casino_gold</item>
+        <item name="android:letterSpacing">0.2</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="CasinoBodyText">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textColor">@color/casino_gold_light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>
