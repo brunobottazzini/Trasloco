@@ -3,7 +3,7 @@
     android:id="@+id/achievementBannerRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/casino_tutorial_banner_bg"
+    android:background="@color/casino_achievement_banner_bg"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
     android:paddingVertical="12dp"

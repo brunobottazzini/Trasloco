@@ -30,4 +30,5 @@
     <!-- Overlay backgrounds -->
     <color name="casino_overlay_dark">#80000000</color>
     <color name="casino_tutorial_overlay_dark">#CC000000</color>
+    <color name="casino_achievement_banner_bg">#F2000000</color>
 </resources>
