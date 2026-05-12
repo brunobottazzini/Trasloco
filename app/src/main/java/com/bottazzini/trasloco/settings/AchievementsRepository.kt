@@ -31,6 +31,8 @@ class AchievementsRepository(context: Context) {
         return found
     }
 
+    fun close() { dbHandler.close() }
+
     /** Returns map of id → unlockedAt (epoch ms) for all unlocked achievements. */
     fun getAllUnlocked(): Map<String, Long> {
         val db = dbHandler.readableDatabase

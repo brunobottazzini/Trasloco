@@ -174,6 +174,8 @@ class StatsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         recordsHandler.close()
+        gameLogRepo.close()
+        achievementsRepo.close()
         super.onDestroy()
     }
 }

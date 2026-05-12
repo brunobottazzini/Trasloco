@@ -286,6 +286,8 @@ class GameActivity : AppCompatActivity() {
 
     fun retryGame(view: View) {
         if (isTutorialMode) return
+        hintsUsedThisGame = 0
+        autoMovesThisGame = 0
         isInitializing = true
         // Re-enable persistence: a retried game should also be resumable.
         shouldPersistOnPause = true
@@ -1182,6 +1184,9 @@ class GameActivity : AppCompatActivity() {
         autoMoveRunnable?.let { timerHandler.removeCallbacks(it) }
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
+        }
+        if (::gameLogRepo.isInitialized) {
+            gameLogRepo.close()
         }
         settingsHandler.close()
         super.onDestroy()

@@ -78,6 +78,8 @@ class GameLogRepository(context: Context) {
         }
     }
 
+    fun close() { dbHandler.close() }
+
     private fun android.database.Cursor.toGameLog() = GameLog(
         id = getLong(getColumnIndexOrThrow(BaseColumns._ID)),
         timestamp = getLong(getColumnIndexOrThrow(GameLogEntry.COLUMN_TIMESTAMP)),
