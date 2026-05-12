@@ -169,8 +169,11 @@
     <string name="stats_win_rate">✅ Win rate</string>
     <string name="stats_avg_time">⌛ Avg. time (wins)</string>
     <string name="stats_no_data">—</string>
-    <string name="stats_chart_title">Last 30 games</string>
+    <string name="stats_chart_title">Duration – last 30 games (min)</string>
     <string name="stats_chart_empty">Play your first game to see the chart</string>
+    <string name="stats_legend_win">Win</string>
+    <string name="stats_legend_loss">Loss</string>
+    <string name="stats_wl_chart_title">Win / Loss ratio</string>
     <string name="stats_trophies_header">Trophies (%1$d / 34)</string>
     <string name="stats_locked">Not unlocked yet</string>
     <string name="stats_unlocked_on">Unlocked on %1$s at %2$s</string>

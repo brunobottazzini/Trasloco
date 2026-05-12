@@ -169,8 +169,11 @@
     <string name="stats_win_rate">✅ % vitórias</string>
     <string name="stats_avg_time">⌛ Tempo médio (vitórias)</string>
     <string name="stats_no_data">—</string>
-    <string name="stats_chart_title">Últimas 30 partidas</string>
+    <string name="stats_chart_title">Duração – últimas 30 partidas (min)</string>
     <string name="stats_chart_empty">Jogue sua primeira partida para ver o gráfico</string>
+    <string name="stats_legend_win">Vitória</string>
+    <string name="stats_legend_loss">Derrota</string>
+    <string name="stats_wl_chart_title">Vitórias / Derrotas</string>
     <string name="stats_trophies_header">Troféus (%1$d / 34)</string>
     <string name="stats_locked">Ainda não desbloqueado</string>
     <string name="stats_unlocked_on">Desbloqueado em %1$s às %2$s</string>

@@ -76,6 +76,25 @@
             android:textStyle="italic"
             android:visibility="gone" />
 
+        <!-- Win / Loss donut chart -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="@string/stats_wl_chart_title"
+            android:textColor="@color/casino_gold_alpha_50"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:letterSpacing="0.2" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/statsWLChart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp" />
+
         <!-- Trophies header -->
         <TextView
             android:id="@+id/statsTrophiesHeader"

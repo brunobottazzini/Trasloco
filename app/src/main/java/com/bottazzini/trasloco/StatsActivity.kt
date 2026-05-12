@@ -21,10 +21,18 @@ import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.TimeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,6 +63,7 @@ class StatsActivity : AppCompatActivity() {
 
         loadStats()
         loadChart()
+        loadPieChart()
         loadAchievements()
     }
 
@@ -118,7 +127,15 @@ class StatsActivity : AppCompatActivity() {
         chart.apply {
             data = LineData(dataSet)
             description.isEnabled = false
-            legend.isEnabled = false
+            legend.apply {
+                isEnabled = true
+                textColor = goldColor
+                form = Legend.LegendForm.CIRCLE
+                setCustom(listOf(
+                    LegendEntry().also { it.label = getString(R.string.stats_legend_win); it.formColor = greenColor },
+                    LegendEntry().also { it.label = getString(R.string.stats_legend_loss); it.formColor = redColor }
+                ))
+            }
             setTouchEnabled(true)
             setBackgroundColor(android.graphics.Color.TRANSPARENT)
             xAxis.apply {
@@ -131,8 +148,59 @@ class StatsActivity : AppCompatActivity() {
             axisLeft.apply {
                 textColor = goldColor
                 axisLineColor = goldColor
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase?) = "${value.toInt()}'"
+                }
             }
             axisRight.isEnabled = false
+            invalidate()
+        }
+    }
+
+    private fun loadPieChart() {
+        val chart = findViewById<PieChart>(R.id.statsWLChart)
+        val wins = gameLogRepo.countWins().toFloat()
+        val total = gameLogRepo.countAll()
+        val losses = (total - wins.toInt()).toFloat()
+
+        val goldColor = ContextCompat.getColor(this, R.color.casino_gold)
+        val bordeauxColor = ContextCompat.getColor(this, R.color.casino_bordeaux)
+
+        if (total == 0) {
+            chart.isVisible = false
+            return
+        }
+
+        val entries = listOf(
+            PieEntry(wins, getString(R.string.stats_legend_win)),
+            PieEntry(losses, getString(R.string.stats_legend_loss))
+        )
+        val dataSet = PieDataSet(entries, "").apply {
+            colors = listOf(goldColor, bordeauxColor)
+            sliceSpace = 3f
+            setDrawValues(false)
+        }
+
+        chart.apply {
+            data = PieData(dataSet)
+            holeRadius = 55f
+            transparentCircleRadius = 60f
+            setHoleColor(android.graphics.Color.TRANSPARENT)
+            setTransparentCircleColor(android.graphics.Color.TRANSPARENT)
+            val winPct = (wins / total * 100).toInt()
+            centerText = "$winPct%"
+            setCenterTextColor(goldColor)
+            setCenterTextTypeface(android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD))
+            setCenterTextSize(20f)
+            description.isEnabled = false
+            legend.apply {
+                isEnabled = true
+                textColor = goldColor
+                form = Legend.LegendForm.CIRCLE
+            }
+            setDrawEntryLabels(false)
+            isRotationEnabled = false
+            setBackgroundColor(android.graphics.Color.TRANSPARENT)
             invalidate()
         }
     }
