@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/detailIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/detailName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="serif"
+        android:textSize="20sp"
+        android:textStyle="italic|bold"
+        android:textColor="@color/casino_gold" />
+
+    <TextView
+        android:id="@+id/detailDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:textColor="@color/casino_gold_alpha_50" />
+
+    <TextView
+        android:id="@+id/detailStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="serif"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:textColor="@color/casino_gold_alpha_50" />
+
+</LinearLayout>

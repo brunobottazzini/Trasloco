@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showRecords(view: View) {
         playSound(R.raw.change_activity)
-        val intent = Intent(this, RecordActivity::class.java)
+        val intent = Intent(this, StatsActivity::class.java)
         startActivity(intent)
     }
 
