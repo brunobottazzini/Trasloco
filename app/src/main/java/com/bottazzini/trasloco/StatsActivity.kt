@@ -149,7 +149,12 @@ class StatsActivity : AppCompatActivity() {
                 textColor = goldColor
                 axisLineColor = goldColor
                 valueFormatter = object : ValueFormatter() {
-                    override fun getAxisLabel(value: Float, axis: AxisBase?) = "${value.toInt()}'"
+                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                        val totalSec = (value * 60).toInt()
+                        val m = totalSec / 60
+                        val s = totalSec % 60
+                        return "%d:%02d".format(m, s)
+                    }
                 }
             }
             axisRight.isEnabled = false
