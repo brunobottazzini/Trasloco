@@ -813,7 +813,7 @@
         android:id="@+id/tutorialBanner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/casino_pause_overlay_bg"
+        android:background="@drawable/casino_tutorial_banner_bg"
         android:orientation="vertical"
         android:paddingHorizontal="12dp"
         android:paddingVertical="10dp"

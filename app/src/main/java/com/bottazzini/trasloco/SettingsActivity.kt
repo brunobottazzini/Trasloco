@@ -6,6 +6,7 @@ import android.view.Window
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
@@ -22,6 +23,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.settings)
         WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.settingsScrollView))
