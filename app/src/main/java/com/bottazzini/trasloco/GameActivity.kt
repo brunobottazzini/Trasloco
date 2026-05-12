@@ -87,6 +87,10 @@ class GameActivity : AppCompatActivity() {
         R.id.subDeck31, R.id.subDeck32, R.id.subDeck33, R.id.subDeck34,
         R.id.subDeck41, R.id.subDeck42, R.id.subDeck43, R.id.subDeck44
     )
+    private var hintsUsedThisGame: Int = 0
+    private var autoMovesThisGame: Int = 0
+    private lateinit var gameLogRepo: com.bottazzini.trasloco.settings.GameLogRepository
+    private lateinit var achievementBanner: com.bottazzini.trasloco.utils.AchievementBanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +110,11 @@ class GameActivity : AppCompatActivity() {
         settingsHandler = SettingsHandler(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
         gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
+        gameLogRepo = com.bottazzini.trasloco.settings.GameLogRepository(applicationContext)
+        achievementBanner = com.bottazzini.trasloco.utils.AchievementBanner(
+            this,
+            findViewById(R.id.gameBannerAchievement)
+        )
         resumeMode = intent.getBooleanExtra("resume", false)
         isTutorialMode = intent.getBooleanExtra(EXTRA_TUTORIAL_MODE, false)
         if (recordsHandler.readValue(Type.CONSECUTIVE) != null) {
@@ -146,6 +155,8 @@ class GameActivity : AppCompatActivity() {
         }
         gameViewModel.hasActiveGame = true
         gameViewModel.gameLost = false
+        hintsUsedThisGame = 0
+        autoMovesThisGame = 0
         playSound(R.raw.shuffle)
         stopTimer()
         prePrepareTable()
@@ -677,6 +688,19 @@ class GameActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.selectedCardTextView).isInvisible = true
         findViewById<View>(R.id.lostOverlay).isGone = false
         stopTimer()
+        val lostDurationMs = System.currentTimeMillis() - gameStartTimeMillis
+        gameLogRepo.insert(
+            com.bottazzini.trasloco.settings.GameLog(
+                timestamp = System.currentTimeMillis(),
+                durationMs = lostDurationMs,
+                won = false,
+                hintsUsed = hintsUsedThisGame,
+                autoMoves = autoMovesThisGame
+            )
+        )
+        val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(this)
+            .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.GAME_LOST)
+        achievementBanner.enqueue(newAchievements)
         val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
         if (consecutive != null) {
             recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
@@ -757,6 +781,15 @@ class GameActivity : AppCompatActivity() {
                 recordsHandler.update(Type.CONSECUTIVE, consecutive, currentValue, false)
             }
         }
+        gameLogRepo.insert(
+            com.bottazzini.trasloco.settings.GameLog(
+                timestamp = System.currentTimeMillis(),
+                durationMs = millisPassed,
+                won = true,
+                hintsUsed = hintsUsedThisGame,
+                autoMoves = autoMovesThisGame
+            )
+        )
         // --- Navigate to YouWonActivity ---
         val intent = Intent(this, YouWonActivity::class.java)
         startActivity(intent)
@@ -1281,6 +1314,7 @@ class GameActivity : AppCompatActivity() {
             return
         }
         highlightHintMove(hint)
+        hintsUsedThisGame++
     }
 
     private fun highlightHintMove(hint: HintMove) {
@@ -1329,6 +1363,7 @@ class GameActivity : AppCompatActivity() {
 
         val moved = tryMove(sourceView, targetView)
         if (moved) {
+            autoMovesThisGame++
             if (hasReachedWonConditions()) {
                 showYouWon()
                 return
