@@ -166,7 +166,7 @@ class StatsActivity : AppCompatActivity() {
         val goldColor = ContextCompat.getColor(this, R.color.casino_gold)
         val bordeauxColor = ContextCompat.getColor(this, R.color.casino_bordeaux)
 
-        if (total == 0) {
+        if (total == 0L) {
             chart.isVisible = false
             return
         }
