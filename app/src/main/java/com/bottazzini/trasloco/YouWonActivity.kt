@@ -31,6 +31,7 @@ class YouWonActivity : AppCompatActivity() {
     private lateinit var recordsHandler: RecordsHandler
     private lateinit var buttonNewGame: Button
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var achievementBanner: com.bottazzini.trasloco.utils.AchievementBanner
     private val youWonViewModel: YouWonViewModel by lazy {
         ViewModelProvider(this).get(YouWonViewModel::class.java)
     }
@@ -41,6 +42,11 @@ class YouWonActivity : AppCompatActivity() {
         hideSystemBars()
         setContentView(R.layout.activity_you_won)
 
+        achievementBanner = com.bottazzini.trasloco.utils.AchievementBanner(
+            this,
+            findViewById(R.id.youWonBannerAchievement)
+        )
+
         recordsHandler = RecordsHandler(applicationContext)
         buttonNewGame = findViewById(R.id.buttonNewGame)
 
@@ -48,6 +54,12 @@ class YouWonActivity : AppCompatActivity() {
             recordsHandler.incrementTotalWins()
             youWonViewModel.statsRecorded = true
         }
+
+        findViewById<android.view.View>(R.id.youWonBannerAchievement).postDelayed({
+            val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(applicationContext)
+                .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.GAME_WON)
+            achievementBanner.enqueue(newAchievements)
+        }, 600L)
 
         val currentTimeMillis = recordsHandler.readCurrentValue(Type.TIME) ?: 0L
         val bestTimeMillis = recordsHandler.getBestTime()
