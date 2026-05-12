@@ -8,6 +8,7 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="12dp"
     android:gravity="center_vertical"
+    android:elevation="8dp"
     android:visibility="gone">
 
     <TextView
