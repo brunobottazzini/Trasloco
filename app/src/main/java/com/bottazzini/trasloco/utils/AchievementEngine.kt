@@ -1,0 +1,126 @@
+package com.bottazzini.trasloco.utils
+
+import android.content.Context
+import com.bottazzini.trasloco.settings.AchievementsRepository
+import com.bottazzini.trasloco.settings.GameLog
+import com.bottazzini.trasloco.settings.GameLogRepository
+import com.bottazzini.trasloco.settings.RecordsHandler
+import com.bottazzini.trasloco.settings.Type
+import java.util.Calendar
+
+class AchievementEngine(
+    private val recordsHandler: RecordsHandler,
+    private val gameLogRepo: GameLogRepository,
+    private val achievementsRepo: AchievementsRepository
+) {
+    companion object {
+        fun create(context: Context) = AchievementEngine(
+            RecordsHandler(context),
+            GameLogRepository(context),
+            AchievementsRepository(context)
+        )
+
+        /** Pure evaluation logic — testable without Android context. */
+        internal fun evaluateConditions(
+            trigger: AchievementTrigger,
+            totalWins: Long,
+            totalGames: Long,
+            currentStreak: Long,
+            lastGame: GameLog?,
+            lastFourGames: List<GameLog>,
+            isNewTimeRecord: Boolean,
+            now: Long
+        ): List<String> {
+            val candidates = mutableListOf<String>()
+
+            when (trigger) {
+                AchievementTrigger.GAME_WON -> {
+                    // Vittorie totali
+                    listOf(1L to "first_win", 10L to "wins_10", 50L to "wins_50",
+                           100L to "wins_100", 500L to "wins_500", 1000L to "wins_1000")
+                        .forEach { (threshold, id) -> if (totalWins >= threshold) candidates.add(id) }
+
+                    // Streak
+                    listOf(3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 50, 100)
+                        .forEach { m -> if (currentStreak >= m) candidates.add("streak_$m") }
+
+                    lastGame?.let { game ->
+                        // Velocità
+                        if (game.durationMs < 3 * 60 * 1000L) candidates.add("speed_3min")
+                        if (game.durationMs < 2 * 60 * 1000L) candidates.add("speed_2min")
+                        if (game.durationMs < 60 * 1000L)     candidates.add("speed_1min")
+                        if (game.durationMs < 45 * 1000L)     candidates.add("speed_45s")
+
+                        // Stile
+                        if (game.hintsUsed == 0) candidates.add("hint_free")
+                        if (game.hintsUsed == 0 && game.autoMoves == 0) candidates.add("no_assist")
+
+                        // Speciali
+                        val cal = Calendar.getInstance().apply { timeInMillis = game.timestamp }
+                        val hour = cal.get(Calendar.HOUR_OF_DAY)
+                        if (hour < 7)  candidates.add("morning")
+                        if (hour == 0) candidates.add("midnight")
+                    }
+
+                    // Resilient: lastFourGames[0]=win, [1..3]=losses
+                    if (lastFourGames.size >= 4 &&
+                        lastFourGames[0].won &&
+                        !lastFourGames[1].won &&
+                        !lastFourGames[2].won &&
+                        !lastFourGames[3].won) candidates.add("resilient")
+
+                    if (isNewTimeRecord) candidates.add("new_record")
+
+                    // Partite giocate (also checked on GAME_LOST)
+                    if (totalGames >= 50)  candidates.add("games_50")
+                    if (totalGames >= 200) candidates.add("games_200")
+                    if (totalGames >= 500) candidates.add("games_500")
+                }
+
+                AchievementTrigger.GAME_LOST -> {
+                    val totalLosses = totalGames - totalWins
+                    if (totalLosses >= 1) candidates.add("first_loss")
+                    if (totalGames >= 50)  candidates.add("games_50")
+                    if (totalGames >= 200) candidates.add("games_200")
+                    if (totalGames >= 500) candidates.add("games_500")
+                }
+
+                AchievementTrigger.APP_OPENED -> {
+                    val cal = Calendar.getInstance().apply { timeInMillis = now }
+                    if (cal.get(Calendar.MONTH) == Calendar.DECEMBER &&
+                        cal.get(Calendar.DAY_OF_MONTH) == 25) candidates.add("christmas")
+                }
+
+                AchievementTrigger.TUTORIAL_COMPLETED -> {
+                    candidates.add("tutorial_done")
+                }
+            }
+
+            return candidates
+        }
+    }
+
+    /**
+     * Evaluates which achievements are newly unlocked for the given trigger.
+     * Persists new unlocks to DB and returns them for banner display.
+     */
+    fun evaluate(trigger: AchievementTrigger): List<AchievementDef> {
+        val totalWins = recordsHandler.getTotalWins()
+        val totalGames = gameLogRepo.countAll()
+        val currentStreak = recordsHandler.readCurrentValue(Type.CONSECUTIVE) ?: 0L
+        val lastFourGames = gameLogRepo.getLastN(4)
+        val lastGame = lastFourGames.firstOrNull()
+        val isNewTimeRecord = recordsHandler.readNew(Type.TIME) ?: false
+        val now = System.currentTimeMillis()
+
+        val candidateIds = evaluateConditions(
+            trigger, totalWins, totalGames, currentStreak,
+            lastGame, lastFourGames, isNewTimeRecord, now
+        )
+
+        val newIds = candidateIds.filter { !achievementsRepo.isUnlocked(it) }
+        newIds.forEach { achievementsRepo.unlock(it, now) }
+
+        return newIds.mapNotNull { AchievementCatalog.findById(it) }
+    }
+}
