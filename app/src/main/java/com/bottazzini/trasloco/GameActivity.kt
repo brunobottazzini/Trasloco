@@ -267,6 +267,9 @@ class GameActivity : AppCompatActivity() {
         val engine = tutorialEngine ?: return
         engine.advanceToNext()
         if (engine.isComplete()) {
+            val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(this)
+                .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.TUTORIAL_COMPLETED)
+            achievementBanner.enqueue(newAchievements)
             finish()
         } else {
             renderTutorialStep()

@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
+        com.bottazzini.trasloco.utils.AchievementEngine.create(applicationContext)
+            .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.APP_OPENED)
 
         findViewById<View>(R.id.textViewTitle).setOnClickListener {
             handleTripleTap()
