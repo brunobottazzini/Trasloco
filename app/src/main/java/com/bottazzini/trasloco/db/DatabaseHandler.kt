@@ -1,6 +1,5 @@
 package com.bottazzini.trasloco.db
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -13,6 +12,7 @@ import com.bottazzini.trasloco.db.columns.SettingsBaseColumns.SettingEntry
 class DatabaseHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
+        private const val TAG = "DatabaseHandler"
         private const val DATABASE_VERSION = 4
         private const val DATABASE_NAME = "Trasloco.db"
 
