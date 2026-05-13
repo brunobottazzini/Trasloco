@@ -78,8 +78,7 @@ class AchievementEngine(
                 }
 
                 AchievementTrigger.GAME_LOST -> {
-                    val totalLosses = totalGames - totalWins
-                    if (totalLosses >= 1) candidates.add("first_loss")
+                    candidates.add("first_loss") // isUnlocked filter prevents re-unlocking
                     if (totalGames >= 50)  candidates.add("games_50")
                     if (totalGames >= 200) candidates.add("games_200")
                     if (totalGames >= 500) candidates.add("games_500")

@@ -1,238 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/verde"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainConstraintLayout"
+    <ScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/verde"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            tools:context=".MainActivity">
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="@string/trasloco"
+                android:textSize="48sp"
+                style="@style/CasinoTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/subtitle_card_game"
+                style="@style/CasinoSubtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+
+            <TextView
+                android:id="@+id/buttonTutorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:background="@drawable/casino_corner_link"
+                android:text="@string/tutorial_corner_label"
+                android:textSize="11sp"
+                android:textStyle="italic"
+                android:fontFamily="serif"
+                android:textColor="@color/casino_gold"
+                android:onClick="showTutorial"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewSubtitle" />
+
+            <!-- Tile 1: Nuova Partita (primary) -->
+            <LinearLayout
+                android:id="@+id/tileNuovaPartita"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/casino_tile_bg_primary"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:onClick="startGame"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/tileRiprendi"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonTutorial"
+                app:layout_constraintWidth_percent="0.42">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="▶"
+                    android:textSize="32sp"
+                    android:textColor="@color/casino_gold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/nuova_partita_label"
+                    android:textColor="@color/casino_gold"
+                    android:textSize="13sp"
+                    android:textStyle="italic|bold" />
+            </LinearLayout>
+
+            <!-- Tile 2: Riprendi (enabled dynamically by MainActivity.updateRiprendiTile) -->
+            <LinearLayout
+                android:id="@+id/tileRiprendi"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/casino_tile_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:onClick="resumeGame"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tileNuovaPartita"
+                app:layout_constraintTop_toBottomOf="@id/buttonTutorial"
+                app:layout_constraintWidth_percent="0.42">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="↻"
+                    android:textSize="32sp"
+                    android:textColor="@color/casino_gold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/riprendi_label"
+                    android:textColor="@color/casino_gold"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <!-- Tile 3: Records -->
+            <LinearLayout
+                android:id="@+id/tileRecords"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/casino_tile_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:onClick="showRecords"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/tileSettings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tileNuovaPartita"
+                app:layout_constraintWidth_percent="0.42">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏆"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/records_label"
+                    android:textColor="@color/casino_gold_light"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <!-- Tile 4: Impostazioni -->
+            <LinearLayout
+                android:id="@+id/tileSettings"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/casino_tile_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:onClick="openSettings"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tileRecords"
+                app:layout_constraintTop_toBottomOf="@id/tileRiprendi"
+                app:layout_constraintWidth_percent="0.42">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚙"
+                    android:textSize="28sp"
+                    android:textColor="@color/casino_gold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/impostazioni_label"
+                    android:textColor="@color/casino_gold_light"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewWatermark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/watermark_studio"
+                android:textSize="9sp"
+                android:fontFamily="serif"
+                android:textStyle="italic"
+                android:textColor="@color/casino_gold_alpha_25"
+                android:alpha="0.6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <include
+        layout="@layout/banner_achievement"
+        android:id="@+id/mainBannerAchievement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        tools:context=".MainActivity">
+        android:layout_gravity="top" />
 
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:text="@string/trasloco"
-            android:textSize="48sp"
-            style="@style/CasinoTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="@string/subtitle_card_game"
-            style="@style/CasinoSubtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
-
-        <TextView
-            android:id="@+id/buttonTutorial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="4dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:background="@drawable/casino_corner_link"
-            android:text="@string/tutorial_corner_label"
-            android:textSize="11sp"
-            android:textStyle="italic"
-            android:fontFamily="serif"
-            android:textColor="@color/casino_gold"
-            android:onClick="showTutorial"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewSubtitle" />
-
-        <!-- Tile 1: Nuova Partita (primary) -->
-        <LinearLayout
-            android:id="@+id/tileNuovaPartita"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/casino_tile_bg_primary"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:onClick="startGame"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/tileRiprendi"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonTutorial"
-            app:layout_constraintWidth_percent="0.42">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="▶"
-                android:textSize="32sp"
-                android:textColor="@color/casino_gold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingHorizontal="4dp"
-                android:text="@string/nuova_partita_label"
-                android:textColor="@color/casino_gold"
-                android:textSize="13sp"
-                android:textStyle="italic|bold" />
-        </LinearLayout>
-
-        <!-- Tile 2: Riprendi (enabled dynamically by MainActivity.updateRiprendiTile) -->
-        <LinearLayout
-            android:id="@+id/tileRiprendi"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="6dp"
-            android:background="@drawable/casino_tile_bg"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:onClick="resumeGame"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tileNuovaPartita"
-            app:layout_constraintTop_toBottomOf="@id/buttonTutorial"
-            app:layout_constraintWidth_percent="0.42">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="↻"
-                android:textSize="32sp"
-                android:textColor="@color/casino_gold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingHorizontal="4dp"
-                android:text="@string/riprendi_label"
-                android:textColor="@color/casino_gold"
-                android:textSize="13sp"
-                android:textStyle="italic" />
-        </LinearLayout>
-
-        <!-- Tile 3: Records -->
-        <LinearLayout
-            android:id="@+id/tileRecords"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/casino_tile_bg"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:onClick="showRecords"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/tileSettings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tileNuovaPartita"
-            app:layout_constraintWidth_percent="0.42">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🏆"
-                android:textSize="28sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingHorizontal="4dp"
-                android:text="@string/records_label"
-                android:textColor="@color/casino_gold_light"
-                android:textSize="13sp"
-                android:textStyle="italic" />
-        </LinearLayout>
-
-        <!-- Tile 4: Impostazioni -->
-        <LinearLayout
-            android:id="@+id/tileSettings"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="6dp"
-            android:background="@drawable/casino_tile_bg"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:onClick="openSettings"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tileRecords"
-            app:layout_constraintTop_toBottomOf="@id/tileRiprendi"
-            app:layout_constraintWidth_percent="0.42">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⚙"
-                android:textSize="28sp"
-                android:textColor="@color/casino_gold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingHorizontal="4dp"
-                android:text="@string/impostazioni_label"
-                android:textColor="@color/casino_gold_light"
-                android:textSize="13sp"
-                android:textStyle="italic" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textViewWatermark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/watermark_studio"
-            android:textSize="9sp"
-            android:fontFamily="serif"
-            android:textStyle="italic"
-            android:textColor="@color/casino_gold_alpha_25"
-            android:alpha="0.6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</FrameLayout>

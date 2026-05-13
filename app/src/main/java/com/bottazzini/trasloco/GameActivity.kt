@@ -269,8 +269,12 @@ class GameActivity : AppCompatActivity() {
         if (engine.isComplete()) {
             val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(this)
                 .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.TUTORIAL_COMPLETED)
-            achievementBanner.enqueue(newAchievements)
-            finish()
+            if (newAchievements.isNotEmpty()) {
+                achievementBanner.enqueue(newAchievements)
+                window.decorView.postDelayed({ finish() }, 3200L)
+            } else {
+                finish()
+            }
         } else {
             renderTutorialStep()
         }
