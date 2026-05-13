@@ -43,6 +43,15 @@ class DeckPickerActivity : AppCompatActivity() {
         }
 
         confirmButton.setOnClickListener { confirmSelection() }
+
+        savedInstanceState?.getString("selected_tag")?.let { tag ->
+            tiles.find { it.tag == tag }?.let { onTileSelected(it) }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        selectedTag?.let { outState.putString("selected_tag", it) }
     }
 
     private fun onTileSelected(selected: LinearLayout) {
