@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/deckPickerScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bordeaux"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="@string/deck_picker_title"
+            android:textSize="26sp"
+            style="@style/CasinoTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/deck_picker_subtitle"
+            android:textSize="12sp"
+            style="@style/CasinoSubtitle" />
+
+        <!-- Piacentine tile -->
+        <LinearLayout
+            android:id="@+id/tilePiacentine"
+            android:tag="piacentine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/casino_tile_bg"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/card_type_piacentine"
+                android:textSize="14sp"
+                android:fontFamily="serif"
+                android:textStyle="italic|bold"
+                android:textColor="@color/casino_gold"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/piacentine_b1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/piacentine_c1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/piacentine_d1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Napoletane tile -->
+        <LinearLayout
+            android:id="@+id/tileNapoletane"
+            android:tag="napoletane"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/casino_tile_bg"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/card_type_napoletane"
+                android:textSize="14sp"
+                android:fontFamily="serif"
+                android:textStyle="italic|bold"
+                android:textColor="@color/casino_gold"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/napoletane_b1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/napoletane_c1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/napoletane_d1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Francesi tile -->
+        <LinearLayout
+            android:id="@+id/tileFrancesi"
+            android:tag="francesi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/casino_tile_bg"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/card_type_francesi"
+                android:textSize="14sp"
+                android:fontFamily="serif"
+                android:textStyle="italic|bold"
+                android:textColor="@color/casino_gold"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/francesi_b1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/francesi_c1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/francesi_d1"
+                    android:scaleType="centerInside"
+                    android:layout_marginHorizontal="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonDeckConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="32dp"
+            android:minWidth="160dp"
+            android:background="@drawable/casino_tile_bg_primary"
+            android:fontFamily="serif"
+            android:padding="14dp"
+            android:text="@string/deck_picker_button"
+            android:textColor="@color/casino_gold"
+            android:textSize="16sp"
+            android:textStyle="italic|bold"
+            android:enabled="false"
+            android:alpha="0.4" />
+
+    </LinearLayout>
+</ScrollView>
