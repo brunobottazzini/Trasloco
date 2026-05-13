@@ -53,11 +53,6 @@ class MainActivity : AppCompatActivity() {
         settingsHandler.insertDefaultSettings()
         settingsHandler.migrateRemovedBackgrounds()
 
-        // Dynamic background — follows user's setting, new users get bordeaux
-        val bg = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
-        val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
-        findViewById<View>(R.id.mainScrollView).background = ContextCompat.getDrawable(this, bgDrawable)
-
         gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
@@ -137,13 +132,18 @@ class MainActivity : AppCompatActivity() {
         playSound(R.raw.change_activity)
         super.onResume()
         updateRiprendiTile()
+        val bg = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
+        val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
+        findViewById<View>(R.id.mainScrollView).background = ContextCompat.getDrawable(this, bgDrawable)
     }
 
     override fun onDestroy() {
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
         }
-        settingsHandler.close()
+        if (::settingsHandler.isInitialized) {
+            settingsHandler.close()
+        }
         super.onDestroy()
     }
 

@@ -8,12 +8,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
+import android.view.View
 import android.view.Window
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.bottazzini.trasloco.settings.Configuration
+import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.ResourceUtils
 
 class SplashActivity : AppCompatActivity() {
 
@@ -35,10 +40,26 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_splash)
 
+        applyThemeFromSettings()
         startAnimation()
 
         handler.postDelayed({ skipEnabled = true }, skipEnableDelayMs)
         handler.postDelayed({ navigateToMain() }, totalDurationMs)
+    }
+
+    private fun applyThemeFromSettings() {
+        val settings = SettingsHandler(applicationContext)
+        val bg = settings.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
+        val cardBack = settings.readValue(Configuration.CARD_BACK.value) ?: "bg2"
+
+        val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
+        findViewById<View>(R.id.splashRoot).background = ContextCompat.getDrawable(this, bgDrawable)
+
+        val cardDrawable = ResourceUtils.getDrawableByName(resources, packageName, cardBack)
+        val cardSrc = ContextCompat.getDrawable(this, cardDrawable)
+        listOf(R.id.splashCard1, R.id.splashCard2, R.id.splashCard3, R.id.splashCard4).forEach {
+            findViewById<ImageView>(it).setImageDrawable(cardSrc)
+        }
     }
 
     private fun startAnimation() {
