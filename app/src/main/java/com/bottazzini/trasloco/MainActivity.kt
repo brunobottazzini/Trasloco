@@ -11,8 +11,11 @@ import android.view.Window
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class MainActivity : AppCompatActivity() {
@@ -28,17 +31,37 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // One-time deck picker gate — runs before layout inflation
+        val prefs = getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
+        if (prefs.getBoolean("tutorial_seen", false) && !prefs.getBoolean("deck_chosen", false)) {
+            prefs.edit().putBoolean("deck_chosen", true).apply()
+        }
+        if (!prefs.getBoolean("deck_chosen", false)) {
+            startActivity(Intent(this, DeckPickerActivity::class.java))
+            finish()
+            return
+        }
+
         enableEdgeToEdge()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
         WindowInsetsUtils.applySystemBarInsets(window, findViewById(R.id.mainScrollView))
         supportActionBar?.hide()
+
         settingsHandler = SettingsHandler(applicationContext)
         settingsHandler.insertDefaultSettings()
         settingsHandler.migrateRemovedBackgrounds()
+
+        // Dynamic background — follows user's setting, new users get bordeaux
+        val bg = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
+        val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
+        findViewById<View>(R.id.mainScrollView).background = ContextCompat.getDrawable(this, bgDrawable)
+
         gameStateRepo = com.bottazzini.trasloco.settings.GameStateRepository(applicationContext)
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
+
         val achievementBanner = com.bottazzini.trasloco.utils.AchievementBanner(
             this, findViewById(R.id.mainBannerAchievement)
         )

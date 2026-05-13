@@ -42,6 +42,7 @@
         <activity android:name=".SettingsActivity" android:theme="@style/Theme.Trasloco" />
         <activity android:name=".RecordActivity" android:theme="@style/Theme.Trasloco" />
         <activity android:name=".StatsActivity" android:theme="@style/Theme.Trasloco" />
+        <activity android:name=".DeckPickerActivity" android:theme="@style/Theme.Trasloco" android:noHistory="true" />
     </application>
 
 </manifest>

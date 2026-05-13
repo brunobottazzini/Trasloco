@@ -21,7 +21,7 @@ class SettingsHandler(context: Context) {
     fun insertDefaultSettings() {
         setDefaultSetting(Configuration.FAST_DEAL.value, "disabled")
         setDefaultSetting(Configuration.CARD_BACK.value, "bg2")
-        setDefaultSetting(Configuration.BACKGROUND.value, "tappeto")
+        setDefaultSetting(Configuration.BACKGROUND.value, "bordeaux")
         setDefaultSetting(Configuration.CARD_TYPE.value, "piacentine")
         setDefaultSetting(Configuration.HINT_ENABLED.value, "enabled")   // default ON
         setDefaultSetting(Configuration.AUTO_MOVE.value, "disabled")     // default OFF
