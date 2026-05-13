@@ -178,4 +178,9 @@
     <string name="stats_locked">Non ancora sbloccato</string>
     <string name="stats_unlocked_on">Sbloccato il %1$s alle %2$s</string>
     <string name="achievement_banner_title">Achievement sbloccato!</string>
+
+    <!-- Deck picker screen -->
+    <string name="deck_picker_title">Scegli il tuo mazzo</string>
+    <string name="deck_picker_subtitle">Potrai cambiarlo nelle Impostazioni</string>
+    <string name="deck_picker_button">Inizia</string>
 </resources>

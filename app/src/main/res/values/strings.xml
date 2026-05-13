@@ -178,4 +178,9 @@
     <string name="stats_locked">Not unlocked yet</string>
     <string name="stats_unlocked_on">Unlocked on %1$s at %2$s</string>
     <string name="achievement_banner_title">Achievement unlocked!</string>
+
+    <!-- Deck picker screen -->
+    <string name="deck_picker_title">Choose your deck</string>
+    <string name="deck_picker_subtitle">You can change this later in Settings</string>
+    <string name="deck_picker_button">Start</string>
 </resources>

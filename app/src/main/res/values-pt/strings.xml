@@ -178,4 +178,9 @@
     <string name="stats_locked">Ainda não desbloqueado</string>
     <string name="stats_unlocked_on">Desbloqueado em %1$s às %2$s</string>
     <string name="achievement_banner_title">Conquista desbloqueada!</string>
+
+    <!-- Deck picker screen -->
+    <string name="deck_picker_title">Escolha seu baralho</string>
+    <string name="deck_picker_subtitle">Você pode mudar isso nas Configurações</string>
+    <string name="deck_picker_button">Começar</string>
 </resources>
