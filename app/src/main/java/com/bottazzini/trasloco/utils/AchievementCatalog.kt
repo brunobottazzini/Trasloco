@@ -18,14 +18,14 @@ object AchievementCatalog {
         AchievementDef("streak_12",  "💥", R.string.achievement_streak_12_name,  R.string.achievement_streak_12_desc),
         AchievementDef("streak_15",  "💥", R.string.achievement_streak_15_name,  R.string.achievement_streak_15_desc),
         AchievementDef("streak_18",  "💥", R.string.achievement_streak_18_name,  R.string.achievement_streak_18_desc),
-        AchievementDef("streak_21",  "⚡", R.string.achievement_streak_21_name,  R.string.achievement_streak_21_desc),
-        AchievementDef("streak_24",  "⚡", R.string.achievement_streak_24_name,  R.string.achievement_streak_24_desc),
-        AchievementDef("streak_27",  "⚡", R.string.achievement_streak_27_name,  R.string.achievement_streak_27_desc),
+        AchievementDef("streak_21",  "⚡️", R.string.achievement_streak_21_name,  R.string.achievement_streak_21_desc),
+        AchievementDef("streak_24",  "⚡️", R.string.achievement_streak_24_name,  R.string.achievement_streak_24_desc),
+        AchievementDef("streak_27",  "⚡️", R.string.achievement_streak_27_name,  R.string.achievement_streak_27_desc),
         AchievementDef("streak_30",  "🌟", R.string.achievement_streak_30_name,  R.string.achievement_streak_30_desc),
         AchievementDef("streak_50",  "🌟", R.string.achievement_streak_50_name,  R.string.achievement_streak_50_desc),
         AchievementDef("streak_100", "💎", R.string.achievement_streak_100_name, R.string.achievement_streak_100_desc),
         // --- Velocità (4) ---
-        AchievementDef("speed_3min", "⏱",  R.string.achievement_speed_3min_name, R.string.achievement_speed_3min_desc),
+        AchievementDef("speed_3min", "⏱️",  R.string.achievement_speed_3min_name, R.string.achievement_speed_3min_desc),
         AchievementDef("speed_2min", "🚀",  R.string.achievement_speed_2min_name, R.string.achievement_speed_2min_desc),
         AchievementDef("speed_1min", "✈️",  R.string.achievement_speed_1min_name, R.string.achievement_speed_1min_desc),
         AchievementDef("speed_45s",  "🌪️", R.string.achievement_speed_45s_name,  R.string.achievement_speed_45s_desc),
@@ -42,7 +42,7 @@ object AchievementCatalog {
         AchievementDef("morning",     "🌅", R.string.achievement_morning_name,     R.string.achievement_morning_desc),
         AchievementDef("midnight",    "🌙", R.string.achievement_midnight_name,    R.string.achievement_midnight_desc),
         AchievementDef("christmas",   "🎄", R.string.achievement_christmas_name,   R.string.achievement_christmas_desc),
-        AchievementDef("new_record",  "⭐", R.string.achievement_new_record_name,  R.string.achievement_new_record_desc)
+        AchievementDef("new_record",  "⭐️", R.string.achievement_new_record_name,  R.string.achievement_new_record_desc)
     )
 
     fun findById(id: String): AchievementDef? = all.find { it.id == id }
