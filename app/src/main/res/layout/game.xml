@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/gameConstraintLayout"
-    android:background="@drawable/verde">
+    android:background="@drawable/bordeaux">
 
     <!-- ========== GUIDELINES ========== -->
 
@@ -749,6 +749,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/pauseTextTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/game_paused"
@@ -759,6 +760,7 @@
             android:letterSpacing="0.3" />
 
         <TextView
+            android:id="@+id/pauseTextSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.ThemeUtils
 
 class SplashActivity : AppCompatActivity() {
 
@@ -60,6 +61,8 @@ class SplashActivity : AppCompatActivity() {
         listOf(R.id.splashCard1, R.id.splashCard2, R.id.splashCard3, R.id.splashCard4).forEach {
             findViewById<ImageView>(it).setImageDrawable(cardSrc)
         }
+
+        findViewById<TextView>(R.id.splashTitle).setTextColor(ThemeUtils.accentColor(bg, this))
     }
 
     private fun startAnimation() {
@@ -71,17 +74,6 @@ class SplashActivity : AppCompatActivity() {
                 brandStudio.animate().alpha(0f).setDuration(150).start()
             }, 800L)
         }.start()
-
-        // Brand intro Phase B: Game logo (600ms - 1200ms)
-//        handler.postDelayed({
-//            val brandGame = findViewById<ImageView>(R.id.splashBrandGame)
-//            brandGame.alpha = 0f
-//            brandGame.animate().alpha(1f).setDuration(150).withEndAction {
-//                brandGame.postDelayed({
-//                    brandGame.animate().alpha(0f).setDuration(150).start()
-//                }, 300L)
-//            }.start()
-//        }, 600L)
 
         // Card animation starts at 1200ms — schedule the existing shuffle sound + Phase 1
         handler.postDelayed({
@@ -118,12 +110,22 @@ class SplashActivity : AppCompatActivity() {
                 shuffleCard(card4, dp(200f), dp(-80f), 35f)
             }, 600L)
 
-            // Phase 3 (2600ms - 3200ms): fan deal-out + title reveal
+            // Phase 3 (2600ms - 3200ms): fan deal-out + logo + title reveal
             handler.postDelayed({
                 dealCard(card1, dp(-240f), dp(100f), -30f)
                 dealCard(card2, dp(-80f), dp(100f), -10f)
                 dealCard(card3, dp(80f), dp(100f), 10f)
                 dealCard(card4, dp(240f), dp(100f), 30f)
+
+                val logo = findViewById<ImageView>(R.id.splashBrandGame)
+                logo.alpha = 0f
+                logo.translationY = -dp(40f)
+                logo.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(600)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
 
                 val title = findViewById<TextView>(R.id.splashTitle)
                 title.alpha = 0f

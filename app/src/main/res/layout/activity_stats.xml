@@ -4,7 +4,7 @@
     android:id="@+id/statsScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/verde"
+    android:background="@drawable/bordeaux"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,6 +15,7 @@
 
         <!-- Title -->
         <TextView
+            android:id="@+id/statsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -46,6 +47,7 @@
 
         <!-- Chart section -->
         <TextView
+            android:id="@+id/statsChartLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -78,6 +80,7 @@
 
         <!-- Win / Loss donut chart -->
         <TextView
+            android:id="@+id/statsWLChartLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

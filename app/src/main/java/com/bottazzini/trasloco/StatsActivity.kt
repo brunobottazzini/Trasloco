@@ -18,6 +18,7 @@ import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.AchievementCatalog
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.TimeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 import com.github.mikephil.charting.charts.LineChart
@@ -57,14 +58,30 @@ class StatsActivity : AppCompatActivity() {
         achievementsRepo = AchievementsRepository(applicationContext)
 
         val settingsHandler = SettingsHandler(applicationContext)
-        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "verde"
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         val drawable = ResourceUtils.getDrawableByName(resources, packageName, backgroundConf)
         findViewById<View>(R.id.statsScrollView).background = ContextCompat.getDrawable(this, drawable)
 
+        val accentColor = ThemeUtils.accentColor(backgroundConf, this)
         loadStats()
-        loadChart()
-        loadPieChart()
+        loadChart(accentColor)
+        loadPieChart(accentColor)
+        applyAccentColor(backgroundConf)
         loadAchievements()
+    }
+
+    private fun applyAccentColor(bg: String) {
+        val color = ThemeUtils.accentColor(bg, this)
+        val dimColor = ThemeUtils.accentColorDim(bg, this)
+        findViewById<TextView>(R.id.statsTitle).setTextColor(color)
+        listOf(R.id.statsChartLabel, R.id.statsChartEmpty, R.id.statsWLChartLabel, R.id.statsTrophiesHeader)
+            .forEach { findViewById<TextView>(it).setTextColor(dimColor) }
+        listOf(R.id.statRowBestTime, R.id.statRowStreak, R.id.statRowTotalWins,
+               R.id.statRowGamesPlayed, R.id.statRowWinRate, R.id.statRowAvgTime).forEach { id ->
+            val row = findViewById<View>(id)
+            row.findViewById<TextView>(R.id.statRowLabel).setTextColor(dimColor)
+            row.findViewById<TextView>(R.id.statRowValue).setTextColor(color)
+        }
     }
 
     private fun loadStats() {
@@ -92,7 +109,7 @@ class StatsActivity : AppCompatActivity() {
         row.findViewById<TextView>(R.id.statRowValue).text = value
     }
 
-    private fun loadChart() {
+    private fun loadChart(accentColor: Int) {
         val chart = findViewById<LineChart>(R.id.statsChart)
         val emptyLabel = findViewById<TextView>(R.id.statsChartEmpty)
         val games = gameLogRepo.getLastN(30).reversed()
@@ -106,7 +123,6 @@ class StatsActivity : AppCompatActivity() {
         chart.isVisible = true
         emptyLabel.isVisible = false
 
-        val goldColor = ContextCompat.getColor(this, R.color.casino_gold)
         val greenColor = ContextCompat.getColor(this, android.R.color.holo_green_dark)
         val redColor = ContextCompat.getColor(this, android.R.color.holo_red_dark)
 
@@ -116,7 +132,7 @@ class StatsActivity : AppCompatActivity() {
         val circleColors = games.map { if (it.won) greenColor else redColor }
 
         val dataSet = LineDataSet(entries, "").apply {
-            color = goldColor
+            color = accentColor
             setCircleColors(circleColors)
             circleRadius = 4f
             lineWidth = 1.5f
@@ -129,7 +145,7 @@ class StatsActivity : AppCompatActivity() {
             description.isEnabled = false
             legend.apply {
                 isEnabled = true
-                textColor = goldColor
+                textColor = accentColor
                 form = Legend.LegendForm.CIRCLE
                 setCustom(listOf(
                     LegendEntry().also { it.label = getString(R.string.stats_legend_win); it.formColor = greenColor },
@@ -140,14 +156,14 @@ class StatsActivity : AppCompatActivity() {
             setBackgroundColor(android.graphics.Color.TRANSPARENT)
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
-                textColor = goldColor
-                axisLineColor = goldColor
+                textColor = accentColor
+                axisLineColor = accentColor
                 setDrawGridLines(false)
                 granularity = 1f
             }
             axisLeft.apply {
-                textColor = goldColor
-                axisLineColor = goldColor
+                textColor = accentColor
+                axisLineColor = accentColor
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
                         val totalSec = (value * 60).toInt()
@@ -162,13 +178,12 @@ class StatsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadPieChart() {
+    private fun loadPieChart(accentColor: Int) {
         val chart = findViewById<PieChart>(R.id.statsWLChart)
         val wins = gameLogRepo.countWins().toFloat()
         val total = gameLogRepo.countAll()
         val losses = (total - wins.toInt()).toFloat()
 
-        val goldColor = ContextCompat.getColor(this, R.color.casino_gold)
         val bordeauxColor = ContextCompat.getColor(this, R.color.casino_bordeaux)
 
         if (total == 0L) {
@@ -181,7 +196,7 @@ class StatsActivity : AppCompatActivity() {
             PieEntry(losses, getString(R.string.stats_legend_loss))
         )
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(goldColor, bordeauxColor)
+            colors = listOf(accentColor, bordeauxColor)
             sliceSpace = 3f
             setDrawValues(false)
         }
@@ -194,13 +209,13 @@ class StatsActivity : AppCompatActivity() {
             setTransparentCircleColor(android.graphics.Color.TRANSPARENT)
             val winPct = (wins / total * 100).toInt()
             centerText = "$winPct%"
-            setCenterTextColor(goldColor)
+            setCenterTextColor(accentColor)
             setCenterTextTypeface(android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD))
             setCenterTextSize(20f)
             description.isEnabled = false
             legend.apply {
                 isEnabled = true
-                textColor = goldColor
+                textColor = accentColor
                 form = Legend.LegendForm.CIRCLE
             }
             setDrawEntryLabels(false)

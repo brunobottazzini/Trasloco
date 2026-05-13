@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,7 @@ import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.PartyGifs.Companion.partyGifUrls
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.TimeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -78,10 +80,11 @@ class YouWonActivity : AppCompatActivity() {
             if (isNewRecord) View.VISIBLE else View.GONE
 
         val settingsHandler = SettingsHandler(applicationContext)
-        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "tappeto"
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
         val rootView: View = findViewById(R.id.youWonScrollView)
         rootView.background = ContextCompat.getDrawable(this, drawable)
+        applyAccentColor(backgroundConf)
 
         loadRandomPartyGif()
 
@@ -113,6 +116,19 @@ class YouWonActivity : AppCompatActivity() {
                 buttonNewGame.performClick()
             }
         })
+    }
+
+    private fun applyAccentColor(bg: String) {
+        val color = ThemeUtils.accentColor(bg, this)
+        val dimColor = ThemeUtils.accentColorDim(bg, this)
+        listOf(R.id.winTitle, R.id.newRecordBadge, R.id.buttonNewGame, R.id.buttonMenu)
+            .forEach { findViewById<TextView>(it).setTextColor(color) }
+        val statCard = findViewById<LinearLayout>(R.id.statCard)
+        for (i in 0 until statCard.childCount) {
+            val row = statCard.getChildAt(i) as? LinearLayout ?: continue
+            (row.getChildAt(0) as? TextView)?.setTextColor(dimColor)
+            (row.getChildAt(1) as? TextView)?.setTextColor(color)
+        }
     }
 
     private fun loadRandomPartyGif() {

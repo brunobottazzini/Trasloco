@@ -30,10 +30,8 @@ class SettingsHandler(context: Context) {
     fun migrateRemovedBackgrounds() {
         val current = readValue(Configuration.BACKGROUND.value)
         val removed = setOf("sabbia", "tavolo")
-        val oldDefaults = setOf("legno", "tappeto")
-        when {
-            current != null && current in removed -> updateSetting(Configuration.BACKGROUND.value, "verde")
-            current != null && current in oldDefaults -> updateSetting(Configuration.BACKGROUND.value, "bordeaux")
+        if (current != null && current in removed) {
+            updateSetting(Configuration.BACKGROUND.value, "verde")
         }
     }
 

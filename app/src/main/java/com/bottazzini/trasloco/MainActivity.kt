@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.View
 import android.view.Window
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +34,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Write defaults before any screen reads them (idempotent — safe to call early)
+        SettingsHandler(applicationContext).insertDefaultSettings()
 
         // One-time deck picker gate — runs before layout inflation
         val prefs = getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
@@ -79,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showTutorial(view: View) {
         playSound(R.raw.change_activity)
+        markTutorialSeen()
         launchGameActivity(tutorial = true)
     }
 
@@ -135,6 +142,22 @@ class MainActivity : AppCompatActivity() {
         val bg = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
         findViewById<View>(R.id.mainScrollView).background = ContextCompat.getDrawable(this, bgDrawable)
+        applyMenuTextColor(bg)
+    }
+
+    private fun applyMenuTextColor(bg: String) {
+        val color = ThemeUtils.accentColor(bg, this)
+        val dimColor = ThemeUtils.accentColorDim(bg, this)
+        findViewById<TextView>(R.id.textViewTitle).setTextColor(color)
+        findViewById<TextView>(R.id.textViewSubtitle).setTextColor(dimColor)
+        findViewById<TextView>(R.id.buttonTutorial).setTextColor(color)
+        listOf(R.id.tileNuovaPartita, R.id.tileRiprendi, R.id.tileRecords, R.id.tileSettings)
+            .forEach { id ->
+                val tile = findViewById<LinearLayout>(id)
+                for (i in 0 until tile.childCount) {
+                    (tile.getChildAt(i) as? TextView)?.setTextColor(color)
+                }
+            }
     }
 
     override fun onDestroy() {

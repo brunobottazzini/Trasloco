@@ -30,7 +30,9 @@ import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
+import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.TimeUtils
+import android.widget.ImageButton
 import java.util.LinkedList
 
 
@@ -267,6 +269,9 @@ class GameActivity : AppCompatActivity() {
         val engine = tutorialEngine ?: return
         engine.advanceToNext()
         if (engine.isComplete()) {
+            val nextBtn = findViewById<Button>(R.id.tutorialNextButton)
+            nextBtn.isEnabled = false
+            nextBtn.isClickable = false
             val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(this)
                 .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.TUTORIAL_COMPLETED)
             if (newAchievements.isNotEmpty()) {
@@ -843,10 +848,11 @@ class GameActivity : AppCompatActivity() {
         val backCardValue = settingsHandler.readValue(Configuration.CARD_BACK.value)
         setBackCards(backCardValue!!)
 
-        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value)
-        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf!!)
+        val backgroundConf = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
+        val drawable = ResourceUtils.getDrawableByName(resources, this.packageName, backgroundConf)
         val layout = findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
         layout.background = ContextCompat.getDrawable(this, drawable)
+        applyAccentColor(backgroundConf)
 
         hintEnabled = settingsHandler.readValue(Configuration.HINT_ENABLED.value) == "enabled"
         if (!::hintEngine.isInitialized) {
@@ -854,6 +860,18 @@ class GameActivity : AppCompatActivity() {
         }
 
         autoMoveEnabled = settingsHandler.readValue(Configuration.AUTO_MOVE.value) == "enabled"
+    }
+
+    private fun applyAccentColor(bg: String) {
+        val color = ThemeUtils.accentColor(bg, this)
+        val dimColor = ThemeUtils.accentColorDim(bg, this)
+        listOf(
+            R.id.iconBack, R.id.textViewGameTimer, R.id.iconPause, R.id.resetButton,
+            R.id.lostTextView, R.id.newGameButton, R.id.retryButton,
+            R.id.pauseTextTitle, R.id.tutorialBannerText, R.id.tutorialNextButton
+        ).forEach { findViewById<TextView>(it).setTextColor(color) }
+        findViewById<TextView>(R.id.pauseTextSubtitle).setTextColor(dimColor)
+        findViewById<ImageButton>(R.id.tutorialExitButton).setColorFilter(color)
     }
 
     private fun setBackCards(imageName: String) {

@@ -9,8 +9,10 @@ import android.widget.Switch
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import android.widget.TextView
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
 class SettingsActivity : AppCompatActivity() {
@@ -101,10 +103,20 @@ class SettingsActivity : AppCompatActivity() {
         if (drawableId != 0) {
             root.background = ContextCompat.getDrawable(this, drawableId)
         }
+        applyAccentColor(backgroundTag)
+    }
+
+    private fun applyAccentColor(bg: String) {
+        val color = ThemeUtils.accentColor(bg, this)
+        val dimColor = ThemeUtils.accentColorDim(bg, this)
+        listOf(R.id.textViewTitle, R.id.labelCardDeck, R.id.labelCardBack, R.id.labelBackground)
+            .forEach { findViewById<TextView>(it).setTextColor(color) }
+        listOf(R.id.heroPreviewLabel, R.id.textViewCredits)
+            .forEach { findViewById<TextView>(it).setTextColor(dimColor) }
     }
 
     private fun updateHeroPreview() {
-        val backgroundTag = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "verde"
+        val backgroundTag = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         val cardTypeTag = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
         val cardBackTag = settingsHandler.readValue(Configuration.CARD_BACK.value) ?: "bg2"
 
@@ -146,7 +158,7 @@ class SettingsActivity : AppCompatActivity() {
         val cardBack = settingsHandler.readValue(Configuration.CARD_BACK.value) ?: "bg2"
         updateSelection(cardBackTileIds, cardBack)
 
-        val background = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "verde"
+        val background = settingsHandler.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         updateSelection(backgroundTileIds, background)
 
         val hint = settingsHandler.readValue(Configuration.HINT_ENABLED.value) ?: "enabled"
