@@ -149,11 +149,17 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Update card back
+        // Update card back, matching front card insets so it appears the same effective size
         val backImg = findViewById<ImageView>(R.id.heroCardBack)
         val backDrawableId = resources.getIdentifier(cardBackTag, "drawable", packageName)
         if (backDrawableId != 0) {
             backImg.setImageDrawable(ContextCompat.getDrawable(this, backDrawableId))
+        }
+        val deck = CardDeckRegistry.byId(cardTypeTag)
+        backImg.post {
+            val px = (backImg.width * deck.insetX / 2f).toInt()
+            val py = (backImg.height * deck.insetY / 2f).toInt()
+            backImg.setPadding(px, py, px, py)
         }
     }
 
