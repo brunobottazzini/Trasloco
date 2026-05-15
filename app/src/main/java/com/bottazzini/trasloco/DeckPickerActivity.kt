@@ -4,22 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.CardDeck
 import com.bottazzini.trasloco.utils.CardDeckRegistry
-import com.bottazzini.trasloco.utils.DeckCarouselAdapter
+import com.bottazzini.trasloco.utils.DeckGridAdapter
+import com.bottazzini.trasloco.utils.DeckRegion
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 class DeckPickerActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
-    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var selectedNameLabel: TextView
     private lateinit var confirmButton: Button
+
+    private var selectedDeck: CardDeck? = null
+    private val adapterByRegion = mutableMapOf<DeckRegion, DeckGridAdapter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,44 +39,63 @@ class DeckPickerActivity : AppCompatActivity() {
 
         settingsHandler = SettingsHandler(applicationContext)
 
-        viewPager = findViewById(R.id.viewPagerDecks)
+        tabLayout = findViewById(R.id.deckRegionTabs)
+        recyclerView = findViewById(R.id.deckGrid)
+        selectedNameLabel = findViewById(R.id.deckSelectedName)
         confirmButton = findViewById(R.id.buttonDeckConfirm)
 
-        val adapter = DeckCarouselAdapter(CardDeckRegistry.ALL)
-        viewPager.adapter = adapter
-        viewPager.offscreenPageLimit = 1
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
 
-        val dots = findViewById<TabLayout>(R.id.deckDotsIndicator)
-        TabLayoutMediator(dots, viewPager) { _, _ -> }.attach()
+        setupAdapters()
+        setupTabs()
 
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                updateConfirmButton(position)
-            }
-        })
-
-        val initialPage = savedInstanceState?.getInt("selected_page", 0) ?: 0
-        viewPager.setCurrentItem(initialPage, false)
-        updateConfirmButton(initialPage)
+        val defaultDeck = CardDeckRegistry.byId("piacentine")
+        selectDeck(defaultDeck)
+        tabLayout.getTabAt(0)?.select()
+        showRegion(DeckRegion.NORD)
 
         confirmButton.setOnClickListener { confirmSelection() }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("selected_page", viewPager.currentItem)
+    private fun setupAdapters() {
+        DeckRegion.values().forEach { region ->
+            adapterByRegion[region] = DeckGridAdapter(CardDeckRegistry.byRegion(region)) { deck ->
+                selectDeck(deck)
+            }
+        }
     }
 
-    private fun updateConfirmButton(position: Int) {
-        val deck = CardDeckRegistry.ALL.getOrNull(position)
-        val enabled = deck?.available == true
-        confirmButton.isEnabled = enabled
-        confirmButton.alpha = if (enabled) 1f else 0.4f
+    private fun setupTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.region_nord))
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.region_sud_isole))
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.region_internazionali))
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                showRegion(DeckRegion.values()[tab.position])
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+    }
+
+    private fun showRegion(region: DeckRegion) {
+        val adapter = adapterByRegion[region] ?: return
+        selectedDeck?.let { adapter.setSelectedId(it.id) }
+        recyclerView.adapter = adapter
+    }
+
+    private fun selectDeck(deck: CardDeck) {
+        selectedDeck = deck
+        selectedNameLabel.text = getString(deck.labelRes)
+        confirmButton.text = getString(R.string.deck_picker_play_with, getString(deck.labelRes))
+        confirmButton.isEnabled = true
+        confirmButton.alpha = 1f
+        adapterByRegion.values.forEach { it.setSelectedId(deck.id) }
     }
 
     private fun confirmSelection() {
-        val deck = CardDeckRegistry.ALL.getOrNull(viewPager.currentItem) ?: return
-        if (!deck.available) return
+        val deck = selectedDeck ?: return
         settingsHandler.updateSetting(Configuration.CARD_TYPE.value, deck.id)
         getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
             .edit().putBoolean("deck_chosen", true).apply()
