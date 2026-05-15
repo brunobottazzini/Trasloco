@@ -67,6 +67,9 @@
     <string name="card_type_trentine">Trentine</string>
     <string name="card_type_triestine">Triestine</string>
     <string name="card_type_coming_soon">Coming soon</string>
+    <string name="region_nord">North</string>
+    <string name="region_sud_isole">South &amp; Islands</string>
+    <string name="region_internazionali">International</string>
     <string name="credits_text">Card art: Piacentine adapted from BriscolaPlusAndroid by S. Di Berardino (PD) · Francesi by Byron Knoll (CC-BY-SA) · Bresciane by ZZandro via Wikimedia (CC-BY-SA 4.0) · All other decks from Cuperativa by I. Sarzi Sartori (MIT)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ CARD GAME ~</string>
@@ -196,4 +199,5 @@
     <string name="deck_picker_title">Choose your deck</string>
     <string name="deck_picker_subtitle">You can change this later in Settings</string>
     <string name="deck_picker_button">Start</string>
+    <string name="deck_picker_play_with">Play with %s</string>
 </resources>

@@ -68,6 +68,9 @@
     <string name="card_type_trentine">Trentine</string>
     <string name="card_type_triestine">Triestine</string>
     <string name="card_type_coming_soon">Prossimamente</string>
+    <string name="region_nord">Nord</string>
+    <string name="region_sud_isole">Sud &amp; Isole</string>
+    <string name="region_internazionali">Internazionali</string>
     <string name="credits_text">Grafica carte: Piacentine adattate da BriscolaPlusAndroid di S. Di Berardino (PD) · Francesi di Byron Knoll (CC-BY-SA) · Bresciane di ZZandro via Wikimedia (CC-BY-SA 4.0) · Tutti gli altri mazzi da Cuperativa di I. Sarzi Sartori (MIT)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ GIOCO DI CARTE ~</string>
@@ -196,4 +199,5 @@
     <string name="deck_picker_title">Scegli il tuo mazzo</string>
     <string name="deck_picker_subtitle">Potrai cambiarlo nelle Impostazioni</string>
     <string name="deck_picker_button">Inizia</string>
+    <string name="deck_picker_play_with">Gioca con le %s</string>
 </resources>
