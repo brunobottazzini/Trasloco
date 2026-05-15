@@ -10,8 +10,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.CardDeckRegistry
+import com.bottazzini.trasloco.utils.DeckCarouselAdapter
 import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
 
@@ -19,9 +22,9 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
 
-    private val cardTypeTileIds = listOf(R.id.cardTypePiacentine, R.id.cardTypeNapoletane, R.id.cardTypeFrancesi)
     private val cardBackTileIds = listOf(R.id.cardBackBg1, R.id.cardBackBg2, R.id.cardBackBg3)
     private lateinit var backgroundTileIds: List<Int>
+    private lateinit var viewPagerSettingsDecks: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +45,20 @@ class SettingsActivity : AppCompatActivity() {
         }
         backgroundTileIds = ids
 
-        readConfigurations()
-    }
+        viewPagerSettingsDecks = findViewById(R.id.viewPagerSettingsDecks)
+        val adapter = DeckCarouselAdapter(CardDeckRegistry.ALL, compact = true)
+        viewPagerSettingsDecks.adapter = adapter
+        viewPagerSettingsDecks.offscreenPageLimit = 1
+        viewPagerSettingsDecks.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                val deck = CardDeckRegistry.ALL.getOrNull(position) ?: return
+                if (!deck.available) return
+                settingsHandler.updateSetting(Configuration.CARD_TYPE.value, deck.id)
+                updateHeroPreview()
+            }
+        })
 
-    fun selectCardType(view: View) {
-        val tag = view.tag?.toString() ?: return
-        settingsHandler.updateSetting(Configuration.CARD_TYPE.value, tag)
-        updateSelection(cardTypeTileIds, tag)
-        updateHeroPreview()
+        readConfigurations()
     }
 
     fun selectCardBack(view: View) {
@@ -153,7 +162,7 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<Switch>(R.id.switchFastDeal).isChecked = (fastDeal == "enabled")
 
         val cardType = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
-        updateSelection(cardTypeTileIds, cardType)
+        viewPagerSettingsDecks.setCurrentItem(CardDeckRegistry.indexOf(cardType), false)
 
         val cardBack = settingsHandler.readValue(Configuration.CARD_BACK.value) ?: "bg2"
         updateSelection(cardBackTileIds, cardBack)

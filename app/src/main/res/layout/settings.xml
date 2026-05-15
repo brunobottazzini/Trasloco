@@ -109,74 +109,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/heroPreview" />
 
-        <LinearLayout
-            android:id="@+id/cardTypeRow"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerSettingsDecks"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:paddingHorizontal="48dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelCardDeck">
-
-            <FrameLayout
-                android:id="@+id/cardTypePiacentine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:padding="3dp"
-                android:background="@drawable/casino_card_tile_selectable"
-                android:tag="piacentine"
-                android:onClick="selectCardType"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/piacentine_b1"
-                    android:scaleType="fitXY" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/cardTypeNapoletane"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:padding="3dp"
-                android:background="@drawable/casino_card_tile_selectable"
-                android:tag="napoletane"
-                android:onClick="selectCardType"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/napoletane_b1"
-                    android:scaleType="fitXY" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/cardTypeFrancesi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:padding="3dp"
-                android:background="@drawable/casino_card_tile_selectable"
-                android:tag="francesi"
-                android:onClick="selectCardType"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/francesi_b1"
-                    android:scaleType="fitXY" />
-            </FrameLayout>
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/labelCardDeck" />
 
         <!-- Card Back section -->
         <TextView
@@ -187,7 +130,7 @@
             android:text="@string/settings_label_card_back"
             style="@style/CasinoSectionLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardTypeRow" />
+            app:layout_constraintTop_toBottomOf="@id/viewPagerSettingsDecks" />
 
         <LinearLayout
             android:id="@+id/cardBackRow"
