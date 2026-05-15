@@ -35,7 +35,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerDecks"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
             android:layout_marginTop="24dp"
             android:paddingHorizontal="48dp"
             android:clipToPadding="false"
