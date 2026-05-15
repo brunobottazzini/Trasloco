@@ -32,26 +32,34 @@
             android:textSize="12sp"
             style="@style/CasinoSubtitle" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPagerDecks"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginTop="24dp"
-            android:paddingHorizontal="48dp"
-            android:clipToPadding="false"
-            android:clipChildren="false" />
-
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/deckDotsIndicator"
-            android:layout_width="wrap_content"
+            android:id="@+id/deckRegionTabs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            app:tabTextColor="@color/casino_gold_alpha_50"
+            app:tabSelectedTextColor="@color/casino_gold"
+            app:tabIndicatorColor="@color/casino_gold"
+            app:tabBackground="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/deckSelectedName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:tabBackground="@drawable/casino_tab_dot"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            app:tabPaddingStart="4dp"
-            app:tabPaddingEnd="4dp" />
+            android:gravity="center"
+            android:textSize="18sp"
+            android:fontFamily="serif"
+            android:textStyle="italic|bold"
+            android:textColor="@color/casino_gold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/deckGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never" />
 
         <Button
             android:id="@+id/buttonDeckConfirm"
