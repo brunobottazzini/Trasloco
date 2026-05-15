@@ -9,11 +9,11 @@ object CardDeckRegistry {
         CardDeck("piacentine",  R.string.card_type_piacentine),
         CardDeck("napoletane",  R.string.card_type_napoletane),
         CardDeck("francesi",    R.string.card_type_francesi),
-        CardDeck("bergamasche", R.string.card_type_bergamasche, available = false),
-        CardDeck("siciliane",   R.string.card_type_siciliane,   available = false),
-        CardDeck("trevisane",   R.string.card_type_trevisane,   available = false),
-        CardDeck("bresciane",   R.string.card_type_bresciane,   available = false),
-        CardDeck("sarde",       R.string.card_type_sarde,       available = false),
+        CardDeck("bergamasche", R.string.card_type_bergamasche),
+        CardDeck("siciliane",   R.string.card_type_siciliane),
+        CardDeck("trevisane",   R.string.card_type_trevisane),
+        CardDeck("bresciane",   R.string.card_type_bresciane),
+        CardDeck("sarde",       R.string.card_type_sarde),
     )
 
     fun indexOf(id: String): Int = ALL.indexOfFirst { it.id == id }.coerceAtLeast(0)
