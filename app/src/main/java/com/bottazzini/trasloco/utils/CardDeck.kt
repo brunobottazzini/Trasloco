@@ -12,9 +12,9 @@ data class CardDeck(
 
 object CardDeckRegistry {
     val ALL = listOf(
-        CardDeck("piacentine",  R.string.card_type_piacentine),
-        CardDeck("napoletane",  R.string.card_type_napoletane),
-        CardDeck("francesi",    R.string.card_type_francesi),
+        CardDeck("piacentine",  R.string.card_type_piacentine,  insetY = 0.06f),
+        CardDeck("napoletane",  R.string.card_type_napoletane,  insetY = 0.14f),
+        CardDeck("francesi",    R.string.card_type_francesi,    insetY = 0.14f),
         CardDeck("bergamasche", R.string.card_type_bergamasche),
         CardDeck("bolognesi",   R.string.card_type_bolognesi,   insetX = 0.04f),
         CardDeck("bresciane",   R.string.card_type_bresciane,   insetX = 0.11f),
