@@ -109,17 +109,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/heroPreview" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPagerSettingsDecks"
+        <TextView
+            android:id="@+id/settingsDeckSelectedName"
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingHorizontal="48dp"
-            android:clipToPadding="false"
-            android:clipChildren="false"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="serif"
+            android:textStyle="italic|bold"
+            android:textColor="@color/casino_gold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/labelCardDeck" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/settingsDeckTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:tabTextColor="@color/casino_gold_alpha_50"
+            app:tabSelectedTextColor="@color/casino_gold"
+            app:tabIndicatorColor="@color/casino_gold"
+            app:tabBackground="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settingsDeckSelectedName" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/settingsDeckGrid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settingsDeckTabLayout" />
 
         <!-- Card Back section -->
         <TextView
@@ -130,7 +156,7 @@
             android:text="@string/settings_label_card_back"
             style="@style/CasinoSectionLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewPagerSettingsDecks" />
+            app:layout_constraintTop_toBottomOf="@id/settingsDeckGrid" />
 
         <LinearLayout
             android:id="@+id/cardBackRow"
