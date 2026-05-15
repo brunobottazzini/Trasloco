@@ -60,8 +60,15 @@
     <string name="card_type_trevisane">Trevisane</string>
     <string name="card_type_bresciane">Bresciane</string>
     <string name="card_type_sarde">Sarde</string>
+    <string name="card_type_bolognesi">Bolognesi</string>
+    <string name="card_type_genovesi">Genovesi</string>
+    <string name="card_type_milanesi">Milanesi</string>
+    <string name="card_type_piemontesi">Piemontesi</string>
+    <string name="card_type_romagnole">Romagnole</string>
+    <string name="card_type_trentine">Trentine</string>
+    <string name="card_type_triestine">Triestine</string>
     <string name="card_type_coming_soon">Em breve</string>
-    <string name="credits_text">Arte das cartas: Piacentine adaptadas de BriscolaPlusAndroid de S. Di Berardino (PD) · Napolitanas (Wikimedia, CC0/CC-BY-SA) · Francesas por Byron Knoll (CC-BY-SA) · Bergamasche de L. Chiesa via Wikimedia (PD) · Bresciane de ZZandro via Wikimedia (CC-BY-SA 4.0) · Sarde de Cuperativa por I. Sarzi Sartori (MIT) · Siciliane + Trevisane de Cuperativa por I. Sarzi Sartori (MIT)</string>
+    <string name="credits_text">Arte das cartas: Piacentine adaptadas de BriscolaPlusAndroid de S. Di Berardino (PD) · Napolitanas (Wikimedia, CC0/CC-BY-SA) · Francesas por Byron Knoll (CC-BY-SA) · Bergamasche de L. Chiesa via Wikimedia (PD) · Bresciane de ZZandro via Wikimedia (CC-BY-SA 4.0) · Sarde + Siciliane + Trevisane + Bolognesi + Genovesi + Milanesi + Piemontesi + Romagnole + Trentine + Triestine de Cuperativa por I. Sarzi Sartori (MIT)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ JOGO DE CARTAS ~</string>
     <string name="riprendi_partita">Continuar</string>
