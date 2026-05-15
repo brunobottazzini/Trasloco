@@ -16,8 +16,8 @@ object CardDeckRegistry {
         CardDeck("napoletane",  R.string.card_type_napoletane),
         CardDeck("francesi",    R.string.card_type_francesi),
         CardDeck("bergamasche", R.string.card_type_bergamasche),
-        CardDeck("siciliane",   R.string.card_type_siciliane,   insetY = 0.10f),
-        CardDeck("trevisane",   R.string.card_type_trevisane,   insetX = 0.125f),
+        CardDeck("siciliane",   R.string.card_type_siciliane,   insetY = 0.14f),
+        CardDeck("trevisane",   R.string.card_type_trevisane),
         CardDeck("bresciane",   R.string.card_type_bresciane,   insetX = 0.11f),
         CardDeck("sarde",       R.string.card_type_sarde,       insetY = 0.14f),
     )
