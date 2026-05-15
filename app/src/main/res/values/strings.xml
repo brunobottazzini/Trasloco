@@ -54,6 +54,12 @@
     <string name="card_type_piacentine">Piacentine</string>
     <string name="card_type_napoletane">Neapolitan</string>
     <string name="card_type_francesi">French</string>
+    <string name="card_type_bergamasche">Bergamasche</string>
+    <string name="card_type_siciliane">Siciliane</string>
+    <string name="card_type_trevisane">Trevisane</string>
+    <string name="card_type_bresciane">Bresciane</string>
+    <string name="card_type_sarde">Sarde</string>
+    <string name="card_type_coming_soon">Coming soon</string>
     <string name="credits_text">Card art: Piacentine adapted from BriscolaPlusAndroid by S. Di Berardino (classic artwork in Public Domain) · Neapolitan (Wikimedia, CC0/CC-BY-SA) · French by Byron Knoll (CC-BY-SA)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ CARD GAME ~</string>

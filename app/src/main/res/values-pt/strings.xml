@@ -55,6 +55,12 @@
     <string name="card_type_piacentine">Piacentine</string>
     <string name="card_type_napoletane">Napolitanas</string>
     <string name="card_type_francesi">Francesas</string>
+    <string name="card_type_bergamasche">Bergamasche</string>
+    <string name="card_type_siciliane">Siciliane</string>
+    <string name="card_type_trevisane">Trevisane</string>
+    <string name="card_type_bresciane">Bresciane</string>
+    <string name="card_type_sarde">Sarde</string>
+    <string name="card_type_coming_soon">Em breve</string>
     <string name="credits_text">Arte das cartas: Piacentine adaptadas de BriscolaPlusAndroid de S. Di Berardino (arte clássica em Domínio Público) · Napolitanas (Wikimedia, CC0/CC-BY-SA) · Francesas por Byron Knoll (CC-BY-SA)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ JOGO DE CARTAS ~</string>
