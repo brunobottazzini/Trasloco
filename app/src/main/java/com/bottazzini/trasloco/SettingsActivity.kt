@@ -6,17 +6,20 @@ import android.view.Window
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import android.widget.TextView
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.CardDeckRegistry
-import com.bottazzini.trasloco.utils.DeckCarouselAdapter
+import com.bottazzini.trasloco.utils.DeckGridAdapter
+import com.bottazzini.trasloco.utils.DeckRegion
 import com.bottazzini.trasloco.utils.ThemeUtils
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
+import com.google.android.material.tabs.TabLayout
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -24,7 +27,11 @@ class SettingsActivity : AppCompatActivity() {
 
     private val cardBackTileIds = listOf(R.id.cardBackBg1, R.id.cardBackBg2, R.id.cardBackBg3)
     private lateinit var backgroundTileIds: List<Int>
-    private lateinit var viewPagerSettingsDecks: ViewPager2
+
+    private lateinit var deckTabLayout: TabLayout
+    private lateinit var deckRecycler: RecyclerView
+    private lateinit var deckSelectedName: TextView
+    private val deckAdapterByRegion = mutableMapOf<DeckRegion, DeckGridAdapter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +43,6 @@ class SettingsActivity : AppCompatActivity() {
 
         settingsHandler = SettingsHandler(applicationContext)
 
-        // Discover all FrameLayouts in backgroundRow (they have tags)
         val bgRow = findViewById<ViewGroup>(R.id.backgroundRow)
         val ids = mutableListOf<Int>()
         for (i in 0 until bgRow.childCount) {
@@ -45,20 +51,46 @@ class SettingsActivity : AppCompatActivity() {
         }
         backgroundTileIds = ids
 
-        viewPagerSettingsDecks = findViewById(R.id.viewPagerSettingsDecks)
-        val adapter = DeckCarouselAdapter(CardDeckRegistry.ALL, compact = true)
-        viewPagerSettingsDecks.adapter = adapter
-        viewPagerSettingsDecks.offscreenPageLimit = 1
-        viewPagerSettingsDecks.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                val deck = CardDeckRegistry.ALL.getOrNull(position) ?: return
-                if (!deck.available) return
-                settingsHandler.updateSetting(Configuration.CARD_TYPE.value, deck.id)
-                updateHeroPreview()
-            }
-        })
+        deckTabLayout = findViewById(R.id.settingsDeckTabLayout)
+        deckRecycler = findViewById(R.id.settingsDeckGrid)
+        deckSelectedName = findViewById(R.id.settingsDeckSelectedName)
+
+        deckRecycler.layoutManager = GridLayoutManager(this, 3)
+
+        setupDeckAdapters()
+        setupDeckTabs()
 
         readConfigurations()
+    }
+
+    private fun setupDeckAdapters() {
+        DeckRegion.values().forEach { region ->
+            deckAdapterByRegion[region] = DeckGridAdapter(CardDeckRegistry.byRegion(region)) { deck ->
+                if (!deck.available) return@DeckGridAdapter
+                settingsHandler.updateSetting(Configuration.CARD_TYPE.value, deck.id)
+                deckSelectedName.text = getString(deck.labelRes)
+                deckAdapterByRegion.values.forEach { it.setSelectedId(deck.id) }
+                updateHeroPreview()
+            }
+        }
+    }
+
+    private fun setupDeckTabs() {
+        deckTabLayout.addTab(deckTabLayout.newTab().setText(R.string.region_nord))
+        deckTabLayout.addTab(deckTabLayout.newTab().setText(R.string.region_sud_isole))
+        deckTabLayout.addTab(deckTabLayout.newTab().setText(R.string.region_internazionali))
+
+        deckTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                showDeckRegion(DeckRegion.values()[tab.position])
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+    }
+
+    private fun showDeckRegion(region: DeckRegion) {
+        deckRecycler.adapter = deckAdapterByRegion[region]
     }
 
     fun selectCardBack(view: View) {
@@ -129,14 +161,12 @@ class SettingsActivity : AppCompatActivity() {
         val cardTypeTag = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
         val cardBackTag = settingsHandler.readValue(Configuration.CARD_BACK.value) ?: "bg2"
 
-        // Update hero background
         val heroBg = findViewById<ImageView>(R.id.heroBackgroundImage)
         val bgDrawableId = resources.getIdentifier(backgroundTag, "drawable", packageName)
         if (bgDrawableId != 0) {
             heroBg.setImageDrawable(ContextCompat.getDrawable(this, bgDrawableId))
         }
 
-        // Update 3 cards (use cards b1, c1, d1 of card type) + 1 card back
         val cardIds = listOf(R.id.heroCard1, R.id.heroCard2, R.id.heroCard3)
         val sampleCards = listOf("${cardTypeTag}_b1", "${cardTypeTag}_c1", "${cardTypeTag}_d1")
         cardIds.forEachIndexed { idx, viewId ->
@@ -149,7 +179,6 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Update card back, matching front card insets so it appears the same effective size
         val backImg = findViewById<ImageView>(R.id.heroCardBack)
         val backDrawableId = resources.getIdentifier(cardBackTag, "drawable", packageName)
         if (backDrawableId != 0) {
@@ -168,7 +197,12 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<Switch>(R.id.switchFastDeal).isChecked = (fastDeal == "enabled")
 
         val cardType = settingsHandler.readValue(Configuration.CARD_TYPE.value) ?: "piacentine"
-        viewPagerSettingsDecks.setCurrentItem(CardDeckRegistry.indexOf(cardType), false)
+        val currentDeck = CardDeckRegistry.byId(cardType)
+        deckSelectedName.text = getString(currentDeck.labelRes)
+        deckAdapterByRegion.values.forEach { it.setSelectedId(cardType) }
+        val tabIndex = DeckRegion.values().indexOf(currentDeck.region)
+        deckTabLayout.getTabAt(tabIndex)?.select()
+        showDeckRegion(currentDeck.region)
 
         val cardBack = settingsHandler.readValue(Configuration.CARD_BACK.value) ?: "bg2"
         updateSelection(cardBackTileIds, cardBack)
