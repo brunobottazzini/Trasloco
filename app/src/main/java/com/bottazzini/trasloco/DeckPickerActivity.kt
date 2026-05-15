@@ -2,23 +2,23 @@ package com.bottazzini.trasloco
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.SettingsHandler
+import com.bottazzini.trasloco.utils.CardDeckRegistry
+import com.bottazzini.trasloco.utils.DeckCarouselAdapter
 import com.bottazzini.trasloco.utils.WindowInsetsUtils
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class DeckPickerActivity : AppCompatActivity() {
 
     private lateinit var settingsHandler: SettingsHandler
-    private var selectedTag: String? = null
-
-    private lateinit var tiles: List<LinearLayout>
+    private lateinit var viewPager: ViewPager2
     private lateinit var confirmButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,42 +31,45 @@ class DeckPickerActivity : AppCompatActivity() {
 
         settingsHandler = SettingsHandler(applicationContext)
 
-        tiles = listOf(
-            findViewById(R.id.tilePiacentine),
-            findViewById(R.id.tileNapoletane),
-            findViewById(R.id.tileFrancesi)
-        )
+        viewPager = findViewById(R.id.viewPagerDecks)
         confirmButton = findViewById(R.id.buttonDeckConfirm)
 
-        tiles.forEach { tile ->
-            tile.setOnClickListener { onTileSelected(tile) }
-        }
+        val adapter = DeckCarouselAdapter(CardDeckRegistry.ALL)
+        viewPager.adapter = adapter
+        viewPager.offscreenPageLimit = 1
+
+        val dots = findViewById<TabLayout>(R.id.deckDotsIndicator)
+        TabLayoutMediator(dots, viewPager) { _, _ -> }.attach()
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                updateConfirmButton(position)
+            }
+        })
+
+        val initialPage = savedInstanceState?.getInt("selected_page", 0) ?: 0
+        viewPager.setCurrentItem(initialPage, false)
+        updateConfirmButton(initialPage)
 
         confirmButton.setOnClickListener { confirmSelection() }
-
-        savedInstanceState?.getString("selected_tag")?.let { tag ->
-            tiles.find { it.tag == tag }?.let { onTileSelected(it) }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        selectedTag?.let { outState.putString("selected_tag", it) }
+        outState.putInt("selected_page", viewPager.currentItem)
     }
 
-    private fun onTileSelected(selected: LinearLayout) {
-        tiles.forEach { tile ->
-            tile.background = ContextCompat.getDrawable(this, R.drawable.casino_tile_bg)
-        }
-        selected.background = ContextCompat.getDrawable(this, R.drawable.casino_tile_bg_primary)
-        selectedTag = selected.tag as String
-        confirmButton.isEnabled = true
-        confirmButton.alpha = 1f
+    private fun updateConfirmButton(position: Int) {
+        val deck = CardDeckRegistry.ALL.getOrNull(position)
+        val enabled = deck?.available == true
+        confirmButton.isEnabled = enabled
+        confirmButton.alpha = if (enabled) 1f else 0.4f
     }
 
     private fun confirmSelection() {
-        val tag = selectedTag ?: return
-        settingsHandler.updateSetting(Configuration.CARD_TYPE.value, tag)
+        val deck = CardDeckRegistry.ALL.getOrNull(viewPager.currentItem) ?: return
+        if (!deck.available) return
+        settingsHandler.updateSetting(Configuration.CARD_TYPE.value, deck.id)
         getSharedPreferences("trasloco_prefs", MODE_PRIVATE)
             .edit().putBoolean("deck_chosen", true).apply()
         startActivity(Intent(this, MainActivity::class.java))
