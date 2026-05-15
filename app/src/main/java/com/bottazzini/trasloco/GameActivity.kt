@@ -894,6 +894,20 @@ class GameActivity : AppCompatActivity() {
         imageView.foreground =
             ContextCompat.getDrawable(this, R.drawable.subdeck_background_selector)
         imageView.isClickable = true
+        applyDeckInsets(imageView)
+    }
+
+    private fun applyDeckInsets(imageView: ImageView) {
+        val deck = com.bottazzini.trasloco.utils.CardDeckRegistry.byId(cardType)
+        if (deck.insetX == 0f && deck.insetY == 0f) {
+            imageView.setPadding(0, 0, 0, 0)
+            return
+        }
+        imageView.post {
+            val px = (imageView.width * deck.insetX / 2f).toInt()
+            val py = (imageView.height * deck.insetY / 2f).toInt()
+            imageView.setPadding(px, py, px, py)
+        }
     }
 
     private fun linkedListOf(val1: Int, val2: Int): LinkedList<Int> {
