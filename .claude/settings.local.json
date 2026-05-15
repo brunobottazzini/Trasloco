@@ -79,14 +79,15 @@
       "Bash(./gradlew processDebugResources *)",
       "Bash(./gradlew :app:compileDebugKotlin -q)",
       "Bash(echo \"EXIT_CODE: $?\")",
-      "Bash(grep -v \"^+$\")"
+      "Bash(grep -v \"^+$\")",
       "Bash(xargs cat)",
       "Bash(git rm *)",
       "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/values* -name \"*.xml\")",
       "Bash(git -C /Users/bottazzini/Documents/Progetti/Trasloco add app/src/main/java/com/bottazzini/trasloco/YouWonActivity.kt)",
       "Bash(git -C /Users/bottazzini/Documents/Progetti/Trasloco commit -m ' *)",
       "Bash(git merge *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "Skill(superpowers:brainstorming)"
     ]
   }
 }
