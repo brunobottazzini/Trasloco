@@ -114,7 +114,22 @@
       "Bash(cp /tmp/deck_sourcing/bresciane/bresciane_*.png /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-xxhdpi/)",
       "Bash(cp /tmp/deck_sourcing/sarde/sarde_*.png /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-xxhdpi/)",
       "Bash(cp /tmp/deck_sourcing/siciliane/siciliane_*.png /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-xxhdpi/)",
-      "Bash(cp /tmp/deck_sourcing/trevisane/trevisane_*.png /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-xxhdpi/)"
+      "Bash(cp /tmp/deck_sourcing/trevisane/trevisane_*.png /Users/bottazzini/Documents/Trasloco/app/src/main/res/drawable-xxhdpi/)",
+      "Bash(curl -s \"https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:Sardinia_deck&cmtype=file&cmlimit=50&format=json\")",
+      "Bash(curl -s \"https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:Sicily_deck&cmtype=file&cmlimit=50&format=json\")",
+      "Bash(curl -s -A \"TraslocoAndroidApp/1.0 \\(bruno.bottazzini@infocert.it\\)\" -L \"https://commons.wikimedia.org/w/index.php?title=File:Carte_da_gioco_siciliane_-_bastoni.jpg&action=raw\")",
+      "Bash(rm -f siciliane_*.png)",
+      "Bash(cp /tmp/deck_sourcing/siciliane_v2/siciliane_*.png .)",
+      "Bash(pip3 install *)",
+      "Bash(/tmp/deck_sourcing/venv/bin/pip install *)",
+      "Bash(/tmp/deck_sourcing/venv/bin/python -c \"import numpy, scipy.ndimage; from PIL import Image; print\\('ok'\\)\")",
+      "Bash(/tmp/deck_sourcing/venv/bin/python -c \"import numpy; from PIL import Image; print\\('ok'\\)\")",
+      "Bash(/tmp/deck_sourcing/venv/bin/python -c \"import scipy.ndimage; print\\('scipy ok'\\)\")",
+      "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/detect_cards.py /tmp/deck_sourcing/sarde/source.jpg 4 10)",
+      "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/detect_cards2.py /tmp/deck_sourcing/sarde/source.jpg 4 10 /tmp/deck_sourcing/sarde/overlay.png)",
+      "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/detect3.py /tmp/deck_sourcing/sarde/source.jpg 4 10 /tmp/deck_sourcing/sarde/overlay3.png)",
+      "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/grid_overlay.py /tmp/deck_sourcing/sarde/source.jpg /tmp/deck_sourcing/sarde/grid.png 4 10)",
+      "Bash(/tmp/deck_sourcing/venv/bin/python)"
     ]
   }
 }
