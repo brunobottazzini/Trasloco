@@ -129,7 +129,18 @@
       "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/detect_cards2.py /tmp/deck_sourcing/sarde/source.jpg 4 10 /tmp/deck_sourcing/sarde/overlay.png)",
       "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/detect3.py /tmp/deck_sourcing/sarde/source.jpg 4 10 /tmp/deck_sourcing/sarde/overlay3.png)",
       "Bash(/tmp/deck_sourcing/venv/bin/python /tmp/deck_sourcing/grid_overlay.py /tmp/deck_sourcing/sarde/source.jpg /tmp/deck_sourcing/sarde/grid.png 4 10)",
-      "Bash(/tmp/deck_sourcing/venv/bin/python)"
+      "Bash(/tmp/deck_sourcing/venv/bin/python)",
+      "Bash(grep -E '\\\\.\\(tsx|ts|jsx|js|css|html\\)$')",
+      "Bash(grep -E '\\\\.\\(tsx|ts|jsx|js|css|svelte|vue|html\\)$')",
+      "Bash(grep -E '\\\\.\\(kt|xml|java\\)$')",
+      "Read(//Users/bottazzini/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/**)",
+      "Bash(bash scripts/start-server.sh --project-dir /Users/bottazzini/Documents/Progetti/Trasloco)",
+      "Read(//usr/local/bin/**)",
+      "Read(//Users/bottazzini/.nvm/versions/**)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:executing-plans)",
+      "Bash(./gradlew testDebugUnitTest --tests \"com.bottazzini.trasloco.utils.CardDeckRegistryTest\")",
+      "Bash(./gradlew assembleDebug testDebugUnitTest)"
     ]
   }
 }
