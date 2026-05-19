@@ -138,8 +138,13 @@ class AchievementEngine(
 
                 AchievementTrigger.APP_OPENED -> {
                     val cal = Calendar.getInstance().apply { timeInMillis = now }
-                    if (cal.get(Calendar.MONTH) == Calendar.DECEMBER &&
-                        cal.get(Calendar.DAY_OF_MONTH) == 25) candidates.add("christmas")
+                    val month = cal.get(Calendar.MONTH)
+                    val day   = cal.get(Calendar.DAY_OF_MONTH)
+                    if (month == Calendar.DECEMBER && day == 25) candidates.add("christmas")
+                    if (month == Calendar.JANUARY  && day == 1)  candidates.add("new_year")
+                    if (month == Calendar.OCTOBER  && day == 31) candidates.add("halloween")
+                    if (month == Calendar.AUGUST   && day == 15) candidates.add("ferragosto")
+                    if (month == Calendar.DECEMBER && day == 31) candidates.add("new_year_eve")
                 }
 
                 AchievementTrigger.TUTORIAL_COMPLETED -> {

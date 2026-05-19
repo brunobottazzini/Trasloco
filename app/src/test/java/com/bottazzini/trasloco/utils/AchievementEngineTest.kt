@@ -613,4 +613,76 @@ class AchievementEngineTest {
         )
         assertTrue("new_year_eve" in result)
     }
+
+    // ---- APP_OPENED holiday achievements ----
+
+    @Test
+    fun `new_year unlocks on APP_OPENED on January 1st`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.JANUARY); set(Calendar.DAY_OF_MONTH, 1)
+        }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.APP_OPENED,
+            totalWins = 0L, totalGames = 0L, currentStreak = 0L,
+            lastGame = null, recentGames = emptyList(),
+            isNewTimeRecord = false, now = cal.timeInMillis
+        )
+        assertTrue("new_year" in result)
+    }
+
+    @Test
+    fun `new_year does not unlock on January 2nd`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.JANUARY); set(Calendar.DAY_OF_MONTH, 2)
+        }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.APP_OPENED,
+            totalWins = 0L, totalGames = 0L, currentStreak = 0L,
+            lastGame = null, recentGames = emptyList(),
+            isNewTimeRecord = false, now = cal.timeInMillis
+        )
+        assertFalse("new_year" in result)
+    }
+
+    @Test
+    fun `halloween unlocks on APP_OPENED on October 31st`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.OCTOBER); set(Calendar.DAY_OF_MONTH, 31)
+        }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.APP_OPENED,
+            totalWins = 0L, totalGames = 0L, currentStreak = 0L,
+            lastGame = null, recentGames = emptyList(),
+            isNewTimeRecord = false, now = cal.timeInMillis
+        )
+        assertTrue("halloween" in result)
+    }
+
+    @Test
+    fun `ferragosto unlocks on APP_OPENED on August 15th`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.AUGUST); set(Calendar.DAY_OF_MONTH, 15)
+        }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.APP_OPENED,
+            totalWins = 0L, totalGames = 0L, currentStreak = 0L,
+            lastGame = null, recentGames = emptyList(),
+            isNewTimeRecord = false, now = cal.timeInMillis
+        )
+        assertTrue("ferragosto" in result)
+    }
+
+    @Test
+    fun `new_year_eve unlocks on APP_OPENED on December 31st`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.DECEMBER); set(Calendar.DAY_OF_MONTH, 31)
+        }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.APP_OPENED,
+            totalWins = 0L, totalGames = 0L, currentStreak = 0L,
+            lastGame = null, recentGames = emptyList(),
+            isNewTimeRecord = false, now = cal.timeInMillis
+        )
+        assertTrue("new_year_eve" in result)
+    }
 }
