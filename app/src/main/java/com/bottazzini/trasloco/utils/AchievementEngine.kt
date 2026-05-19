@@ -60,6 +60,9 @@ class AchievementEngine(
                         val hour = cal.get(Calendar.HOUR_OF_DAY)
                         if (hour < 7)  candidates.add("morning")
                         if (hour == 0) candidates.add("midnight")
+
+                        if (game.durationMs > 15 * 60 * 1000L) candidates.add("slow_win")
+                        if (game.hintsUsed >= 5) candidates.add("hint_hero")
                     }
 
                     // Resilient: recentGames[0]=win, [1..3]=losses
@@ -68,6 +71,26 @@ class AchievementEngine(
                         !recentGames[1].won &&
                         !recentGames[2].won &&
                         !recentGames[3].won) candidates.add("resilient")
+
+                    // Stavo solo scaldando
+                    if (recentGames.size >= 3 &&
+                        recentGames[0].won &&
+                        !recentGames[1].won &&
+                        !recentGames[2].won) candidates.add("comeback_2")
+
+                    // Hint in tutte le ultime 5 partite
+                    if (recentGames.size >= 5 && recentGames.take(5).all { it.hintsUsed > 0 })
+                        candidates.add("hint_addict")
+
+                    // 3 vittorie di fila senza hint né auto-mosse
+                    if (recentGames.size >= 3 && recentGames.take(3).all {
+                            it.won && it.hintsUsed == 0 && it.autoMoves == 0 })
+                        candidates.add("perfectionist")
+
+                    // 3 vittorie di fila in meno di 2 minuti
+                    if (recentGames.size >= 3 && recentGames.take(3).all {
+                            it.won && it.durationMs < 2 * 60 * 1000L })
+                        candidates.add("speed_freak")
 
                     if (isNewTimeRecord) candidates.add("new_record")
 

@@ -314,4 +314,162 @@ class AchievementEngineTest {
         )
         assertFalse("big_loser" in result)
     }
+
+    // ---- GAME_WON style achievements ----
+
+    @Test
+    fun `comeback_2 unlocks when win follows 2 consecutive losses`() {
+        val win = wonGame(120_000L)
+        val games = listOf(win, lostGame(), lostGame())
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 3L, currentStreak = 1L,
+            lastGame = win, recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("comeback_2" in result)
+    }
+
+    @Test
+    fun `comeback_2 does not unlock when only one prior loss`() {
+        val win = wonGame(120_000L)
+        val games = listOf(win, lostGame())
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 2L, currentStreak = 1L,
+            lastGame = win, recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("comeback_2" in result)
+    }
+
+    @Test
+    fun `slow_win unlocks for game longer than 15 minutes`() {
+        val game = wonGame(16 * 60 * 1000L)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("slow_win" in result)
+    }
+
+    @Test
+    fun `slow_win does not unlock for game under 15 minutes`() {
+        val game = wonGame(14 * 60 * 1000L)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("slow_win" in result)
+    }
+
+    @Test
+    fun `hint_hero unlocks when 5 or more hints used`() {
+        val game = wonGame(200_000L, hintsUsed = 5)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("hint_hero" in result)
+    }
+
+    @Test
+    fun `hint_hero does not unlock with fewer than 5 hints`() {
+        val game = wonGame(200_000L, hintsUsed = 4)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("hint_hero" in result)
+    }
+
+    @Test
+    fun `hint_addict unlocks when last 5 games all used hints`() {
+        val games = List(5) { wonGame(200_000L, hintsUsed = 1) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 5L, totalGames = 5L, currentStreak = 1L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("hint_addict" in result)
+    }
+
+    @Test
+    fun `hint_addict does not unlock when one of last 5 games had no hints`() {
+        val games = listOf(
+            wonGame(200_000L, hintsUsed = 1),
+            wonGame(200_000L, hintsUsed = 0),
+            wonGame(200_000L, hintsUsed = 1),
+            wonGame(200_000L, hintsUsed = 1),
+            wonGame(200_000L, hintsUsed = 1)
+        )
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 5L, totalGames = 5L, currentStreak = 1L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("hint_addict" in result)
+    }
+
+    @Test
+    fun `perfectionist unlocks when last 3 wins have zero hints and auto moves`() {
+        val games = List(3) { wonGame(200_000L, hintsUsed = 0, autoMoves = 0) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("perfectionist" in result)
+    }
+
+    @Test
+    fun `perfectionist does not unlock when any game used hints`() {
+        val games = listOf(
+            wonGame(200_000L, hintsUsed = 0, autoMoves = 0),
+            wonGame(200_000L, hintsUsed = 1, autoMoves = 0),
+            wonGame(200_000L, hintsUsed = 0, autoMoves = 0)
+        )
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("perfectionist" in result)
+    }
+
+    @Test
+    fun `speed_freak unlocks when last 3 games are all wins under 2 minutes`() {
+        val games = List(3) { wonGame(90_000L) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("speed_freak" in result)
+    }
+
+    @Test
+    fun `speed_freak does not unlock when one game is over 2 minutes`() {
+        val games = listOf(wonGame(90_000L), wonGame(150_000L), wonGame(90_000L))
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("speed_freak" in result)
+    }
 }
