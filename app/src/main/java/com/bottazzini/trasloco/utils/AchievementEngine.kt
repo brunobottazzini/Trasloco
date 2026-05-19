@@ -27,7 +27,7 @@ class AchievementEngine(
             totalGames: Long,
             currentStreak: Long,
             lastGame: GameLog?,
-            lastFourGames: List<GameLog>,
+            recentGames: List<GameLog>,
             isNewTimeRecord: Boolean,
             now: Long
         ): List<String> {
@@ -62,12 +62,12 @@ class AchievementEngine(
                         if (hour == 0) candidates.add("midnight")
                     }
 
-                    // Resilient: lastFourGames[0]=win, [1..3]=losses
-                    if (lastFourGames.size >= 4 &&
-                        lastFourGames[0].won &&
-                        !lastFourGames[1].won &&
-                        !lastFourGames[2].won &&
-                        !lastFourGames[3].won) candidates.add("resilient")
+                    // Resilient: recentGames[0]=win, [1..3]=losses
+                    if (recentGames.size >= 4 &&
+                        recentGames[0].won &&
+                        !recentGames[1].won &&
+                        !recentGames[2].won &&
+                        !recentGames[3].won) candidates.add("resilient")
 
                     if (isNewTimeRecord) candidates.add("new_record")
 
@@ -107,14 +107,14 @@ class AchievementEngine(
         val totalWins = recordsHandler.getTotalWins()
         val totalGames = gameLogRepo.countAll()
         val currentStreak = recordsHandler.readCurrentValue(Type.CONSECUTIVE) ?: 0L
-        val lastFourGames = gameLogRepo.getLastN(4)
-        val lastGame = lastFourGames.firstOrNull()
+        val recentGames = gameLogRepo.getLastN(10)
+        val lastGame = recentGames.firstOrNull()
         val isNewTimeRecord = recordsHandler.readNew(Type.TIME) ?: false
         val now = System.currentTimeMillis()
 
         val candidateIds = evaluateConditions(
             trigger, totalWins, totalGames, currentStreak,
-            lastGame, lastFourGames, isNewTimeRecord, now
+            lastGame, recentGames, isNewTimeRecord, now
         )
 
         val newIds = candidateIds.filter { !achievementsRepo.isUnlocked(it) }
