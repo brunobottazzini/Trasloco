@@ -472,4 +472,145 @@ class AchievementEngineTest {
         )
         assertFalse("speed_freak" in result)
     }
+
+    // ---- GAME_WON time/day achievements ----
+
+    @Test
+    fun `lunch_win unlocks for game won between 12 and 13 hours`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 12); set(Calendar.MINUTE, 30)
+        }
+        val game = wonGame(200_000L, timestamp = cal.timeInMillis)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("lunch_win" in result)
+    }
+
+    @Test
+    fun `lunch_win does not unlock outside 12-13 hours`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 15); set(Calendar.MINUTE, 0)
+        }
+        val game = wonGame(200_000L, timestamp = cal.timeInMillis)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("lunch_win" in result)
+    }
+
+    @Test
+    fun `sunday_player unlocks for game won on Sunday`() {
+        val cal = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) }
+        val game = wonGame(200_000L, timestamp = cal.timeInMillis)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("sunday_player" in result)
+    }
+
+    @Test
+    fun `night_owl_3 unlocks when last 3 games are played between midnight and 5am`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 2); set(Calendar.MINUTE, 0)
+        }
+        val games = List(3) { wonGame(200_000L, timestamp = cal.timeInMillis) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("night_owl_3" in result)
+    }
+
+    @Test
+    fun `night_owl_3 does not unlock when a game is played after 6am`() {
+        val nightCal = Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 2) }
+        val dayCal   = Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 10) }
+        val games = listOf(
+            wonGame(200_000L, timestamp = nightCal.timeInMillis),
+            wonGame(200_000L, timestamp = dayCal.timeInMillis),
+            wonGame(200_000L, timestamp = nightCal.timeInMillis)
+        )
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("night_owl_3" in result)
+    }
+
+    @Test
+    fun `same_day_3 unlocks when last 3 wins are on the same calendar day`() {
+        val cal = Calendar.getInstance().apply {
+            set(2026, Calendar.JANUARY, 1, 10, 0, 0)
+        }
+        val ts = cal.timeInMillis
+        val games = List(3) { wonGame(200_000L, timestamp = ts + it * 3_600_000L) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("same_day_3" in result)
+    }
+
+    @Test
+    fun `same_day_3 does not unlock when wins span different days`() {
+        val day1 = Calendar.getInstance().apply { set(2026, Calendar.JANUARY, 1, 10, 0, 0) }.timeInMillis
+        val day2 = Calendar.getInstance().apply { set(2026, Calendar.JANUARY, 2, 10, 0, 0) }.timeInMillis
+        val games = listOf(
+            wonGame(200_000L, timestamp = day1),
+            wonGame(200_000L, timestamp = day2),
+            wonGame(200_000L, timestamp = day1)
+        )
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 3L, totalGames = 3L, currentStreak = 3L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("same_day_3" in result)
+    }
+
+    @Test
+    fun `same_day_5 unlocks when last 5 games are on the same calendar day`() {
+        val cal = Calendar.getInstance().apply { set(2026, Calendar.MARCH, 15, 9, 0, 0) }
+        val ts = cal.timeInMillis
+        val games = List(5) { wonGame(200_000L, timestamp = ts + it * 1_800_000L) }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 5L, totalGames = 5L, currentStreak = 5L,
+            lastGame = games[0], recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("same_day_5" in result)
+    }
+
+    @Test
+    fun `new_year_eve unlocks for game won on December 31`() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.MONTH, Calendar.DECEMBER); set(Calendar.DAY_OF_MONTH, 31)
+        }
+        val game = wonGame(200_000L, timestamp = cal.timeInMillis)
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_WON,
+            totalWins = 1L, totalGames = 1L, currentStreak = 1L,
+            lastGame = game, recentGames = listOf(game),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("new_year_eve" in result)
+    }
 }

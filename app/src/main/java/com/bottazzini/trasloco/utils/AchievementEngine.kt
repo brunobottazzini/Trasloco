@@ -60,10 +60,31 @@ class AchievementEngine(
                         val hour = cal.get(Calendar.HOUR_OF_DAY)
                         if (hour < 7)  candidates.add("morning")
                         if (hour == 0) candidates.add("midnight")
+                        if (hour in 12..13) candidates.add("lunch_win")
+                        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) candidates.add("sunday_player")
+                        if (cal.get(Calendar.MONTH) == Calendar.DECEMBER &&
+                            cal.get(Calendar.DAY_OF_MONTH) == 31) candidates.add("new_year_eve")
 
                         if (game.durationMs > 15 * 60 * 1000L) candidates.add("slow_win")
                         if (game.hintsUsed >= 5) candidates.add("hint_hero")
                     }
+
+                    // 3 partite di fila dopo mezzanotte (ore 0-5)
+                    if (recentGames.size >= 3 && recentGames.take(3).all {
+                            Calendar.getInstance().apply { timeInMillis = it.timestamp }
+                                .get(Calendar.HOUR_OF_DAY) in 0..5 })
+                        candidates.add("night_owl_3")
+
+                    // 3 vittorie nello stesso giorno
+                    val lastThreeWins = recentGames.filter { it.won }.take(3)
+                    if (lastThreeWins.size == 3 &&
+                        lastThreeWins.map { dayKey(it.timestamp) }.distinct().size == 1)
+                        candidates.add("same_day_3")
+
+                    // 5 partite (qualsiasi risultato) nello stesso giorno
+                    if (recentGames.size >= 5 &&
+                        recentGames.take(5).map { dayKey(it.timestamp) }.distinct().size == 1)
+                        candidates.add("same_day_5")
 
                     // Resilient: recentGames[0]=win, [1..3]=losses
                     if (recentGames.size >= 4 &&
@@ -127,6 +148,15 @@ class AchievementEngine(
             }
 
             return candidates
+        }
+
+        private fun dayKey(ts: Long): String {
+            val cal = Calendar.getInstance().apply { timeInMillis = ts }
+            return "%d-%02d-%02d".format(
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            )
         }
     }
 
