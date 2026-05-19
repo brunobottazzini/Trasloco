@@ -140,7 +140,11 @@
       "Skill(superpowers:writing-plans)",
       "Skill(superpowers:executing-plans)",
       "Bash(./gradlew testDebugUnitTest --tests \"com.bottazzini.trasloco.utils.CardDeckRegistryTest\")",
-      "Bash(./gradlew assembleDebug testDebugUnitTest)"
+      "Bash(./gradlew assembleDebug testDebugUnitTest)",
+      "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/drawable* -name \"*button*\" -o -name \"*selector*\" -o -name \"*ripple*\")",
+      "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/drawable* -name \"casino_tile*\" -o -name \"casino_corner*\")",
+      "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/values* -name \"colors*\")",
+      "Bash(find *)"
     ]
   }
 }

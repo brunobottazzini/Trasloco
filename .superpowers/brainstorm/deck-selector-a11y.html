@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibilità font grandi</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a0a0a; color: #d4af37; font-family: Georgia, serif; padding: 24px; }
+  h1 { text-align:center; font-size:20px; font-style:italic; letter-spacing:2px; margin-bottom:6px; }
+  .subtitle { text-align:center; color:#a07830; font-size:12px; margin-bottom:28px; font-style:italic; }
+
+  .columns { display:flex; gap:20px; align-items:flex-start; }
+  .col { flex:1; }
+  .col-title {
+    font-size:12px; letter-spacing:1px; text-transform:uppercase;
+    color:#a07830; font-family:sans-serif;
+    border-bottom:1px solid #3a1a1a; padding-bottom:6px; margin-bottom:12px;
+  }
+  .col-title.bad { color:#c06060; }
+  .col-title.good { color:#60c060; }
+
+  .phone {
+    background:#2a1010; border:2px solid #5a3010; border-radius:18px;
+    padding:14px 10px; margin-bottom:12px;
+  }
+  .phone-label { font-size:9px; color:#a07830; font-family:sans-serif; text-align:center; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+
+  /* TABS */
+  .geo-tabs { display:flex; border-bottom:1px solid #5a3010; margin-bottom:10px; }
+  .geo-tab {
+    flex:1; text-align:center; padding:5px 2px;
+    font-family:sans-serif; color:#a07830; border-bottom:2px solid transparent;
+  }
+  .geo-tab.active { color:#d4af37; border-bottom:2px solid #d4af37; font-weight:bold; }
+
+  /* PROBLEM: tiny tiles with name inside */
+  .problem-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:4px; margin-bottom:8px;
+  }
+  .problem-tile {
+    background:#3a1a1a; border:1.5px solid #5a3010; border-radius:6px;
+    padding:4px 2px; text-align:center;
+  }
+  .problem-tile.sel { border-color:#d4af37; background:#4a2010; }
+  .cards-row { display:flex; justify-content:center; gap:1px; margin-bottom:2px; }
+  .c { border-radius:2px; border:1px solid #8a6030; }
+  .c.a { background:#c8a060; }
+  .c.r { background:#b03030; border-color:#803030; }
+  .c.d { background:#604a30; border-color:#504030; }
+  .c.g { background:#3a6030; border-color:#2a4020; }
+  .c.b { background:#3050a0; border-color:#204080; }
+  /* Large font simulation */
+  .large-name { font-size:14px; color:#d4af37; font-family:sans-serif; line-height:1.2; }
+  .normal-name { font-size:9px; color:#d4af37; font-family:sans-serif; }
+  .overflow-name {
+    font-size:14px; color:#c06060; font-family:sans-serif; line-height:1.1;
+    word-break:break-word;
+  }
+
+  /* SOLUTION A: name label outside, tiles = previews only */
+  .selected-label {
+    background:#4a2010; border:1px solid #d4af37; border-radius:8px;
+    padding:6px 10px; text-align:center; margin-bottom:8px;
+    font-family:sans-serif;
+  }
+  .selected-label .sl-hint { font-size:10px; color:#a07830; margin-bottom:2px; }
+  .selected-label .sl-name { font-size:16px; color:#d4af37; font-weight:bold; font-style:italic; }
+  .selected-label .sl-name.large { font-size:20px; }
+
+  .solution-grid {
+    display:grid; gap:5px; margin-bottom:8px;
+  }
+  .solution-grid.cols3 { grid-template-columns:repeat(3,1fr); }
+  .solution-grid.cols2 { grid-template-columns:repeat(2,1fr); }
+
+  .solution-tile {
+    background:#3a1a1a; border:1.5px solid #5a3010; border-radius:8px;
+    padding:8px 6px; text-align:center; cursor:pointer;
+  }
+  .solution-tile.sel { border-color:#d4af37; background:#4a2010; }
+
+  /* SOLUTION B: dynamic cols */
+  .dyn-grid-normal { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-bottom:8px; }
+  .dyn-grid-large  { display:grid; grid-template-columns:repeat(2,1fr); gap:5px; margin-bottom:8px; }
+  .dyn-tile {
+    background:#3a1a1a; border:1.5px solid #5a3010; border-radius:8px;
+    padding:6px 4px; text-align:center;
+  }
+  .dyn-tile.sel { border-color:#d4af37; background:#4a2010; }
+
+  .confirm-btn {
+    display:block; width:100%; background:#5a3010; border:1px solid #d4af37;
+    border-radius:10px; color:#d4af37; text-align:center; padding:8px;
+    font-style:italic; font-weight:bold; letter-spacing:1px; font-family:sans-serif;
+  }
+
+  /* Badge */
+  .badge {
+    display:inline-block; padding:2px 8px; border-radius:8px;
+    font-size:10px; font-family:sans-serif; font-weight:bold; letter-spacing:0.5px;
+    vertical-align:middle; margin-left:6px;
+  }
+  .badge.bad { background:#c06060; color:#fff; }
+  .badge.good { background:#60c060; color:#1a0a0a; }
+
+  /* Slider for font simulation */
+  .slider-row {
+    display:flex; align-items:center; gap:10px; margin-bottom:20px;
+    background:#2a1010; border:1px solid #5a3010; border-radius:8px; padding:10px 14px;
+  }
+  .slider-label { font-size:12px; color:#a07830; font-family:sans-serif; white-space:nowrap; }
+  input[type=range] { flex:1; accent-color:#d4af37; }
+  .slider-val { font-size:12px; color:#d4af37; font-family:sans-serif; min-width:60px; text-align:right; }
+
+  .pros-cons { display:flex; gap:8px; margin-top:4px; }
+  .pros, .cons { flex:1; border-radius:6px; padding:6px 8px; font-family:sans-serif; }
+  .pros { background:#1a3010; border:1px solid #305020; }
+  .cons { background:#301a1a; border:1px solid #503020; }
+  .pros h4, .cons h4 { font-size:10px; font-weight:bold; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+  .pros h4 { color:#60c060; } .cons h4 { color:#c06060; }
+  .pros li, .cons li { font-size:11px; color:#a09080; margin-left:12px; line-height:1.4; }
+
+  .divider { border:none; border-top:1px solid #3a1a1a; margin:20px 0; }
+  .section-title { font-size:14px; font-style:italic; color:#d4af37; margin-bottom:12px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+<h1>✦ Accessibilità — Font Grandi ✦</h1>
+<p class="subtitle">Il problema con 3-4 colonne · due soluzioni a confronto</p>
+
+<!-- PROBLEM vs SOLUTION side by side -->
+<div class="columns" style="margin-bottom:28px;">
+
+  <!-- PROBLEMA -->
+  <div class="col">
+    <div class="col-title bad">✗ Problema — nome dentro il tile</div>
+    <div class="phone">
+      <div class="phone-label">Font grande (accessibilità)</div>
+      <div class="geo-tabs">
+        <div class="geo-tab active" style="font-size:14px;">Nord</div>
+        <div class="geo-tab" style="font-size:14px;">Sud</div>
+        <div class="geo-tab" style="font-size:14px;">Intl</div>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-tile sel">
+          <div class="cards-row"><div class="c a" style="width:10px;height:15px"></div><div class="c r" style="width:10px;height:15px"></div></div>
+          <div class="overflow-name">Piacen­tine</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c d" style="width:10px;height:15px"></div><div class="c r" style="width:10px;height:15px"></div></div>
+          <div class="overflow-name">Berga­masche</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c r" style="width:10px;height:15px"></div><div class="c a" style="width:10px;height:15px"></div></div>
+          <div class="overflow-name">Bolo­gnesi</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c g" style="width:10px;height:15px"></div><div class="c r" style="width:10px;height:15px"></div></div>
+          <div class="overflow-name">Bresc­iane</div>
+        </div>
+      </div>
+      <div style="background:#5a1010;border:1px solid #c06060;border-radius:6px;padding:6px;text-align:center;">
+        <div style="font-size:11px;color:#c06060;font-family:sans-serif;">⚠ I nomi si sovrappongono, i tile si distorcono</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUZIONE RACCOMANDATA -->
+  <div class="col">
+    <div class="col-title good">✓ Soluzione — nome fuori dal tile <span class="badge good">Consigliato</span></div>
+    <div class="phone">
+      <div class="phone-label">Font grande (accessibilità)</div>
+      <div class="geo-tabs">
+        <div class="geo-tab active" style="font-size:14px;">Nord</div>
+        <div class="geo-tab" style="font-size:14px;">Sud &amp; Isole</div>
+        <div class="geo-tab" style="font-size:14px;">Intl</div>
+      </div>
+      <!-- Nome selezionato in evidenza -->
+      <div class="selected-label">
+        <div class="sl-hint">Mazzo selezionato</div>
+        <div class="sl-name large">Piacentine</div>
+      </div>
+      <!-- Tiles solo con preview carte, no nome -->
+      <div class="solution-grid cols3">
+        <div class="solution-tile sel" onclick="pickDeck(this,'Piacentine')">
+          <div class="cards-row"><div class="c a" style="width:16px;height:24px"></div><div class="c r" style="width:16px;height:24px"></div><div class="c a" style="width:16px;height:24px"></div></div>
+        </div>
+        <div class="solution-tile" onclick="pickDeck(this,'Bergamasche')">
+          <div class="cards-row"><div class="c d" style="width:16px;height:24px"></div><div class="c r" style="width:16px;height:24px"></div><div class="c d" style="width:16px;height:24px"></div></div>
+        </div>
+        <div class="solution-tile" onclick="pickDeck(this,'Bolognesi')">
+          <div class="cards-row"><div class="c r" style="width:16px;height:24px"></div><div class="c a" style="width:16px;height:24px"></div><div class="c r" style="width:16px;height:24px"></div></div>
+        </div>
+        <div class="solution-tile" onclick="pickDeck(this,'Bresciane')">
+          <div class="cards-row"><div class="c g" style="width:16px;height:24px"></div><div class="c r" style="width:16px;height:24px"></div><div class="c g" style="width:16px;height:24px"></div></div>
+        </div>
+        <div class="solution-tile" onclick="pickDeck(this,'Genovesi')">
+          <div class="cards-row"><div class="c a" style="width:16px;height:24px"></div><div class="c d" style="width:16px;height:24px"></div><div class="c a" style="width:16px;height:24px"></div></div>
+        </div>
+        <div class="solution-tile" onclick="pickDeck(this,'Milanesi')">
+          <div class="cards-row"><div class="c r" style="width:16px;height:24px"></div><div class="c b" style="width:16px;height:24px"></div><div class="c r" style="width:16px;height:24px"></div></div>
+        </div>
+      </div>
+      <div class="confirm-btn" id="confirm-a11y" style="font-size:15px;">Gioca con le Piacentine →</div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros"><h4>Pro</h4><ul><li>Nome sempre leggibile</li><li>Tile non si distorcono</li><li>Funziona con qualsiasi font</li><li>Più visivo e pulito</li></ul></div>
+      <div class="cons"><h4>Contro</h4><ul><li>I tile non mostrano il nome inline<br>(ma è visibile sopra)</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SETTINGS VERSION -->
+<div class="section-title">✦ Nelle Impostazioni — stesso approccio</div>
+
+<div class="columns">
+  <div class="col">
+    <div class="col-title bad">✗ Font grande — 4 colonne rotte</div>
+    <div class="phone">
+      <div class="phone-label">Settings · font grande</div>
+      <div class="geo-tabs">
+        <div class="geo-tab active" style="font-size:13px;">Nord</div>
+        <div class="geo-tab" style="font-size:13px;">Sud</div>
+        <div class="geo-tab" style="font-size:13px;">Intl</div>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-tile sel">
+          <div class="cards-row"><div class="c a" style="width:9px;height:13px"></div><div class="c r" style="width:9px;height:13px"></div></div>
+          <div class="overflow-name" style="font-size:13px;">Piac.</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c d" style="width:9px;height:13px"></div><div class="c r" style="width:9px;height:13px"></div></div>
+          <div class="overflow-name" style="font-size:13px;">Berg.</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c r" style="width:9px;height:13px"></div><div class="c a" style="width:9px;height:13px"></div></div>
+          <div class="overflow-name" style="font-size:13px;">Bolo.</div>
+        </div>
+        <div class="problem-tile">
+          <div class="cards-row"><div class="c g" style="width:9px;height:13px"></div><div class="c r" style="width:9px;height:13px"></div></div>
+          <div class="overflow-name" style="font-size:13px;">Bres.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="col-title good">✓ Nome fuori — 3 colonne, tile puri</div>
+    <div class="phone">
+      <div class="phone-label">Settings · font grande</div>
+      <div class="geo-tabs">
+        <div class="geo-tab active" style="font-size:13px;">Nord</div>
+        <div class="geo-tab" style="font-size:13px;">Sud &amp; Isole</div>
+        <div class="geo-tab" style="font-size:13px;">Intl</div>
+      </div>
+      <div class="selected-label" style="margin-bottom:6px;">
+        <div class="sl-hint" style="font-size:12px;">Mazzo selezionato</div>
+        <div class="sl-name" style="font-size:18px;">Piacentine</div>
+      </div>
+      <div class="solution-grid cols3">
+        <div class="solution-tile sel" style="padding:6px 4px;" onclick="pickSettings(this,'Piacentine')">
+          <div class="cards-row"><div class="c a" style="width:14px;height:20px"></div><div class="c r" style="width:14px;height:20px"></div><div class="c a" style="width:14px;height:20px"></div></div>
+        </div>
+        <div class="solution-tile" style="padding:6px 4px;" onclick="pickSettings(this,'Bergamasche')">
+          <div class="cards-row"><div class="c d" style="width:14px;height:20px"></div><div class="c r" style="width:14px;height:20px"></div><div class="c d" style="width:14px;height:20px"></div></div>
+        </div>
+        <div class="solution-tile" style="padding:6px 4px;" onclick="pickSettings(this,'Bolognesi')">
+          <div class="cards-row"><div class="c r" style="width:14px;height:20px"></div><div class="c a" style="width:14px;height:20px"></div><div class="c r" style="width:14px;height:20px"></div></div>
+        </div>
+        <div class="solution-tile" style="padding:6px 4px;" onclick="pickSettings(this,'Bresciane')">
+          <div class="cards-row"><div class="c g" style="width:14px;height:20px"></div><div class="c r" style="width:14px;height:20px"></div><div class="c g" style="width:14px;height:20px"></div></div>
+        </div>
+        <div class="solution-tile" style="padding:6px 4px;" onclick="pickSettings(this,'Genovesi')">
+          <div class="cards-row"><div class="c a" style="width:14px;height:20px"></div><div class="c d" style="width:14px;height:20px"></div><div class="c a" style="width:14px;height:20px"></div></div>
+        </div>
+        <div class="solution-tile" style="padding:6px 4px;" onclick="pickSettings(this,'Milanesi')">
+          <div class="cards-row"><div class="c r" style="width:14px;height:20px"></div><div class="c b" style="width:14px;height:20px"></div><div class="c r" style="width:14px;height:20px"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div style="background:#2a1010;border:1px solid #5a3010;border-radius:10px;padding:14px 16px;margin-top:4px;">
+  <div style="font-size:13px;color:#d4af37;font-style:italic;margin-bottom:8px;">✦ Riepilogo scelta di design</div>
+  <ul style="font-family:sans-serif;font-size:12px;color:#a07830;line-height:1.7;margin-left:16px;">
+    <li><strong style="color:#d4af37;">Tile = solo preview carte</strong> (nessun testo dentro) — dimensione fissa in dp, non influenzata da sp</li>
+    <li><strong style="color:#d4af37;">Nome mazzo</strong> mostrato in un label sopra la griglia, in sp — scala correttamente con font grandi</li>
+    <li><strong style="color:#d4af37;">3 colonne</strong> per entrambi (picker e settings) — abbastanza ampio anche con font accessibili</li>
+    <li><strong style="color:#d4af37;">Tab con testo in sp</strong> — si adattano automaticamente (il sistema wrappa se necessario)</li>
+  </ul>
+</div>
+
+<p style="text-align:center;color:#5a3010;font-size:11px;margin-top:16px;font-family:sans-serif;">
+  Clicca i tile per vedere la selezione aggiornata · poi rispondi nel terminale
+</p>
+
+<script>
+  function pickDeck(el, name) {
+    document.querySelectorAll('.solution-tile').forEach(t => t.classList.remove('sel'));
+    el.classList.add('sel');
+    document.querySelectorAll('.sl-name').forEach(n => n.textContent = name);
+    document.getElementById('confirm-a11y').textContent = 'Gioca con le ' + name + ' →';
+  }
+  function pickSettings(el, name) {
+    document.querySelectorAll('.solution-tile').forEach(t => t.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+</script>
+</body>
+</html>

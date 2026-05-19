@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deck Selector — 3 Approcci</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a0a0a;
+    color: #d4af37;
+    font-family: Georgia, serif;
+    padding: 24px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    font-style: italic;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    color: #d4af37;
+  }
+  .subtitle {
+    text-align: center;
+    color: #a07830;
+    font-size: 13px;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+  .approaches {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .approach {
+    flex: 1;
+    background: #2a1010;
+    border: 1px solid #5a3010;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .approach:hover { border-color: #d4af37; }
+  .approach.selected {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 2px #d4af3740;
+  }
+  .approach-label {
+    display: inline-block;
+    background: #5a3010;
+    color: #d4af37;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .recommended-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #d4af37;
+    color: #1a0a0a;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+  }
+  .approach h2 {
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 8px;
+    color: #e8c84a;
+  }
+  .approach p {
+    font-size: 12px;
+    color: #a07830;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    font-family: sans-serif;
+  }
+
+  /* ---- MOCKUP STYLES ---- */
+  .phone {
+    background: #3a1a1a;
+    border: 1.5px solid #5a3010;
+    border-radius: 16px;
+    padding: 12px 10px;
+    margin-bottom: 12px;
+    min-height: 260px;
+  }
+  .phone-label {
+    font-size: 10px;
+    color: #a07830;
+    text-align: center;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Approach A — Grid + Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .tab {
+    flex: 1;
+    background: #2a1010;
+    border: 1px solid #5a3010;
+    border-radius: 6px;
+    text-align: center;
+    padding: 4px 2px;
+    font-size: 10px;
+    color: #a07830;
+    font-family: sans-serif;
+  }
+  .tab.active {
+    background: #5a3010;
+    color: #d4af37;
+    border-color: #d4af37;
+  }
+  .deck-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .deck-tile {
+    background: #2a1010;
+    border: 1.5px solid #5a3010;
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+  }
+  .deck-tile.selected-tile {
+    border-color: #d4af37;
+    background: #3a2010;
+  }
+  .deck-tile .cards-row {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 3px;
+  }
+  .card-thumb {
+    width: 12px;
+    height: 18px;
+    border-radius: 2px;
+    background: #c8a060;
+    border: 1px solid #8a6030;
+  }
+  .card-thumb.red { background: #c04040; border-color: #903030; }
+  .card-thumb.blue { background: #4060c0; border-color: #304080; }
+  .card-thumb.green { background: #407040; border-color: #305030; }
+  .card-thumb.dark { background: #605040; border-color: #504030; }
+  .deck-tile .tile-name {
+    font-size: 9px;
+    color: #d4af37;
+    font-family: sans-serif;
+  }
+  .confirm-btn {
+    display: block;
+    background: #5a3010;
+    color: #d4af37;
+    text-align: center;
+    border-radius: 8px;
+    padding: 6px;
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 8px;
+    border: 1px solid #d4af37;
+  }
+
+  /* Approach B — List sezioni */
+  .section-header {
+    background: #5a3010;
+    color: #d4af37;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-family: sans-serif;
+  }
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #2a1010;
+    border: 1px solid #5a3010;
+    border-radius: 6px;
+    padding: 5px 8px;
+    margin-bottom: 3px;
+  }
+  .list-item.selected-item { border-color: #d4af37; }
+  .list-mini-cards {
+    display: flex;
+    gap: 2px;
+  }
+  .mini-card {
+    width: 10px;
+    height: 15px;
+    border-radius: 1px;
+    background: #c8a060;
+    border: 1px solid #8a6030;
+  }
+  .list-item-name {
+    font-size: 11px;
+    color: #d4af37;
+    font-family: sans-serif;
+    flex: 1;
+  }
+  .radio-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid #5a3010;
+  }
+  .radio-dot.checked {
+    background: #d4af37;
+    border-color: #d4af37;
+  }
+
+  /* Approach C — Hero + strip */
+  .hero-card {
+    background: #2a1010;
+    border: 1.5px solid #d4af37;
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .hero-cards-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .hero-card-img {
+    width: 20px;
+    height: 30px;
+    border-radius: 3px;
+    background: #c8a060;
+    border: 1.5px solid #8a6030;
+  }
+  .hero-name {
+    font-size: 13px;
+    color: #d4af37;
+    font-style: italic;
+    font-weight: bold;
+  }
+  .strip-label {
+    font-size: 10px;
+    color: #a07830;
+    font-family: sans-serif;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .strip {
+    display: flex;
+    gap: 4px;
+    overflow: hidden;
+  }
+  .strip-item {
+    flex-shrink: 0;
+    background: #2a1010;
+    border: 1.5px solid #5a3010;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .strip-item.active-strip { border-color: #d4af37; }
+  .strip-card {
+    width: 14px;
+    height: 20px;
+    border-radius: 2px;
+    background: #c8a060;
+    border: 1px solid #8a6030;
+  }
+  .region-divider {
+    font-size: 9px;
+    color: #5a3010;
+    font-family: sans-serif;
+    padding: 2px 4px;
+    align-self: center;
+  }
+
+  .pros-cons {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .pros, .cons {
+    flex: 1;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-family: sans-serif;
+  }
+  .pros { background: #1a3010; border: 1px solid #305020; }
+  .cons { background: #301a1a; border: 1px solid #503020; }
+  .pros h4, .cons h4 {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .pros h4 { color: #60c060; }
+  .cons h4 { color: #c06060; }
+  .pros li, .cons li {
+    font-size: 11px;
+    color: #a09080;
+    margin-left: 12px;
+    line-height: 1.4;
+  }
+
+  /* Settings strip mockup */
+  .settings-section {
+    margin-top: 12px;
+    border-top: 1px dashed #5a3010;
+    padding-top: 10px;
+  }
+  .settings-label {
+    font-size: 10px;
+    color: #a07830;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: sans-serif;
+  }
+
+  /* Click handling */
+  .approach { user-select: none; }
+</style>
+</head>
+<body>
+
+<h1>✦ Selettore Mazzo — 3 Approcci ✦</h1>
+<p class="subtitle">15 mazzi regionali · Piacentine default · Raggruppati per area geografica</p>
+
+<div class="approaches">
+
+  <!-- APPROACH A -->
+  <div class="approach" onclick="this.classList.toggle('selected')">
+    <div class="approach-label">A</div>
+    <span class="recommended-badge">★ Consigliato</span>
+    <h2>Griglia + Tab geografici</h2>
+    <p>Tabs Nord / Sud / Internazionali in alto, griglia 3×N sotto. Tap su un tile = selezione immediata con bordo dorato. Preview di 3 carte per tile.</p>
+
+    <div class="phone">
+      <div class="phone-label">Deck Picker (full screen)</div>
+      <div class="tabs">
+        <div class="tab active">Nord</div>
+        <div class="tab">Sud</div>
+        <div class="tab">Intl</div>
+      </div>
+      <div class="deck-grid">
+        <div class="deck-tile selected-tile">
+          <div class="cards-row">
+            <div class="card-thumb"></div>
+            <div class="card-thumb red"></div>
+            <div class="card-thumb"></div>
+          </div>
+          <div class="tile-name">Piacentine</div>
+        </div>
+        <div class="deck-tile">
+          <div class="cards-row">
+            <div class="card-thumb dark"></div>
+            <div class="card-thumb red"></div>
+            <div class="card-thumb dark"></div>
+          </div>
+          <div class="tile-name">Bergamasche</div>
+        </div>
+        <div class="deck-tile">
+          <div class="cards-row">
+            <div class="card-thumb red"></div>
+            <div class="card-thumb"></div>
+            <div class="card-thumb red"></div>
+          </div>
+          <div class="tile-name">Bolognesi</div>
+        </div>
+        <div class="deck-tile">
+          <div class="cards-row">
+            <div class="card-thumb green"></div>
+            <div class="card-thumb red"></div>
+            <div class="card-thumb green"></div>
+          </div>
+          <div class="tile-name">Bresciane</div>
+        </div>
+        <div class="deck-tile">
+          <div class="cards-row">
+            <div class="card-thumb"></div>
+            <div class="card-thumb dark"></div>
+            <div class="card-thumb"></div>
+          </div>
+          <div class="tile-name">Genovesi</div>
+        </div>
+        <div class="deck-tile">
+          <div class="cards-row">
+            <div class="card-thumb red"></div>
+            <div class="card-thumb"></div>
+            <div class="card-thumb red"></div>
+          </div>
+          <div class="tile-name">Milanesi</div>
+        </div>
+      </div>
+      <div class="confirm-btn">Gioca con le Piacentine →</div>
+
+      <div class="settings-section">
+        <div class="settings-label">Nelle Impostazioni</div>
+        <div class="tabs" style="margin-bottom:6px">
+          <div class="tab active">Nord</div>
+          <div class="tab">Sud</div>
+          <div class="tab">Intl</div>
+        </div>
+        <div class="deck-grid" style="grid-template-columns: repeat(4,1fr); gap:4px">
+          <div class="deck-tile selected-tile" style="padding:3px">
+            <div class="cards-row"><div class="card-thumb" style="width:9px;height:13px"></div><div class="card-thumb red" style="width:9px;height:13px"></div></div>
+            <div class="tile-name" style="font-size:8px">Piacent.</div>
+          </div>
+          <div class="deck-tile" style="padding:3px">
+            <div class="cards-row"><div class="card-thumb dark" style="width:9px;height:13px"></div><div class="card-thumb red" style="width:9px;height:13px"></div></div>
+            <div class="tile-name" style="font-size:8px">Bergam.</div>
+          </div>
+          <div class="deck-tile" style="padding:3px">
+            <div class="cards-row"><div class="card-thumb red" style="width:9px;height:13px"></div><div class="card-thumb" style="width:9px;height:13px"></div></div>
+            <div class="tile-name" style="font-size:8px">Bolo.</div>
+          </div>
+          <div class="deck-tile" style="padding:3px">
+            <div class="cards-row"><div class="card-thumb green" style="width:9px;height:13px"></div><div class="card-thumb" style="width:9px;height:13px"></div></div>
+            <div class="tile-name" style="font-size:8px">Bresciane</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros"><h4>Pro</h4><ul><li>Visione d'insieme</li><li>Navigazione rapida</li><li>Scalabile</li></ul></div>
+      <div class="cons"><h4>Contro</h4><ul><li>Tile piccoli (preview ridotta)</li><li>Tabs aggiungono un tap</li></ul></div>
+    </div>
+  </div>
+
+  <!-- APPROACH B -->
+  <div class="approach" onclick="this.classList.toggle('selected')">
+    <div class="approach-label">B</div>
+    <h2>Lista a sezioni geografiche</h2>
+    <p>Sezioni con header area (Nord, Sud…), ogni riga mostra nome + mini-preview 2 carte. Scorrimento verticale, radio button a destra.</p>
+
+    <div class="phone">
+      <div class="phone-label">Deck Picker (full screen)</div>
+      <div class="section-header">◆ Nord</div>
+      <div class="list-item selected-item">
+        <div class="list-mini-cards">
+          <div class="mini-card"></div><div class="mini-card" style="background:#c04040;border-color:#903030"></div><div class="mini-card"></div>
+        </div>
+        <div class="list-item-name">Piacentine</div>
+        <div class="radio-dot checked"></div>
+      </div>
+      <div class="list-item">
+        <div class="list-mini-cards">
+          <div class="mini-card" style="background:#605040;border-color:#504030"></div><div class="mini-card" style="background:#c04040;border-color:#903030"></div><div class="mini-card" style="background:#605040;border-color:#504030"></div>
+        </div>
+        <div class="list-item-name">Bergamasche</div>
+        <div class="radio-dot"></div>
+      </div>
+      <div class="list-item">
+        <div class="list-mini-cards">
+          <div class="mini-card" style="background:#c04040;border-color:#903030"></div><div class="mini-card"></div><div class="mini-card" style="background:#c04040;border-color:#903030"></div>
+        </div>
+        <div class="list-item-name">Bolognesi</div>
+        <div class="radio-dot"></div>
+      </div>
+      <div class="list-item">
+        <div class="list-mini-cards"><div class="mini-card"></div><div class="mini-card"></div><div class="mini-card"></div></div>
+        <div class="list-item-name">Bresciane</div>
+        <div class="radio-dot"></div>
+      </div>
+      <div class="section-header" style="margin-top:6px">◆ Sud</div>
+      <div class="list-item">
+        <div class="list-mini-cards"><div class="mini-card" style="background:#4060c0"></div><div class="mini-card" style="background:#c04040"></div><div class="mini-card" style="background:#4060c0"></div></div>
+        <div class="list-item-name">Napoletane</div>
+        <div class="radio-dot"></div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-label">Nelle Impostazioni (stessa lista, compatta)</div>
+        <div class="section-header" style="font-size:9px;padding:2px 6px">◆ Nord</div>
+        <div class="list-item" style="padding:3px 6px">
+          <div class="list-mini-cards"><div class="mini-card" style="width:8px;height:12px"></div><div class="mini-card" style="width:8px;height:12px;background:#c04040"></div></div>
+          <div class="list-item-name" style="font-size:10px">Piacentine</div>
+          <div class="radio-dot checked" style="width:8px;height:8px"></div>
+        </div>
+        <div class="list-item" style="padding:3px 6px">
+          <div class="list-mini-cards"><div class="mini-card" style="width:8px;height:12px;background:#605040"></div><div class="mini-card" style="width:8px;height:12px;background:#c04040"></div></div>
+          <div class="list-item-name" style="font-size:10px">Bergamasche</div>
+          <div class="radio-dot" style="width:8px;height:8px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros"><h4>Pro</h4><ul><li>Pattern Android nativo</li><li>Nome leggibile</li><li>Scroll naturale</li></ul></div>
+      <div class="cons"><h4>Contro</h4><ul><li>Preview carte piccola</li><li>Lungo da scorrere</li><li>Meno "carattere"</li></ul></div>
+    </div>
+  </div>
+
+  <!-- APPROACH C -->
+  <div class="approach" onclick="this.classList.toggle('selected')">
+    <div class="approach-label">C</div>
+    <h2>Hero + strip orizzontale per area</h2>
+    <p>In alto preview grande del mazzo selezionato (3 carte + nome). Sotto, strip orizzontali per area con tile piccoli scorrevoli. Tap su tile = aggiorna hero.</p>
+
+    <div class="phone">
+      <div class="phone-label">Deck Picker (full screen)</div>
+      <div class="hero-card">
+        <div class="hero-cards-row">
+          <div class="hero-card-img"></div>
+          <div class="hero-card-img" style="background:#c04040;border-color:#903030"></div>
+          <div class="hero-card-img"></div>
+          <div class="hero-card-img" style="background:#605040;border-color:#504030"></div>
+        </div>
+        <div class="hero-name">Piacentine</div>
+      </div>
+
+      <div class="strip-label">◆ Nord</div>
+      <div class="strip" style="margin-bottom:6px">
+        <div class="strip-item active-strip">
+          <div class="strip-card"></div>
+        </div>
+        <div class="strip-item"><div class="strip-card" style="background:#605040"></div></div>
+        <div class="strip-item"><div class="strip-card" style="background:#c04040"></div></div>
+        <div class="strip-item"><div class="strip-card" style="background:#407040"></div></div>
+        <div class="strip-item"><div class="strip-card"></div></div>
+        <div class="strip-item"><div class="strip-card" style="background:#c04040"></div></div>
+        <div class="region-divider">…</div>
+      </div>
+
+      <div class="strip-label">◆ Sud</div>
+      <div class="strip">
+        <div class="strip-item"><div class="strip-card" style="background:#4060c0"></div></div>
+        <div class="strip-item"><div class="strip-card" style="background:#c04040"></div></div>
+        <div class="strip-item"><div class="strip-card" style="background:#605040"></div></div>
+      </div>
+
+      <div class="confirm-btn" style="margin-top:10px">Gioca con le Piacentine →</div>
+
+      <div class="settings-section">
+        <div class="settings-label">Nelle Impostazioni</div>
+        <div class="hero-card" style="padding:5px;margin-bottom:5px">
+          <div class="hero-cards-row" style="gap:2px">
+            <div class="hero-card-img" style="width:14px;height:21px"></div>
+            <div class="hero-card-img" style="width:14px;height:21px;background:#c04040"></div>
+            <div class="hero-card-img" style="width:14px;height:21px"></div>
+          </div>
+          <div class="hero-name" style="font-size:10px">Piacentine</div>
+        </div>
+        <div class="strip" style="gap:3px">
+          <div class="strip-item active-strip" style="width:26px;height:26px"><div class="strip-card" style="width:10px;height:15px"></div></div>
+          <div class="strip-item" style="width:26px;height:26px"><div class="strip-card" style="width:10px;height:15px;background:#605040"></div></div>
+          <div class="strip-item" style="width:26px;height:26px"><div class="strip-card" style="width:10px;height:15px;background:#c04040"></div></div>
+          <div class="strip-item" style="width:26px;height:26px"><div class="strip-card" style="width:10px;height:15px;background:#407040"></div></div>
+          <div class="strip-item" style="width:26px;height:26px"><div class="strip-card" style="width:10px;height:15px"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros"><h4>Pro</h4><ul><li>Preview grande e bella</li><li>Scoperta piacevole</li><li>Visivo e intuitivo</li></ul></div>
+      <div class="cons"><h4>Contro</h4><ul><li>Strip strette = tile piccoli</li><li>Più complesso da implementare</li><li>Nord ha 10+ mazzi: strip lunga</li></ul></div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;color:#5a3010;font-size:12px;margin-top:20px;font-family:sans-serif;">
+  Clicca su un approccio per evidenziarlo · poi rispondi nel terminale quale preferisci (A, B o C)
+</p>
+
+</body>
+</html>

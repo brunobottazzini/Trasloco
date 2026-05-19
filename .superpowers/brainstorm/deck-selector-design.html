@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deck Selector — Design Finale</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a0a0a;
+    color: #d4af37;
+    font-family: Georgia, serif;
+    padding: 24px;
+  }
+  h1 { text-align:center; font-size:20px; font-style:italic; letter-spacing:2px; margin-bottom:6px; }
+  .subtitle { text-align:center; color:#a07830; font-size:12px; margin-bottom:28px; font-style:italic; }
+
+  .screens { display:flex; gap:24px; align-items:flex-start; }
+
+  .screen-wrap { flex:1; }
+  .screen-title {
+    font-size:13px; letter-spacing:1px; text-transform:uppercase;
+    color:#a07830; margin-bottom:10px; font-family:sans-serif;
+    border-bottom:1px solid #3a1a1a; padding-bottom:6px;
+  }
+
+  /* Phone frame */
+  .phone {
+    background: #2a1010;
+    border: 2px solid #5a3010;
+    border-radius: 20px;
+    padding: 16px 12px;
+    position: relative;
+  }
+
+  .app-title {
+    text-align:center; font-size:16px; font-style:italic; font-weight:bold;
+    color:#d4af37; letter-spacing:2px; margin-bottom:4px;
+  }
+  .app-subtitle {
+    text-align:center; font-size:10px; color:#a07830; font-family:sans-serif;
+    margin-bottom:14px; font-style:italic;
+  }
+
+  /* Tabs */
+  .geo-tabs {
+    display:flex; border-bottom:1px solid #5a3010; margin-bottom:10px;
+  }
+  .geo-tab {
+    flex:1; text-align:center; padding:6px 4px;
+    font-size:11px; font-family:sans-serif; color:#a07830;
+    cursor:pointer; border-bottom:2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .geo-tab.active { color:#d4af37; border-bottom:2px solid #d4af37; font-weight:bold; }
+
+  /* Grid */
+  .deck-grid {
+    display:grid;
+    gap:6px;
+    margin-bottom:10px;
+  }
+  .deck-grid.cols3 { grid-template-columns: repeat(3,1fr); }
+  .deck-grid.cols4 { grid-template-columns: repeat(4,1fr); }
+
+  .deck-tile {
+    background: #3a1a1a;
+    border: 1.5px solid #5a3010;
+    border-radius: 8px;
+    padding: 7px 5px 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s;
+  }
+  .deck-tile:hover { border-color: #a07830; }
+  .deck-tile.sel {
+    border-color: #d4af37;
+    background: #4a2010;
+    box-shadow: 0 0 0 1px #d4af3740;
+  }
+  .deck-tile.unavail { opacity:0.4; cursor:default; }
+
+  .cards-row {
+    display:flex; justify-content:center; gap:2px; margin-bottom:4px;
+  }
+  .c { width:13px; height:20px; border-radius:2px; border:1px solid #8a6030; }
+  .c.a { background:#c8a060; }
+  .c.r { background:#b03030; border-color:#803030; }
+  .c.d { background:#604a30; border-color:#504030; }
+  .c.g { background:#3a6030; border-color:#2a4020; }
+  .c.b { background:#3050a0; border-color:#204080; }
+  .c.y { background:#a09020; border-color:#807020; }
+
+  /* Compact tiles for settings */
+  .deck-tile.sm { padding:4px 3px 3px; border-radius:6px; }
+  .deck-tile.sm .c { width:10px; height:15px; }
+  .deck-tile.sm .tile-name { font-size:8px; }
+
+  .tile-name { font-size:9px; color:#d4af37; font-family:sans-serif; line-height:1.2; }
+
+  /* Confirm button */
+  .confirm-btn {
+    display:block; width:100%;
+    background: #5a3010;
+    border: 1px solid #d4af37;
+    border-radius:10px;
+    color:#d4af37;
+    text-align:center;
+    padding:9px;
+    font-size:12px; font-style:italic; font-weight:bold;
+    letter-spacing:1px;
+    margin-top:4px;
+  }
+  .confirm-btn.disabled { opacity:0.35; border-color:#5a3010; }
+
+  /* Settings embed */
+  .settings-context {
+    background: #2a1010;
+    border: 2px solid #5a3010;
+    border-radius: 16px;
+    padding: 12px 10px;
+  }
+  .settings-row-label {
+    font-size:10px; letter-spacing:1px; text-transform:uppercase;
+    color:#a07830; font-family:sans-serif; margin-bottom:6px;
+  }
+  .settings-geo-tabs { display:flex; border-bottom:1px solid #5a3010; margin-bottom:8px; }
+  .settings-geo-tab {
+    flex:1; text-align:center; padding:4px 2px;
+    font-size:10px; font-family:sans-serif; color:#a07830;
+    border-bottom:2px solid transparent;
+  }
+  .settings-geo-tab.active { color:#d4af37; border-bottom:2px solid #d4af37; }
+
+  /* Other settings rows (context) */
+  .other-row {
+    background:#3a1a1a; border:1px solid #3a2010;
+    border-radius:8px; padding:8px 10px;
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .other-row-label { font-size:11px; color:#d4af37; font-family:sans-serif; }
+  .toggle {
+    width:32px; height:18px; border-radius:9px;
+    background:#3a1a1a; border:1px solid #5a3010;
+    position:relative;
+  }
+  .toggle.on { background:#5a3010; }
+  .toggle::after {
+    content:''; position:absolute; top:2px; left:2px;
+    width:12px; height:12px; border-radius:50%;
+    background:#a07830;
+    transition: left .15s;
+  }
+  .toggle.on::after { left:16px; background:#d4af37; }
+
+  /* Annotation callouts */
+  .callouts { margin-top:14px; }
+  .callout {
+    display:flex; gap:8px; align-items:flex-start;
+    margin-bottom:6px;
+  }
+  .callout-num {
+    flex-shrink:0; width:18px; height:18px; border-radius:50%;
+    background:#5a3010; color:#d4af37;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:bold; font-family:sans-serif;
+  }
+  .callout-text { font-size:11px; color:#a07830; font-family:sans-serif; line-height:1.4; }
+  .callout-text strong { color:#d4af37; }
+
+  /* Tab switch logic */
+  .tab-panel { display:none; }
+  .tab-panel.visible { display:block; }
+</style>
+</head>
+<body>
+
+<h1>✦ Selettore Mazzo — Design Finale ✦</h1>
+<p class="subtitle">Approccio A · Griglia + Tab geografici · 3 aree: Nord / Sud &amp; Isole / Internazionali</p>
+
+<div class="screens">
+
+  <!-- ===================== SCREEN 1: DECK PICKER ===================== -->
+  <div class="screen-wrap">
+    <div class="screen-title">① DeckPickerActivity — schermo intero</div>
+    <div class="phone">
+      <div class="app-title">✦ Scegli il mazzo ✦</div>
+      <div class="app-subtitle">Seleziona le carte con cui giocare</div>
+
+      <div class="geo-tabs">
+        <div class="geo-tab active" onclick="switchTab(this,'nord-full')">Nord</div>
+        <div class="geo-tab" onclick="switchTab(this,'sud-full')">Sud &amp; Isole</div>
+        <div class="geo-tab" onclick="switchTab(this,'intl-full')">Internaz.</div>
+      </div>
+
+      <!-- Nord tab -->
+      <div id="nord-full" class="tab-panel visible">
+        <div class="deck-grid cols3">
+          <div class="deck-tile sel" onclick="selectTile(this,'Piacentine')">
+            <div class="cards-row"><div class="c a"></div><div class="c r"></div><div class="c a"></div></div>
+            <div class="tile-name">Piacentine</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Bergamasche')">
+            <div class="cards-row"><div class="c d"></div><div class="c r"></div><div class="c d"></div></div>
+            <div class="tile-name">Bergamasche</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Bolognesi')">
+            <div class="cards-row"><div class="c r"></div><div class="c a"></div><div class="c r"></div></div>
+            <div class="tile-name">Bolognesi</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Bresciane')">
+            <div class="cards-row"><div class="c g"></div><div class="c r"></div><div class="c g"></div></div>
+            <div class="tile-name">Bresciane</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Genovesi')">
+            <div class="cards-row"><div class="c a"></div><div class="c d"></div><div class="c a"></div></div>
+            <div class="tile-name">Genovesi</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Milanesi')">
+            <div class="cards-row"><div class="c r"></div><div class="c y"></div><div class="c r"></div></div>
+            <div class="tile-name">Milanesi</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Piemontesi')">
+            <div class="cards-row"><div class="c d"></div><div class="c a"></div><div class="c d"></div></div>
+            <div class="tile-name">Piemontesi</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Romagnole')">
+            <div class="cards-row"><div class="c r"></div><div class="c d"></div><div class="c r"></div></div>
+            <div class="tile-name">Romagnole</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Trentine')">
+            <div class="cards-row"><div class="c g"></div><div class="c a"></div><div class="c g"></div></div>
+            <div class="tile-name">Trentine</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Trevisane')">
+            <div class="cards-row"><div class="c a"></div><div class="c r"></div><div class="c a"></div></div>
+            <div class="tile-name">Trevisane</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Triestine')">
+            <div class="cards-row"><div class="c b"></div><div class="c r"></div><div class="c b"></div></div>
+            <div class="tile-name">Triestine</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sud tab -->
+      <div id="sud-full" class="tab-panel">
+        <div class="deck-grid cols3">
+          <div class="deck-tile" onclick="selectTile(this,'Napoletane')">
+            <div class="cards-row"><div class="c b"></div><div class="c r"></div><div class="c b"></div></div>
+            <div class="tile-name">Napoletane</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Sarde')">
+            <div class="cards-row"><div class="c d"></div><div class="c r"></div><div class="c d"></div></div>
+            <div class="tile-name">Sarde</div>
+          </div>
+          <div class="deck-tile" onclick="selectTile(this,'Siciliane')">
+            <div class="cards-row"><div class="c r"></div><div class="c d"></div><div class="c r"></div></div>
+            <div class="tile-name">Siciliane</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Internaz tab -->
+      <div id="intl-full" class="tab-panel">
+        <div class="deck-grid cols3">
+          <div class="deck-tile" onclick="selectTile(this,'Francesi')">
+            <div class="cards-row"><div class="c b"></div><div class="c y"></div><div class="c r"></div></div>
+            <div class="tile-name">Francesi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirm-btn" id="confirm-full">Gioca con le Piacentine →</div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout"><div class="callout-num">1</div><div class="callout-text"><strong>Tab default: Nord</strong>, Piacentine preselezionate all'apertura</div></div>
+      <div class="callout"><div class="callout-num">2</div><div class="callout-text"><strong>Tap tile</strong> → bordo dorato, bottone si aggiorna con nome mazzo</div></div>
+      <div class="callout"><div class="callout-num">3</div><div class="callout-text"><strong>Cambio tab</strong> → la selezione corrente rimane, bottone sempre visibile</div></div>
+      <div class="callout"><div class="callout-num">4</div><div class="callout-text">Bottone <strong>disabilitato</strong> (opaco) se nessun mazzo selezionato</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 2: SETTINGS ===================== -->
+  <div class="screen-wrap">
+    <div class="screen-title">② SettingsActivity — sezione mazzo (embedded)</div>
+    <div class="settings-context">
+
+      <!-- Simulated settings header -->
+      <div style="text-align:center; font-size:15px; font-style:italic; letter-spacing:2px; margin-bottom:12px;">✦ Impostazioni ✦</div>
+
+      <!-- Hero preview (existing) -->
+      <div style="background:#3a1a1a;border:1px solid #5a3010;border-radius:10px;padding:8px;text-align:center;margin-bottom:12px;">
+        <div style="font-size:9px;color:#a07830;font-family:sans-serif;letter-spacing:1px;margin-bottom:4px;">ANTEPRIMA</div>
+        <div style="display:flex;justify-content:center;gap:4px;">
+          <div style="width:22px;height:32px;border-radius:3px;background:#c8a060;border:1px solid #8a6030"></div>
+          <div style="width:22px;height:32px;border-radius:3px;background:#b03030;border:1px solid #803030"></div>
+          <div style="width:22px;height:32px;border-radius:3px;background:#c8a060;border:1px solid #8a6030"></div>
+          <div style="width:22px;height:32px;border-radius:3px;background:#c8a060;border:1px solid #8a6030"></div>
+        </div>
+      </div>
+
+      <!-- DECK SECTION -->
+      <div class="settings-row-label">Mazzo di carte</div>
+
+      <div class="settings-geo-tabs">
+        <div class="settings-geo-tab active" onclick="switchSettingsTab(this,'nord-s')">Nord</div>
+        <div class="settings-geo-tab" onclick="switchSettingsTab(this,'sud-s')">Sud &amp; Isole</div>
+        <div class="settings-geo-tab" onclick="switchSettingsTab(this,'intl-s')">Intl</div>
+      </div>
+
+      <!-- Nord -->
+      <div id="nord-s" class="tab-panel visible">
+        <div class="deck-grid cols4" style="margin-bottom:8px;">
+          <div class="deck-tile sm sel" onclick="selectSettingsTile(this,'Piacentine')">
+            <div class="cards-row"><div class="c a"></div><div class="c r"></div></div>
+            <div class="tile-name">Piacent.</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Bergamasche')">
+            <div class="cards-row"><div class="c d"></div><div class="c r"></div></div>
+            <div class="tile-name">Bergam.</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Bolognesi')">
+            <div class="cards-row"><div class="c r"></div><div class="c a"></div></div>
+            <div class="tile-name">Bologna</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Bresciane')">
+            <div class="cards-row"><div class="c g"></div><div class="c r"></div></div>
+            <div class="tile-name">Bresciane</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Genovesi')">
+            <div class="cards-row"><div class="c a"></div><div class="c d"></div></div>
+            <div class="tile-name">Genovesi</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Milanesi')">
+            <div class="cards-row"><div class="c r"></div><div class="c y"></div></div>
+            <div class="tile-name">Milanesi</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Piemontesi')">
+            <div class="cards-row"><div class="c d"></div><div class="c a"></div></div>
+            <div class="tile-name">Piemont.</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Romagnole')">
+            <div class="cards-row"><div class="c r"></div><div class="c d"></div></div>
+            <div class="tile-name">Romagna</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Trentine')">
+            <div class="cards-row"><div class="c g"></div><div class="c a"></div></div>
+            <div class="tile-name">Trentine</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Trevisane')">
+            <div class="cards-row"><div class="c a"></div><div class="c r"></div></div>
+            <div class="tile-name">Trevisane</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Triestine')">
+            <div class="cards-row"><div class="c b"></div><div class="c r"></div></div>
+            <div class="tile-name">Triestine</div>
+          </div>
+        </div>
+      </div>
+      <div id="sud-s" class="tab-panel">
+        <div class="deck-grid cols4" style="margin-bottom:8px;">
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Napoletane')">
+            <div class="cards-row"><div class="c b"></div><div class="c r"></div></div>
+            <div class="tile-name">Napolet.</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Sarde')">
+            <div class="cards-row"><div class="c d"></div><div class="c r"></div></div>
+            <div class="tile-name">Sarde</div>
+          </div>
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Siciliane')">
+            <div class="cards-row"><div class="c r"></div><div class="c d"></div></div>
+            <div class="tile-name">Siciliane</div>
+          </div>
+        </div>
+      </div>
+      <div id="intl-s" class="tab-panel">
+        <div class="deck-grid cols4" style="margin-bottom:8px;">
+          <div class="deck-tile sm" onclick="selectSettingsTile(this,'Francesi')">
+            <div class="cards-row"><div class="c b"></div><div class="c y"></div></div>
+            <div class="tile-name">Francesi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resto settings per contesto -->
+      <div style="border-top:1px solid #3a1a1a;margin:4px 0 10px;"></div>
+      <div class="settings-row-label">Dorso carte</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <div style="background:#3a1a1a;border:1.5px solid #d4af37;border-radius:6px;padding:3px;width:36px;height:50px;display:flex;align-items:center;justify-content:center;"><div style="width:24px;height:36px;background:#c8a060;border-radius:3px;border:1px solid #8a6030"></div></div>
+        <div style="background:#3a1a1a;border:1.5px solid #5a3010;border-radius:6px;padding:3px;width:36px;height:50px;display:flex;align-items:center;justify-content:center;"><div style="width:24px;height:36px;background:#b03030;border-radius:3px;border:1px solid #803030"></div></div>
+        <div style="background:#3a1a1a;border:1.5px solid #5a3010;border-radius:6px;padding:3px;width:36px;height:50px;display:flex;align-items:center;justify-content:center;"><div style="width:24px;height:36px;background:#3050a0;border-radius:3px;border:1px solid #204080"></div></div>
+      </div>
+      <div class="other-row"><div class="other-row-label">⚡ Distribuzione veloce</div><div class="toggle on"></div></div>
+      <div class="other-row"><div class="other-row-label">💡 Suggerimenti</div><div class="toggle"></div></div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout"><div class="callout-num">1</div><div class="callout-text"><strong>Tab default</strong>: quello che contiene il mazzo attualmente salvato</div></div>
+      <div class="callout"><div class="callout-num">2</div><div class="callout-text"><strong>Tap tile</strong> → salva immediatamente + aggiorna hero preview (come oggi)</div></div>
+      <div class="callout"><div class="callout-num">3</div><div class="callout-text"><strong>4 colonne</strong> vs 3 nel picker: più compatto, si vede tutto il Nord in ~3 righe</div></div>
+      <div class="callout"><div class="callout-num">4</div><div class="callout-text">Altezza totale sezione mazzo: <strong>~160dp</strong> (tabs ~36dp + griglia ~120dp)</div></div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;color:#5a3010;font-size:11px;margin-top:20px;font-family:sans-serif;">
+  Mockup interattivo — clicca i tile e i tab per vedere il comportamento · poi rispondi nel terminale
+</p>
+
+<script>
+  function switchTab(el, panelId) {
+    const tabs = el.parentElement.querySelectorAll('.geo-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const panels = document.querySelectorAll('#nord-full,#sud-full,#intl-full');
+    panels.forEach(p => p.classList.remove('visible'));
+    document.getElementById(panelId).classList.add('visible');
+  }
+  function switchSettingsTab(el, panelId) {
+    const tabs = el.parentElement.querySelectorAll('.settings-geo-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const panels = document.querySelectorAll('#nord-s,#sud-s,#intl-s');
+    panels.forEach(p => p.classList.remove('visible'));
+    document.getElementById(panelId).classList.add('visible');
+  }
+  function selectTile(el, name) {
+    const grid = el.closest('.deck-grid');
+    if (grid) grid.querySelectorAll('.deck-tile').forEach(t => t.classList.remove('sel'));
+    else document.querySelectorAll('#nord-full .deck-tile, #sud-full .deck-tile, #intl-full .deck-tile').forEach(t => t.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('confirm-full').textContent = 'Gioca con le ' + name + ' →';
+  }
+  function selectSettingsTile(el, name) {
+    document.querySelectorAll('#nord-s .deck-tile, #sud-s .deck-tile, #intl-s .deck-tile').forEach(t => t.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+</script>
+</body>
+</html>

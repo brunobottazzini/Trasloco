@@ -1,0 +1,13 @@
+fixed
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Sul branch main
+# Il tuo branch è avanti rispetto a 'origin/main' di 9 commit.
+#   (usa "git push" per pubblicare i tuoi commit locali)
+#
+# Modifiche di cui verrà eseguito il commit:
+#	modificato:             ../../app/src/main/res/layout/activity_deck_picker.xml
+#	modificato:             ../../app/src/main/res/layout/item_deck_carousel.xml
+#	modificato:             ../../app/src/main/res/layout/settings.xml
+#
