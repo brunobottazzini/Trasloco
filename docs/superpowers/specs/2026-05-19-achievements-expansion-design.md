@@ -231,9 +231,28 @@ Esempi chiave:
 
 ---
 
+## Fix banner APP_OPENED (timing)
+
+**Problema rilevato:** In `MainActivity.onCreate()` il banner viene accodato immediatamente, ma:
+1. Il layout non è ancora stato misurato — `bannerRoot.height == 0`, il banner parte da `-200f` invece dell'altezza reale
+2. La transizione `fade_in` da `SplashActivity` dura ~300ms — il banner si sovrappone alla dissolvenza
+
+**Fix in `MainActivity.onCreate()`:**
+```kotlin
+// Prima (problematico)
+achievementBanner.enqueue(newAchievements)
+
+// Dopo
+bannerRoot.postDelayed({ achievementBanner.enqueue(newAchievements) }, 500L)
+```
+
+I 500ms coprono sia la fine della transizione che il primo layout pass del menu.
+
+---
+
 ## Impatto
 
 - Nessuna modifica al DB
-- Nessuna modifica all'UI (il banner esistente gestisce già qualsiasi achievement)
+- Fix minore in `MainActivity.onCreate()` per il timing del banner
 - `stats_trophies_header` passa da `34` a `55` (stringa con `%1$d` — si aggiorna automaticamente)
 - Retrocompatibilità completa: gli achievement non sbloccati restano locked per chi ha già la app
