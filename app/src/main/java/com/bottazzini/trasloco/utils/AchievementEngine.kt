@@ -82,6 +82,14 @@ class AchievementEngine(
                     if (totalGames >= 50)  candidates.add("games_50")
                     if (totalGames >= 200) candidates.add("games_200")
                     if (totalGames >= 500) candidates.add("games_500")
+
+                    // Sconfitte consecutive
+                    listOf(2, 3, 5, 7, 10).forEach { n ->
+                        if (recentGames.size >= n && recentGames.take(n).all { !it.won })
+                            candidates.add("loss_$n")
+                    }
+                    // Perseveranza infinita
+                    if (totalGames - totalWins >= 100) candidates.add("big_loser")
                 }
 
                 AchievementTrigger.APP_OPENED -> {

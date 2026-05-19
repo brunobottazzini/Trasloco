@@ -229,4 +229,89 @@ class AchievementEngineTest {
         assertTrue("games_50" in result)
         assertFalse("games_200" in result)
     }
+
+    // ---- GAME_LOST streak achievements ----
+
+    @Test
+    fun `loss_2 unlocks after 2 consecutive losses`() {
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 0L, totalGames = 2L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = listOf(lostGame(), lostGame()),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("loss_2" in result)
+    }
+
+    @Test
+    fun `loss_2 does not unlock after only 1 loss`() {
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 0L, totalGames = 1L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = listOf(lostGame()),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("loss_2" in result)
+    }
+
+    @Test
+    fun `loss_5 unlocks after 5 consecutive losses, loss_7 does not`() {
+        val losses = List(5) { lostGame() }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 0L, totalGames = 5L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = losses,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("loss_5" in result)
+        assertFalse("loss_7" in result)
+    }
+
+    @Test
+    fun `loss_10 unlocks all lower streak achievements too`() {
+        val losses = List(10) { lostGame() }
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 0L, totalGames = 10L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = losses,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        listOf("loss_2", "loss_3", "loss_5", "loss_7", "loss_10").forEach {
+            assertTrue("$it should be in result", it in result)
+        }
+    }
+
+    @Test
+    fun `loss_5 does not unlock when a win breaks the streak`() {
+        val games = listOf(lostGame(), lostGame(), wonGame(100_000L), lostGame(), lostGame())
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 1L, totalGames = 5L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = games,
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("loss_5" in result)
+    }
+
+    @Test
+    fun `big_loser unlocks when total losses reach 100`() {
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 50L, totalGames = 151L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = listOf(lostGame()),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertTrue("big_loser" in result)
+    }
+
+    @Test
+    fun `big_loser does not unlock before 100 total losses`() {
+        val result = AchievementEngine.evaluateConditions(
+            trigger = AchievementTrigger.GAME_LOST,
+            totalWins = 50L, totalGames = 99L, currentStreak = 0L,
+            lastGame = lostGame(), recentGames = listOf(lostGame()),
+            isNewTimeRecord = false, now = System.currentTimeMillis()
+        )
+        assertFalse("big_loser" in result)
+    }
 }
