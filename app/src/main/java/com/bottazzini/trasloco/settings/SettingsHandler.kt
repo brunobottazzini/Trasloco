@@ -19,7 +19,7 @@ class SettingsHandler(context: Context) {
     private val dbHandler = DatabaseHandler(context)
 
     fun insertDefaultSettings() {
-        setDefaultSetting(Configuration.FAST_DEAL.value, "disabled")
+        setDefaultSetting(Configuration.FAST_DEAL.value, "enabled")
         setDefaultSetting(Configuration.CARD_BACK.value, "bg2")
         setDefaultSetting(Configuration.BACKGROUND.value, "bordeaux")
         setDefaultSetting(Configuration.CARD_TYPE.value, "piacentine")

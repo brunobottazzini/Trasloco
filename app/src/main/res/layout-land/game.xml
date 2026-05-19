@@ -690,51 +690,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/lostTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:letterSpacing="0.3"
-            android:text="@string/hai_perso"
-            android:textColor="@color/casino_gold"
-            android:textSize="42sp"
-            android:textStyle="italic" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal">
+            android:background="@drawable/casino_lost_card_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="28dp">
 
-            <Button
-                android:id="@+id/newGameButton"
+            <TextView
+                android:id="@+id/lostTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/casino_tile_bg_primary"
                 android:fontFamily="serif"
-                android:minWidth="180dp"
-                android:onClick="startNewGame"
-                android:padding="12dp"
-                android:text="@string/nuova_partita"
+                android:letterSpacing="0.3"
+                android:text="@string/hai_perso"
                 android:textColor="@color/casino_gold"
-                android:textSize="16sp"
-                android:textStyle="italic|bold" />
-
-            <Button
-                android:id="@+id/retryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/casino_tile_bg"
-                android:fontFamily="serif"
-                android:minWidth="180dp"
-                android:onClick="retryGame"
-                android:padding="12dp"
-                android:text="@string/riprova"
-                android:textColor="@color/casino_gold"
-                android:textSize="14sp"
+                android:textSize="42sp"
                 android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/newGameButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/casino_tile_bg_primary"
+                    android:stateListAnimator="@null"
+                    android:fontFamily="serif"
+                    android:minWidth="180dp"
+                    android:onClick="startNewGame"
+                    android:padding="12dp"
+                    android:text="@string/nuova_partita"
+                    android:textColor="@color/casino_gold"
+                    android:textSize="16sp"
+                    android:textStyle="italic|bold" />
+
+                <Button
+                    android:id="@+id/retryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/casino_tile_bg"
+                    android:stateListAnimator="@null"
+                    android:fontFamily="serif"
+                    android:minWidth="180dp"
+                    android:onClick="retryGame"
+                    android:padding="12dp"
+                    android:text="@string/riprova"
+                    android:textColor="@color/casino_gold"
+                    android:textSize="14sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

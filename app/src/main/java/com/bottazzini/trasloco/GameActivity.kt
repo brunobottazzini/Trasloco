@@ -869,9 +869,9 @@ class GameActivity : AppCompatActivity() {
             R.id.iconBack, R.id.textViewGameTimer, R.id.iconPause, R.id.resetButton,
             R.id.lostTextView, R.id.newGameButton, R.id.retryButton,
             R.id.pauseTextTitle, R.id.tutorialBannerText, R.id.tutorialNextButton
-        ).forEach { findViewById<TextView>(it).setTextColor(color) }
-        findViewById<TextView>(R.id.pauseTextSubtitle).setTextColor(dimColor)
-        findViewById<ImageButton>(R.id.tutorialExitButton).setColorFilter(color)
+        ).forEach { findViewById<TextView>(it)?.setTextColor(color) }
+        findViewById<TextView>(R.id.pauseTextSubtitle)?.setTextColor(dimColor)
+        findViewById<ImageButton>(R.id.tutorialExitButton)?.setColorFilter(color)
     }
 
     private fun setBackCards(imageName: String) {

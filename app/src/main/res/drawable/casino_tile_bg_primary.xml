@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/casino_gold_alpha_50"
+                android:endColor="@color/casino_gold_alpha_25" />
+            <stroke android:width="2dp" android:color="@color/casino_gold" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -10,4 +20,4 @@
             <corners android:radius="8dp" />
         </shape>
     </item>
-</layer-list>
+</selector>
