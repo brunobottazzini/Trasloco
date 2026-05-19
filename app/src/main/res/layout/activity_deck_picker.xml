@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:background="@android:color/transparent"
             app:tabTextColor="@color/casino_gold_alpha_50"
             app:tabSelectedTextColor="@color/casino_gold"
             app:tabIndicatorColor="@color/casino_gold"
