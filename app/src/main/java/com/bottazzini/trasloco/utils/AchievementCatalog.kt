@@ -42,7 +42,32 @@ object AchievementCatalog {
         AchievementDef("morning",     "🌅", R.string.achievement_morning_name,     R.string.achievement_morning_desc),
         AchievementDef("midnight",    "🌙", R.string.achievement_midnight_name,    R.string.achievement_midnight_desc),
         AchievementDef("christmas",   "🎄", R.string.achievement_christmas_name,   R.string.achievement_christmas_desc),
-        AchievementDef("new_record",  "⭐️", R.string.achievement_new_record_name,  R.string.achievement_new_record_desc)
+        AchievementDef("new_record",  "⭐️", R.string.achievement_new_record_name,  R.string.achievement_new_record_desc),
+        // --- Sconfitte consecutive (6) ---
+        AchievementDef("loss_2",        "😬", R.string.achievement_loss_2_name,        R.string.achievement_loss_2_desc),
+        AchievementDef("loss_3",        "🤦", R.string.achievement_loss_3_name,        R.string.achievement_loss_3_desc),
+        AchievementDef("loss_5",        "💀", R.string.achievement_loss_5_name,        R.string.achievement_loss_5_desc),
+        AchievementDef("loss_7",        "🫣", R.string.achievement_loss_7_name,        R.string.achievement_loss_7_desc),
+        AchievementDef("loss_10",       "🃏", R.string.achievement_loss_10_name,       R.string.achievement_loss_10_desc),
+        AchievementDef("big_loser",     "🏳️", R.string.achievement_big_loser_name,     R.string.achievement_big_loser_desc),
+        // --- Rimonte e stile (8) ---
+        AchievementDef("comeback_2",    "😤", R.string.achievement_comeback_2_name,    R.string.achievement_comeback_2_desc),
+        AchievementDef("slow_win",      "🐢", R.string.achievement_slow_win_name,      R.string.achievement_slow_win_desc),
+        AchievementDef("hint_hero",     "💡", R.string.achievement_hint_hero_name,     R.string.achievement_hint_hero_desc),
+        AchievementDef("hint_addict",   "🧪", R.string.achievement_hint_addict_name,   R.string.achievement_hint_addict_desc),
+        AchievementDef("perfectionist", "🎭", R.string.achievement_perfectionist_name, R.string.achievement_perfectionist_desc),
+        AchievementDef("speed_freak",   "⚡", R.string.achievement_speed_freak_name,   R.string.achievement_speed_freak_desc),
+        AchievementDef("lunch_win",     "🍝", R.string.achievement_lunch_win_name,     R.string.achievement_lunch_win_desc),
+        AchievementDef("sunday_player", "☕", R.string.achievement_sunday_player_name, R.string.achievement_sunday_player_desc),
+        // --- Sessioni (3) ---
+        AchievementDef("night_owl_3",   "🦉", R.string.achievement_night_owl_3_name,   R.string.achievement_night_owl_3_desc),
+        AchievementDef("same_day_3",    "📅", R.string.achievement_same_day_3_name,    R.string.achievement_same_day_3_desc),
+        AchievementDef("same_day_5",    "🔁", R.string.achievement_same_day_5_name,    R.string.achievement_same_day_5_desc),
+        // --- Nuove festività (4) ---
+        AchievementDef("new_year_eve",  "🥂", R.string.achievement_new_year_eve_name,  R.string.achievement_new_year_eve_desc),
+        AchievementDef("new_year",      "🎆", R.string.achievement_new_year_name,      R.string.achievement_new_year_desc),
+        AchievementDef("halloween",     "🎃", R.string.achievement_halloween_name,     R.string.achievement_halloween_desc),
+        AchievementDef("ferragosto",    "☀️", R.string.achievement_ferragosto_name,    R.string.achievement_ferragosto_desc)
     )
 
     fun findById(id: String): AchievementDef? = all.find { it.id == id }

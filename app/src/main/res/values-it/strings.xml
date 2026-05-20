@@ -41,6 +41,10 @@
     <string name="tutorial_exit_title">Esci dal tutorial?</string>
     <string name="tutorial_exit_confirm">Sì, esci</string>
     <string name="tutorial_exit_cancel">Continua</string>
+    <string name="abandon_game_title">Partita in corso</string>
+    <string name="abandon_game_message">Hai una partita salvata. Iniziando una nuova partita la abbandoni e azzeri la striscia di vittorie consecutive.\n\nVuoi riprendere invece?</string>
+    <string name="abandon_game_confirm">Nuova partita</string>
+    <string name="abandon_game_resume">↩ Riprendi</string>
     <string name="tutorial_step_intro">Benvenuto al Trasloco. Obiettivo: portare tutte le carte sui 4 mazzetti finali in alto, dall\'Asso al Re, divise per seme. Tocca Avanti.</string>
     <string name="tutorial_step1_instruction">Tocca il 5 di Coppe, poi tocca il 6 di Coppe per impilarlo sopra. Sulle colonne le carte vanno in ordine decrescente, stesso seme.</string>
     <string name="tutorial_step1_confirm">✓ Bene. Decrescente, stesso seme.</string>
@@ -176,6 +180,52 @@
     <string name="achievement_christmas_desc">Apri l\'app il 25 dicembre</string>
     <string name="achievement_new_record_name">Record assoluto</string>
     <string name="achievement_new_record_desc">Batti il tuo record personale di velocità</string>
+    <!-- Consecutive losses (6) -->
+    <string name="achievement_loss_2_name">Sfortunato</string>
+    <string name="achievement_loss_2_desc">2 sconfitte consecutive</string>
+    <string name="achievement_loss_3_name">In difficoltà</string>
+    <string name="achievement_loss_3_desc">3 sconfitte consecutive</string>
+    <string name="achievement_loss_5_name">Maledetto</string>
+    <string name="achievement_loss_5_desc">5 sconfitte consecutive</string>
+    <string name="achievement_loss_7_name">Perseguitato</string>
+    <string name="achievement_loss_7_desc">7 sconfitte consecutive</string>
+    <string name="achievement_loss_10_name">Iettatore</string>
+    <string name="achievement_loss_10_desc">10 sconfitte consecutive</string>
+    <string name="achievement_big_loser_name">Grande Perdente</string>
+    <string name="achievement_big_loser_desc">Striscia di sconfitte da record</string>
+    <!-- Comebacks and style (8) -->
+    <string name="achievement_comeback_2_name">Ritorno alla Vittoria</string>
+    <string name="achievement_comeback_2_desc">Vinci 2 partite dopo una sconfitta</string>
+    <string name="achievement_slow_win_name">Mani Ferme</string>
+    <string name="achievement_slow_win_desc">Vinci una partita in più di 30 minuti</string>
+    <string name="achievement_hint_hero_name">Maestro di Suggerimenti</string>
+    <string name="achievement_hint_hero_desc">Usa i suggerimenti strategicamente per vincere</string>
+    <string name="achievement_hint_addict_name">Dipendente da Suggerimenti</string>
+    <string name="achievement_hint_addict_desc">Vinci usando 10+ suggerimenti</string>
+    <string name="achievement_perfectionist_name">Perfezionista</string>
+    <string name="achievement_perfectionist_desc">Vinci senza auto-mossa ma con suggerimenti</string>
+    <string name="achievement_speed_freak_name">Velocista Puro</string>
+    <string name="achievement_speed_freak_desc">Vinci costantemente in meno di 2 minuti</string>
+    <string name="achievement_lunch_win_name">Pausa Pranzo Vincente</string>
+    <string name="achievement_lunch_win_desc">Vinci una partita tra le 12-2 PM</string>
+    <string name="achievement_sunday_player_name">Guerriero del Fine Settimana</string>
+    <string name="achievement_sunday_player_desc">Vinci una partita domenica mattina</string>
+    <!-- Sessions (3) -->
+    <string name="achievement_night_owl_3_name">Nottambulo</string>
+    <string name="achievement_night_owl_3_desc">3 partite giocate dopo mezzanotte</string>
+    <string name="achievement_same_day_3_name">Sessione Intensiva</string>
+    <string name="achievement_same_day_3_desc">3 vittorie nello stesso giorno</string>
+    <string name="achievement_same_day_5_name">Maratona Giornaliera</string>
+    <string name="achievement_same_day_5_desc">5 vittorie nello stesso giorno</string>
+    <!-- Holidays (4) -->
+    <string name="achievement_new_year_eve_name">Momento di Festa</string>
+    <string name="achievement_new_year_eve_desc">Apri l\'app il 31 dicembre</string>
+    <string name="achievement_new_year_name">Nuovo Anno, Nuova Vittoria</string>
+    <string name="achievement_new_year_desc">Apri l\'app il 1° gennaio</string>
+    <string name="achievement_halloween_name">Stagione Paurosa</string>
+    <string name="achievement_halloween_desc">Apri l\'app il 31 ottobre</string>
+    <string name="achievement_ferragosto_name">Vibrazioni Estive</string>
+    <string name="achievement_ferragosto_desc">Apri l\'app il 15 agosto</string>
     <!-- Stats screen labels -->
     <string name="stats_title">Statistiche &amp; Trofei</string>
     <string name="stats_best_time">⏱ Miglior tempo</string>

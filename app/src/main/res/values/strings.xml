@@ -40,6 +40,10 @@
     <string name="tutorial_exit_title">Leave tutorial?</string>
     <string name="tutorial_exit_confirm">Yes, leave</string>
     <string name="tutorial_exit_cancel">Continue</string>
+    <string name="abandon_game_title">Game in progress</string>
+    <string name="abandon_game_message">You have a saved game. Starting a new game will abandon it and reset your consecutive wins streak.\n\nWant to resume instead?</string>
+    <string name="abandon_game_confirm">New game</string>
+    <string name="abandon_game_resume">↩ Resume</string>
     <string name="tutorial_step_intro">Welcome to Trasloco. The goal: move all cards to the 4 foundation piles at the top, in order from Ace to King, by suit. Tap Next.</string>
     <string name="tutorial_step1_instruction">Tap the 5 of Cups, then tap the 6 of Cups to stack it on top. On columns, cards go in descending order, same suit.</string>
     <string name="tutorial_step1_confirm">✓ Nice. Descending, same suit.</string>
@@ -176,6 +180,52 @@
     <string name="achievement_christmas_desc">Open the app on December 25th</string>
     <string name="achievement_new_record_name">Absolute Record</string>
     <string name="achievement_new_record_desc">Beat your personal speed record</string>
+    <!-- Consecutive losses (6) -->
+    <string name="achievement_loss_2_name">Unlucky</string>
+    <string name="achievement_loss_2_desc">2 consecutive losses</string>
+    <string name="achievement_loss_3_name">Struggling</string>
+    <string name="achievement_loss_3_desc">3 consecutive losses</string>
+    <string name="achievement_loss_5_name">Cursed</string>
+    <string name="achievement_loss_5_desc">5 consecutive losses</string>
+    <string name="achievement_loss_7_name">Haunted</string>
+    <string name="achievement_loss_7_desc">7 consecutive losses</string>
+    <string name="achievement_loss_10_name">Jinxed</string>
+    <string name="achievement_loss_10_desc">10 consecutive losses</string>
+    <string name="achievement_big_loser_name">Big Loser</string>
+    <string name="achievement_big_loser_desc">Record-breaking losing streak</string>
+    <!-- Comebacks and style (8) -->
+    <string name="achievement_comeback_2_name">Comeback Kid</string>
+    <string name="achievement_comeback_2_desc">Win 2 games after a loss</string>
+    <string name="achievement_slow_win_name">Steady Hands</string>
+    <string name="achievement_slow_win_desc">Win a game in over 30 minutes</string>
+    <string name="achievement_hint_hero_name">Hint Master</string>
+    <string name="achievement_hint_hero_desc">Use hints strategically to win</string>
+    <string name="achievement_hint_addict_name">Hint Dependent</string>
+    <string name="achievement_hint_addict_desc">Win using 10+ hints</string>
+    <string name="achievement_perfectionist_name">Perfectionist</string>
+    <string name="achievement_perfectionist_desc">Win without auto-move and with hints</string>
+    <string name="achievement_speed_freak_name">Speed Freak</string>
+    <string name="achievement_speed_freak_desc">Win consistently under 2 minutes</string>
+    <string name="achievement_lunch_win_name">Lunch Break Win</string>
+    <string name="achievement_lunch_win_desc">Win a game between 12-2 PM</string>
+    <string name="achievement_sunday_player_name">Weekend Warrior</string>
+    <string name="achievement_sunday_player_desc">Win a game on Sunday morning</string>
+    <!-- Sessions (3) -->
+    <string name="achievement_night_owl_3_name">Night Owl</string>
+    <string name="achievement_night_owl_3_desc">3 games played after midnight</string>
+    <string name="achievement_same_day_3_name">Same Day Grind</string>
+    <string name="achievement_same_day_3_desc">3 wins in the same calendar day</string>
+    <string name="achievement_same_day_5_name">All Day Grind</string>
+    <string name="achievement_same_day_5_desc">5 wins in the same calendar day</string>
+    <!-- Holidays (4) -->
+    <string name="achievement_new_year_eve_name">Party Time</string>
+    <string name="achievement_new_year_eve_desc">Open the app on December 31st</string>
+    <string name="achievement_new_year_name">New Year, New Win</string>
+    <string name="achievement_new_year_desc">Open the app on January 1st</string>
+    <string name="achievement_halloween_name">Spooky Season</string>
+    <string name="achievement_halloween_desc">Open the app on October 31st</string>
+    <string name="achievement_ferragosto_name">Summer Vibes</string>
+    <string name="achievement_ferragosto_desc">Open the app on August 15th</string>
     <!-- Stats screen labels -->
     <string name="stats_title">Statistics &amp; Trophies</string>
     <string name="stats_best_time">⏱ Best time</string>
