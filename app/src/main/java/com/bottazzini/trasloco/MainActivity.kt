@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
+import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.ThemeUtils
@@ -63,12 +64,11 @@ class MainActivity : AppCompatActivity() {
         recordsHandler = RecordsHandler(applicationContext)
         recordsHandler.insertDefaultSettings()
 
-        val achievementBanner = com.bottazzini.trasloco.utils.AchievementBanner(
-            this, findViewById(R.id.mainBannerAchievement)
-        )
+        val bannerRoot = findViewById<View>(R.id.mainBannerAchievement)
+        val achievementBanner = com.bottazzini.trasloco.utils.AchievementBanner(this, bannerRoot)
         val newAchievements = com.bottazzini.trasloco.utils.AchievementEngine.create(applicationContext)
             .evaluate(com.bottazzini.trasloco.utils.AchievementTrigger.APP_OPENED)
-        achievementBanner.enqueue(newAchievements)
+        bannerRoot.postDelayed({ achievementBanner.enqueue(newAchievements) }, 500L)
 
         findViewById<View>(R.id.textViewTitle).setOnClickListener {
             handleTripleTap()
@@ -76,11 +76,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startGame(view: View) {
-        if (!isTutorialSeen()) {
+        if (gameStateRepo.hasSavedGame()) {
+            showAbandonGameDialog()
+        } else if (!isTutorialSeen()) {
             showTutorialPromptDialog()
         } else {
             launchGameActivity(tutorial = false)
         }
+    }
+
+    private fun showAbandonGameDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.abandon_game_title)
+            .setMessage(R.string.abandon_game_message)
+            .setCancelable(true)
+            .setNegativeButton(R.string.abandon_game_confirm) { _, _ ->
+                val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
+                if (consecutive != null) {
+                    recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
+                }
+                if (!isTutorialSeen()) {
+                    showTutorialPromptDialog()
+                } else {
+                    launchGameActivity(tutorial = false)
+                }
+            }
+            .setPositiveButton(R.string.abandon_game_resume) { _, _ ->
+                resumeGame(null)
+            }
+            .show()
     }
 
     fun showTutorial(view: View) {
@@ -181,7 +205,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun resumeGame(view: View) {
+    fun resumeGame(view: View?) {
         playSound(R.raw.change_activity)
         val intent = Intent(this, GameActivity::class.java)
         intent.putExtra("resume", true)

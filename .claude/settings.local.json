@@ -144,7 +144,14 @@
       "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/drawable* -name \"*button*\" -o -name \"*selector*\" -o -name \"*ripple*\")",
       "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/drawable* -name \"casino_tile*\" -o -name \"casino_corner*\")",
       "Bash(find /Users/bottazzini/Documents/Progetti/Trasloco/app/src/main/res/values* -name \"colors*\")",
-      "Bash(find *)"
+      "Bash(find *)",
+      "Skill(superpowers:subagent-driven-development)",
+      "Bash(./gradlew test *)",
+      "Bash(./gradlew testDebugUnitTest --tests \"AchievementEngineTest\")",
+      "Bash(./gradlew testDebugUnitTest --tests \"AchievementEngineTest\" -i)",
+      "Bash(grep *)",
+      "Bash(xmllint --noout app/src/main/res/values/strings.xml)",
+      "Bash(xmllint *)"
     ]
   }
 }

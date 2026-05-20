@@ -149,6 +149,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun startNewGame() {
+        abandonCurrentGame()
         isInitializing = true
         // Starting a fresh game invalidates any previously saved snapshot.
         shouldPersistOnPause = true
@@ -1317,7 +1318,17 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    private fun abandonCurrentGame() {
+        if (!isTutorialMode && gameViewModel.hasActiveGame && !gameViewModel.gameLost) {
+            val consecutive = recordsHandler.readValue(Type.CONSECUTIVE)
+            if (consecutive != null) {
+                recordsHandler.update(Type.CONSECUTIVE, consecutive, 0L, false)
+            }
+        }
+    }
+
     fun onClickBack(view: View) {
+        abandonCurrentGame()
         finish()
     }
 
@@ -1327,6 +1338,7 @@ class GameActivity : AppCompatActivity() {
             showTutorialExitDialog()
             return
         }
+        abandonCurrentGame()
         super.onBackPressed()
     }
 
