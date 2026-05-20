@@ -56,8 +56,8 @@
     <string name="choose_backcard">Escolha o verso da carta</string>
     <string name="card_type_label">Tipo de baralho</string>
     <string name="card_type_piacentine">Piacentine</string>
-    <string name="card_type_napoletane">Napolitanas</string>
-    <string name="card_type_francesi">Francesas</string>
+    <string name="card_type_napoletane">Napoletane</string>
+    <string name="card_type_francesi">Francesi</string>
     <string name="card_type_bergamasche">Bergamasche</string>
     <string name="card_type_siciliane">Siciliane</string>
     <string name="card_type_trevisane">Trevisane</string>
@@ -74,7 +74,7 @@
     <string name="region_nord">Norte</string>
     <string name="region_sud_isole">Sul &amp; Ilhas</string>
     <string name="region_internazionali">Internacional</string>
-    <string name="credits_text">Arte das cartas: Piacentine adaptadas de BriscolaPlusAndroid por S. Di Berardino (PD) · Francesas por Byron Knoll (CC-BY-SA) · Bresciane de ZZandro via Wikimedia (CC-BY-SA 4.0) · Todos os outros baralhos de Cuperativa por I. Sarzi Sartori (MIT)</string>
+    <string name="credits_text">Card art: Piacentine adapted from BriscolaPlusAndroid by S. Di Berardino (PD) · Francesi by Byron Knoll (CC-BY-SA) · Bresciane by ZZandro via Wikimedia (CC-BY-SA 4.0) · All other decks from Cuperativa by I. Sarzi Sartori (MIT)</string>
     <string name="bordeaux">Bordeaux</string>
     <string name="subtitle_card_game">~ JOGO DE CARTAS ~</string>
     <string name="riprendi_partita">Continuar</string>
