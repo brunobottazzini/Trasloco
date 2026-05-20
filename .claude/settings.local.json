@@ -151,7 +151,16 @@
       "Bash(./gradlew testDebugUnitTest --tests \"AchievementEngineTest\" -i)",
       "Bash(grep *)",
       "Bash(xmllint --noout app/src/main/res/values/strings.xml)",
-      "Bash(xmllint *)"
+      "Bash(xmllint *)",
+      "Bash(chmod +x /tmp/final_check.sh)",
+      "Bash(/tmp/final_check.sh)",
+      "Bash(chmod +x /tmp/verify_nl.sh)",
+      "Bash(/tmp/verify_nl.sh)",
+      "Bash(chmod +x /tmp/compare_decks.sh)",
+      "Bash(/tmp/compare_decks.sh)",
+      "Bash(bash /tmp/comprehensive_check.sh)",
+      "Bash(chmod +x /tmp/verify_ja.sh)",
+      "Bash(/tmp/verify_ja.sh)"
     ]
   }
 }

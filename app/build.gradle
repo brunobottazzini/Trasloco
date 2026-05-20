@@ -22,8 +22,8 @@ android {
     defaultConfig {
         applicationId "com.bottazzini.trasloco"
         compileSdk = 36
-        versionCode 32
-        versionName "2.6.0"
+        versionCode 33
+        versionName "2.6.1"
 
         defaultConfig {
             applicationId = "com.bottazzini.trasloco"
