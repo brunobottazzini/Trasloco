@@ -746,6 +746,22 @@
                     android:textColor="@color/casino_gold"
                     android:textSize="14sp"
                     android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/menuLostButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/casino_tile_bg"
+                    android:stateListAnimator="@null"
+                    android:fontFamily="serif"
+                    android:minWidth="180dp"
+                    android:onClick="goToMenuFromLost"
+                    android:padding="12dp"
+                    android:text="@string/win_button_menu"
+                    android:textColor="@color/casino_gold"
+                    android:textSize="14sp"
+                    android:textStyle="italic" />
             </LinearLayout>
 
         </LinearLayout>

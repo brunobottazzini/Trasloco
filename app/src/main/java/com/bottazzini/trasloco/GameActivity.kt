@@ -314,6 +314,14 @@ class GameActivity : AppCompatActivity() {
         isInitializing = false
     }
 
+    fun goToMenuFromLost(view: View) {
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK }
+        )
+        finish()
+    }
+
     fun undoClick(view: View) {
         if (playList.isNotEmpty()) {
             val undoSelectedCard = playList.keys.iterator().next()
@@ -868,7 +876,7 @@ class GameActivity : AppCompatActivity() {
         val dimColor = ThemeUtils.accentColorDim(bg, this)
         listOf(
             R.id.iconBack, R.id.textViewGameTimer, R.id.iconPause, R.id.resetButton,
-            R.id.lostTextView, R.id.newGameButton, R.id.retryButton,
+            R.id.lostTextView, R.id.newGameButton, R.id.retryButton, R.id.menuLostButton,
             R.id.pauseTextTitle, R.id.tutorialBannerText, R.id.tutorialNextButton
         ).forEach { findViewById<TextView>(it)?.setTextColor(color) }
         findViewById<TextView>(R.id.pauseTextSubtitle)?.setTextColor(dimColor)
