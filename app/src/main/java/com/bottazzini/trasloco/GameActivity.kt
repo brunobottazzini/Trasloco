@@ -29,6 +29,8 @@ import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
 import com.bottazzini.trasloco.utils.CardAnimator
+import com.bottazzini.trasloco.utils.DealAnimator
+import com.bottazzini.trasloco.utils.DealEntry
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.ThemeUtils
@@ -69,6 +71,7 @@ class GameActivity : AppCompatActivity() {
     private var mediaPlayerAtomic: MediaPlayer? = null
     private var mediaPlayer: MediaPlayer? = null
     private var isInitializing = true
+    private var isIntroAnimating = false
     private val gameViewModel: GameViewModel by lazy {
         ViewModelProvider(this).get(GameViewModel::class.java)
     }
@@ -749,9 +752,15 @@ class GameActivity : AppCompatActivity() {
         }
         subDeckMap[line] = subDeck
 
-        if (isInitializing || deals.isEmpty()) {
-            // During board setup: apply images directly, no animation
-            deals.forEach { setImage(it.imageViewId, it.cardName) }
+        if (deals.isEmpty()) return
+
+        if (isInitializing) {
+            // During board setup with no intro animation: apply images directly
+            if (!isIntroAnimating) {
+                deals.forEach { setImage(it.imageViewId, it.cardName) }
+            }
+            // With isIntroAnimating=true: state is already updated above; visuals
+            // are deferred to DealEntry.onLand callbacks in DealAnimator.
             return
         }
 
@@ -778,6 +787,39 @@ class GameActivity : AppCompatActivity() {
             dealRunnables.add(r)
             timerHandler.postDelayed(r, index * 80L)
         }
+    }
+
+    /**
+     * Builds the 12 DealEntry objects for the intro cascade animation.
+     * Order: col=1 rows 1-4, col=2 rows 1-4, col=3 rows 1-4 (cascade vertical order).
+     * Entries for empty slots (card == "zero" or missing) have drawable=null and are skipped.
+     */
+    private fun buildDealEntries(): List<DealEntry> {
+        val entries = mutableListOf<DealEntry>()
+        for (col in 1..3) {
+            for (row in 1..4) {
+                val position  = "$row$col"
+                val cardName  = cardTableMap[position]?.lastOrNull() ?: continue
+                if (cardName == "zero") continue
+                val imageViewId = resources.getIdentifier("subDeck$position", "id", packageName)
+                val talloneId   = resources.getIdentifier("subDeck$row",      "id", packageName)
+                val resourceName = "${cardType}_$cardName"
+                val drawableId   = ResourceUtils.getDrawableByName(resources, packageName, resourceName)
+                val drawable     = androidx.core.content.ContextCompat.getDrawable(this, drawableId)
+                val sourceView   = findViewById<ImageView>(talloneId)
+                val targetView   = findViewById<ImageView>(imageViewId)
+                entries.add(DealEntry(
+                    sourceView = sourceView,
+                    targetView = targetView,
+                    drawable   = drawable,
+                    onLand     = {
+                        playSoundAtomic(R.raw.flipcard)
+                        setImage(imageViewId, cardName)
+                    }
+                ))
+            }
+        }
+        return entries
     }
 
     private fun setImage(position: Int, imageName: String) {
