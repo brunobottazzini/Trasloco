@@ -38,6 +38,7 @@ object DealAnimator {
     private var handlerRef: Handler? = null
     private var rootRef: WeakReference<ViewGroup>? = null
     private var skipOnComplete: (() -> Unit)? = null
+    private var talloneRefs: List<ImageView> = emptyList()
 
     enum class ShuffleStyle {
         RIFFLE, CUT, SPIN, BOUNCE, WAVE, FLIP, TUMBLE, PULSE, TOSS, FAN
@@ -58,6 +59,8 @@ object DealAnimator {
         handlerRef     = handler
         rootRef        = WeakReference(root)
         skipOnComplete = onComplete
+        talloneRefs    = talloneViews
+        hideTalloni()
 
         playStyle(style, root, talloneViews, backDrawable, handler) {
             val timings = cascadeTimings(staggerMs = 150L, roundGapMs = 250L)
@@ -112,6 +115,8 @@ object DealAnimator {
         pendingRunnables.clear()
         ghostViews.forEach { r?.removeView(it) }
         ghostViews.clear()
+        restoreTalloni()
+        talloneRefs = emptyList()
         val cb = skipOnComplete
         skipOnComplete = null
         handlerRef = null
@@ -120,6 +125,16 @@ object DealAnimator {
     }
 
     // ── Private helpers ───────────────────────────────────────────────────
+
+    /** Hide all 4 talloni at Phase 1 start so the shuffle appears to be the deck's source. */
+    private fun hideTalloni() {
+        talloneRefs.forEach { it.alpha = 0f }
+    }
+
+    /** Restore tallone visibility (called by skip()/reset() in case the intro was interrupted). */
+    private fun restoreTalloni() {
+        talloneRefs.forEach { it.alpha = 1f }
+    }
 
     private fun reset() {
         riffleAnims.forEach { it.cancel() }
@@ -130,6 +145,8 @@ object DealAnimator {
         pendingRunnables.clear()
         ghostViews.forEach { r?.removeView(it) }
         ghostViews.clear()
+        restoreTalloni()
+        talloneRefs    = emptyList()
         handlerRef     = null
         rootRef        = null
         skipOnComplete = null
@@ -647,6 +664,7 @@ object DealAnimator {
         ghostViews.clear()
         pendingRunnables.clear()
         riffleAnims.clear()
+        talloneRefs    = emptyList()
         handlerRef     = null
         rootRef        = null
         skipOnComplete = null
