@@ -343,6 +343,7 @@ class GameActivity : AppCompatActivity() {
         hintsUsedThisGame = 0
         autoMovesThisGame = 0
         isInitializing = true
+        isIntroAnimating = true
         // Re-enable persistence: a retried game should also be resumable.
         shouldPersistOnPause = true
         gameViewModel.hasActiveGame = true
@@ -353,9 +354,24 @@ class GameActivity : AppCompatActivity() {
         cardTableMap.clear()
         newPlayList()
         subDeckMap = HashMap(coppiedSubDeckMap)
-        prepareTable()
-        startTimer()
-        isInitializing = false
+        prepareTable()  // state updated; setImage skipped because isIntroAnimating=true
+
+        val dealEntries = buildDealEntries()
+
+        // Tap on gameRoot skips the animation
+        gameRoot.setOnClickListener { DealAnimator.skip() }
+
+        DealAnimator.playRetry(
+            root        = gameRoot,
+            dealEntries = dealEntries,
+            handler     = timerHandler,
+            onComplete  = {
+                isIntroAnimating = false
+                isInitializing   = false
+                gameRoot.setOnClickListener(null)
+                startTimer()
+            }
+        )
     }
 
     fun goToMenuFromLost(view: View) {
