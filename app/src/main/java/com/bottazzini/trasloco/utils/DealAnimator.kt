@@ -574,7 +574,11 @@ object DealAnimator {
                     if (rootRef?.get() == null) return
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    val dp40 = 40f * root.context.resources.displayMetrics.density
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
+                        style = ShuffleStyle.BOUNCE,
+                        pathFn = { _, f -> 0f to -Math.sin(f.toDouble() * Math.PI).toFloat() * dp40 },
+                        scaleFn = { _, f -> 1f + 0.10f * Math.sin(f.toDouble() * Math.PI).toFloat() },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -606,7 +610,11 @@ object DealAnimator {
                     if (rootRef?.get() == null) return
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
+                        style = ShuffleStyle.PULSE,
+                        scaleFn = { _, f ->
+                            1f + 0.05f * Math.abs(Math.sin(f.toDouble() * Math.PI * 3)).toFloat()
+                        },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -636,9 +644,14 @@ object DealAnimator {
                 override fun onAnimationEnd(animation: Animator) {
                     if (rootRef?.get() == null) return
                     ghost.translationX = startTx
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    val dp20 = 20f * root.context.resources.displayMetrics.density
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 0L, 0L, 0L),
-                        flightDurationMs = 180L,
+                        flightDurationMs = 280L,
+                        style = ShuffleStyle.WAVE,
+                        pathFn = { _, f ->
+                            Math.sin(f.toDouble() * Math.PI * 2).toFloat() * dp20 to 0f
+                        },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -672,9 +685,13 @@ object DealAnimator {
                     ghost.translationY = startTy
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    val dp80 = 80f * root.context.resources.displayMetrics.density
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 40L, 80L, 120L),
-                        flightDurationMs = 200L,
+                        flightDurationMs = 280L,
+                        style = ShuffleStyle.TOSS,
+                        pathFn = { _, f -> 0f to -Math.sin(f.toDouble() * Math.PI).toFloat() * dp80 },
+                        scaleFn = { _, f -> 1f + 0.20f * Math.sin(f.toDouble() * Math.PI).toFloat() },
                         onAllLanded = onAfterPhase2)
                 }
             })
