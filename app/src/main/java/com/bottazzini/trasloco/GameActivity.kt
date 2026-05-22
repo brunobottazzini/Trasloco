@@ -28,6 +28,7 @@ import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
+import com.bottazzini.trasloco.utils.CardAnimator
 import com.bottazzini.trasloco.utils.DeckSetup
 import com.bottazzini.trasloco.utils.ResourceUtils
 import com.bottazzini.trasloco.utils.ThemeUtils
@@ -76,6 +77,9 @@ class GameActivity : AppCompatActivity() {
     private var autoMoveEnabled: Boolean = false
     private var soundEnabled: Boolean = true
     private var autoMoveRunnable: Runnable? = null
+    private val gameRoot: ConstraintLayout by lazy {
+        findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
+    }
     private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
     private var dragTouchStartX: Float = 0f
     private var dragTouchStartY: Float = 0f
@@ -483,11 +487,28 @@ class GameActivity : AppCompatActivity() {
         line: String
     ) {
         val lastCard = cardTableMap[selectedPositionName]!!.first()
+
+        // Capture source view + card drawable BEFORE clearing the slot
+        val sourceView = findViewById<ImageView>(selectedPositionId)
+        val cardResourceName = if (lastCard == "zero") lastCard else "${cardType}_${lastCard}"
+        val drawableId = ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
+        val cardDrawable = ContextCompat.getDrawable(this, drawableId)
+        val targetView = findViewById<ImageView>(desiredCardPositionId)
+
+        // Update game state synchronously so win-condition checks are correct immediately
         cardTableMap[selectedPositionName]!!.clear()
         setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
-        setImage(selectedPositionId, "zero")
-        setImage(desiredCardPositionId, lastCard)
         endDeckList[line] = lastCard
+
+        // Clear source slot visually right away
+        setImage(selectedPositionId, "zero")
+
+        // Animate the card ghost flying to the end-deck slot; show the card there on completion
+        CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 350L) {
+            if (!isFinishing) {
+                setImage(desiredCardPositionId, lastCard)
+            }
+        }
     }
 
 
