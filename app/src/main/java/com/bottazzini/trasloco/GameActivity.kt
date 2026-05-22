@@ -225,6 +225,7 @@ class GameActivity : AppCompatActivity() {
                         isInitializing   = false
                         gameRoot.setOnClickListener(null)
                         startTimer()
+                        refreshAllStackIndicators()
                     }
                 )
             }
@@ -247,6 +248,7 @@ class GameActivity : AppCompatActivity() {
         subDeckMap = com.bottazzini.trasloco.utils.DeckSetup.getSubDeckMap()
         coppiedSubDeckMap = HashMap(subDeckMap)
         prepareTable()
+        refreshAllStackIndicators()
 
         // Init engine + banner.
         tutorialEngine = com.bottazzini.trasloco.utils.TutorialEngine(
@@ -373,6 +375,7 @@ class GameActivity : AppCompatActivity() {
                 isInitializing   = false
                 gameRoot.setOnClickListener(null)
                 startTimer()
+                refreshAllStackIndicators()
             }
         )
     }
@@ -743,6 +746,29 @@ class GameActivity : AppCompatActivity() {
             // source decks
             val deckId = resources.getIdentifier("subDeck$row", "id", packageName)
             if (deckId != 0) findViewById<View>(deckId)?.overlay?.clear()
+        }
+    }
+
+    /**
+     * Syncs all stack indicators and source-deck badges with current game state.
+     * Call after any full board rebuild: new game, retry, restore, tutorial start.
+     */
+    private fun refreshAllStackIndicators() {
+        // scoperte (columns 1–3, all 4 rows)
+        for (row in 1..4) {
+            for (col in 1..3) {
+                val pos = "$row$col"
+                val cards = cardTableMap[pos] ?: emptyList()
+                setNumberOfCards(cards, pos)
+            }
+        }
+        // source decks
+        for (line in listOf("1", "2", "3", "4")) {
+            updateSourceDeck(line)
+        }
+        // end decks
+        for (line in listOf("1", "2", "3", "4")) {
+            updateEndDeckIndicator(line)
         }
     }
 
@@ -1524,6 +1550,7 @@ class GameActivity : AppCompatActivity() {
             val endDeckId = resources.getIdentifier("subDeck${line}4", "id", this.packageName)
             setImage(endDeckId, card)
         }
+        refreshAllStackIndicators()
 
         if (selectedPositionId != null) {
             setSelected(selectedPositionId)
