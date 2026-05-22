@@ -670,29 +670,56 @@ class GameActivity : AppCompatActivity() {
     private fun dealCard(line: String) {
         val subDeck = getSubDeckListConcurrentSafely(line)
         val iterator = subDeck.iterator()
+
+        // Collect which slots will receive cards and update state immediately.
+        // State must be correct before returning so lost-condition checks see the new cards.
+        data class DealEntry(val position: String, val imageViewId: Int, val cardName: String)
+        val deals = mutableListOf<DealEntry>()
+
         while (iterator.hasNext()) {
             val cardName = iterator.next()
             for (pos in 1..3) {
-                val position = "$line${pos}"
+                val position = "$line$pos"
                 val imageViewId =
                     resources.getIdentifier("subDeck$position", "id", this.packageName)
-
                 if (getCardName(imageViewId) == "zero") {
-                    if (!isInitializing) {
-                        playSoundAtomic(R.raw.flipcard)
-                    }
-                    setImage(imageViewId, cardName)
                     cardTableMap[position] = arrayListOf(cardName)
                     iterator.remove()
-
                     clearUndoButton()
+                    deals.add(DealEntry(position, imageViewId, cardName))
                     break
                 }
-
             }
         }
-
         subDeckMap[line] = subDeck
+
+        if (isInitializing || deals.isEmpty()) {
+            // During board setup: apply images directly, no animation
+            deals.forEach { setImage(it.imageViewId, it.cardName) }
+            return
+        }
+
+        // Animate each card flying from the deck view to its target slot,
+        // staggered by 120ms so cards arrive in a visible cascade.
+        val deckViewId = resources.getIdentifier("subDeck$line", "id", packageName)
+        val deckView = findViewById<ImageView>(deckViewId)
+
+        deals.forEachIndexed { index, entry ->
+            timerHandler.postDelayed({
+                if (isFinishing) return@postDelayed
+                playSoundAtomic(R.raw.flipcard)
+                val cardResourceName = "${cardType}_${entry.cardName}"
+                val drawableId =
+                    ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
+                val cardDrawable = ContextCompat.getDrawable(this, drawableId)
+                val targetView = findViewById<ImageView>(entry.imageViewId)
+                CardAnimator.animateCardFlight(gameRoot, deckView, targetView, cardDrawable, 350L) {
+                    if (!isFinishing) {
+                        setImage(entry.imageViewId, entry.cardName)
+                    }
+                }
+            }, index * 120L)
+        }
     }
 
     private fun setImage(position: Int, imageName: String) {
