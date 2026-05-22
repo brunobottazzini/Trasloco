@@ -695,6 +695,27 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Updates the source-deck badge count and stack indicator for [line] ("1"–"4").
+     * Call whenever subDeckMap[line] changes.
+     */
+    private fun updateSourceDeck(line: String) {
+        val size = subDeckMap[line]?.size ?: 0
+        // badge
+        val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
+        val badge = findViewById<TextView>(badgeId)
+        if (size > 0) {
+            badge.text = size.toString()
+            badge.visibility = View.VISIBLE
+        } else {
+            badge.text = ""
+            badge.visibility = View.INVISIBLE
+        }
+        // indicator: show when 2+ cards remain
+        val deckId = resources.getIdentifier("subDeck$line", "id", packageName)
+        setStackIndicator(findViewById(deckId), size > 1)
+    }
+
     private fun isEndDeckClick(positionName: String) = positionName.last() == '4'
 
     private fun canBeInserted(
@@ -841,6 +862,7 @@ class GameActivity : AppCompatActivity() {
             }
         }
         subDeckMap[line] = subDeck
+        updateSourceDeck(line)   // ← new line
 
         if (deals.isEmpty()) return
 
