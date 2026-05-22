@@ -160,7 +160,9 @@ object DealAnimator {
 
     /**
      * Phase 2: 4 ghost decks fly from centralGhost position to each tallone.
-     * Stagger: 0 / 60 / 120 / 180 ms. Fires onAllLanded after the last ghost lands.
+     * Stagger and flight duration are caller-controlled via [delays] and
+     * [flightDurationMs] (defaults: 0/60/120/180 ms stagger, 220 ms flight).
+     * Fires onAllLanded after the last ghost lands.
      */
     private fun playPhase2(
         root: ViewGroup,
