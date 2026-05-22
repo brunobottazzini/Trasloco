@@ -28,7 +28,9 @@ import com.bottazzini.trasloco.settings.Configuration
 import com.bottazzini.trasloco.settings.RecordsHandler
 import com.bottazzini.trasloco.settings.SettingsHandler
 import com.bottazzini.trasloco.settings.Type
+import androidx.core.view.doOnLayout
 import com.bottazzini.trasloco.utils.CardAnimator
+import com.bottazzini.trasloco.utils.CardStackIndicatorDrawable
 import com.bottazzini.trasloco.utils.DealAnimator
 import com.bottazzini.trasloco.utils.DealEntry
 import com.bottazzini.trasloco.utils.DeckSetup
@@ -664,6 +666,27 @@ class GameActivity : AppCompatActivity() {
         } else {
             textView.text = ""
             textView.visibility = View.INVISIBLE
+        }
+    }
+
+    /**
+     * Adds or removes the stack-depth indicator overlay on [view].
+     * Uses ViewOverlay so it does not conflict with existing foreground/background.
+     */
+    private fun setStackIndicator(view: View, show: Boolean) {
+        view.overlay.clear()
+        if (!show) return
+        fun addOverlay() {
+            if (view.width > 0 && view.height > 0) {
+                val d = CardStackIndicatorDrawable(this)
+                d.setBounds(0, 0, view.width, view.height)
+                view.overlay.add(d)
+            }
+        }
+        if (view.isLaidOut && view.width > 0) {
+            addOverlay()
+        } else {
+            view.doOnLayout { addOverlay() }
         }
     }
 
