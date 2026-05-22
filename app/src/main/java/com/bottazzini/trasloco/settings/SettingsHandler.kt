@@ -11,7 +11,8 @@ enum class Configuration(val value: String) {
     BACKGROUND("background"),
     CARD_TYPE("cardType"),
     HINT_ENABLED("hintEnabled"),
-    AUTO_MOVE("autoMove")
+    AUTO_MOVE("autoMove"),
+    SOUND_ENABLED("soundEnabled")
 }
 
 class SettingsHandler(context: Context) {
@@ -25,6 +26,7 @@ class SettingsHandler(context: Context) {
         setDefaultSetting(Configuration.CARD_TYPE.value, "piacentine")
         setDefaultSetting(Configuration.HINT_ENABLED.value, "enabled")   // default ON
         setDefaultSetting(Configuration.AUTO_MOVE.value, "disabled")     // default OFF
+        setDefaultSetting(Configuration.SOUND_ENABLED.value, "enabled")  // default ON
     }
 
     fun migrateRemovedBackgrounds() {
