@@ -161,7 +161,8 @@
       "Bash(bash /tmp/comprehensive_check.sh)",
       "Bash(chmod +x /tmp/verify_ja.sh)",
       "Bash(/tmp/verify_ja.sh)",
-      "Bash(./gradlew testDebugUnitTest --tests \"com.bottazzini.trasloco.*\")"
+      "Bash(./gradlew testDebugUnitTest --tests \"com.bottazzini.trasloco.*\")",
+      "Bash(./gradlew assembleDebug --quiet)"
     ]
   }
 }

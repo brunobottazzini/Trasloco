@@ -88,11 +88,14 @@ class YouWonActivity : AppCompatActivity() {
 
         loadRandomPartyGif()
 
-        try {
-            mediaPlayer = MediaPlayer.create(this, R.raw.youwin)
-            mediaPlayer?.start()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        val soundEnabled = settingsHandler.readValue(Configuration.SOUND_ENABLED.value) != "disabled"
+        if (soundEnabled) {
+            try {
+                mediaPlayer = MediaPlayer.create(this, R.raw.youwin)
+                mediaPlayer?.start()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         buttonNewGame.setOnClickListener {
