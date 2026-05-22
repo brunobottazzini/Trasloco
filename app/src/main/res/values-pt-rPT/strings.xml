@@ -99,6 +99,7 @@
     <string name="cd_hint">Dica</string>
     <string name="hint_with_icon">💡 Dicas</string>
     <string name="auto_move_with_icon">🎯 Mover automaticamente para pilha final</string>
+    <string name="sound_with_icon">🔊 Som</string>
     <string name="win_title">Vitória!</string>
     <string name="win_stat_time">⏱ Tempo</string>
     <string name="win_stat_best">🏅 Melhor tempo</string>

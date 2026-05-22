@@ -99,6 +99,7 @@
     <string name="cd_hint">İpucu</string>
     <string name="hint_with_icon">💡 İpuçları</string>
     <string name="auto_move_with_icon">🎯 Son Deste\'ye Otomatik Taşıyın</string>
+    <string name="sound_with_icon">🔊 Ses</string>
     <string name="win_title">Zafer!</string>
     <string name="win_stat_time">⏱ Zaman</string>
     <string name="win_stat_best">🏅 En İyi Zaman</string>

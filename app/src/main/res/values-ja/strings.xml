@@ -99,6 +99,7 @@
     <string name="cd_hint">ヒント</string>
     <string name="hint_with_icon">💡 ヒント</string>
     <string name="auto_move_with_icon">🎯 最終デッキに自動移動</string>
+    <string name="sound_with_icon">🔊 サウンド</string>
     <string name="win_title">勝利!</string>
     <string name="win_stat_time">⏱ 時間</string>
     <string name="win_stat_best">🏅 ベストタイム</string>

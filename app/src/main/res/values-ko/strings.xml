@@ -99,6 +99,7 @@
     <string name="cd_hint">힌트</string>
     <string name="hint_with_icon">💡 힌트</string>
     <string name="auto_move_with_icon">🎯 최종 덱으로 자동 이동</string>
+    <string name="sound_with_icon">🔊 사운드</string>
     <string name="win_title">승리!</string>
     <string name="win_stat_time">⏱ 시간</string>
     <string name="win_stat_best">🏅 최고 기록</string>

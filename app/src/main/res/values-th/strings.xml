@@ -99,6 +99,7 @@
     <string name="cd_hint">คำใบ้</string>
     <string name="hint_with_icon">💡 คำใบ้</string>
     <string name="auto_move_with_icon">🎯 ย้ายอัตโนมัติไปยังสำรับสุดท้าย</string>
+    <string name="sound_with_icon">🔊 เสียง</string>
     <string name="win_title">ชนะแล้ว!</string>
     <string name="win_stat_time">⏱ เวลา</string>
     <string name="win_stat_best">🏅 เวลาที่ดีที่สุด</string>

@@ -99,6 +99,7 @@
     <string name="cd_hint">Pista</string>
     <string name="hint_with_icon">💡 Pistas</string>
     <string name="auto_move_with_icon">🎯 Mover automáticamente a la baraja final</string>
+    <string name="sound_with_icon">🔊 Sonido</string>
     <string name="win_title">¡Victoria!</string>
     <string name="win_stat_time">⏱ Tiempo</string>
     <string name="win_stat_best">🏅 Mejor tiempo</string>

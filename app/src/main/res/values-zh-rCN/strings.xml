@@ -99,6 +99,7 @@
     <string name="cd_hint">提示</string>
     <string name="hint_with_icon">💡 提示</string>
     <string name="auto_move_with_icon">🎯 自动移到最后的牌堆</string>
+    <string name="sound_with_icon">🔊 声音</string>
     <string name="win_title">胜利！</string>
     <string name="win_stat_time">⏱ 时间</string>
     <string name="win_stat_best">🏅 最佳时间</string>

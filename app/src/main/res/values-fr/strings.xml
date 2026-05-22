@@ -99,6 +99,7 @@
     <string name="cd_hint">Indice</string>
     <string name="hint_with_icon">💡 Indices</string>
     <string name="auto_move_with_icon">🎯 Déplacement automatique vers la pile finale</string>
+    <string name="sound_with_icon">🔊 Son</string>
     <string name="win_title">Victoire !</string>
     <string name="win_stat_time">⏱ Temps</string>
     <string name="win_stat_best">🏅 Meilleur temps</string>

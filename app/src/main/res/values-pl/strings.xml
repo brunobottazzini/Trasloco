@@ -99,6 +99,7 @@
     <string name="cd_hint">Wskazówka</string>
     <string name="hint_with_icon">💡 Wskazówki</string>
     <string name="auto_move_with_icon">🎯 Autoprzeniesienie do ostatniej talii</string>
+    <string name="sound_with_icon">🔊 Dźwięk</string>
     <string name="win_title">Zwycięstwo!</string>
     <string name="win_stat_time">⏱ Czas</string>
     <string name="win_stat_best">🏅 Najlepszy czas</string>

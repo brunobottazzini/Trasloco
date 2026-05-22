@@ -99,6 +99,7 @@
     <string name="cd_hint">संकेत</string>
     <string name="hint_with_icon">💡 संकेत</string>
     <string name="auto_move_with_icon">🎯 अंतिम डेक में स्वचालित-चाल</string>
+    <string name="sound_with_icon">🔊 ध्वनि</string>
     <string name="win_title">जीत!</string>
     <string name="win_stat_time">⏱ समय</string>
     <string name="win_stat_best">🏅 सर्वश्रेष्ठ समय</string>
