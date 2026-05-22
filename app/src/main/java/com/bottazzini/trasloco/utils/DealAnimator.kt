@@ -825,6 +825,62 @@ object DealAnimator {
     }
 
     /**
+     * Generic Phase 2 dispatcher used by per-variant `playXxx` functions.
+     *
+     * For each tallone (with optional per-row delays), creates a ghost via
+     * [CardAnimator.animateCardFlightCustom] with style-specific path / rotation /
+     * scale, and when the ghost lands triggers [revealTallone] for that tallone.
+     * Fires [onAllLanded] after the **last ghost lands** (the reveal runs in
+     * parallel — we don't wait for it to allow Phase 3 cascade to chain).
+     *
+     * Lambdas are index-aware (the index is the row, 0..3) so variants like FAN
+     * can vary per-ghost behavior.
+     */
+    private fun playPhase2Custom(
+        root: ViewGroup,
+        centralGhost: View,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        delays: LongArray = longArrayOf(0L, 60L, 120L, 180L),
+        flightDurationMs: Long = 280L,
+        style: ShuffleStyle,
+        pathFn: ((Int, Float) -> Pair<Float, Float>)? = null,
+        rotationFn: ((Int, Float) -> Float)? = null,
+        scaleFn: ((Int, Float) -> Float)? = null,
+        onAllLanded: () -> Unit
+    ) {
+        var landedCount = 0
+        val total = talloneViews.size
+
+        talloneViews.forEachIndexed { index, tallone ->
+            val r = Runnable {
+                val currentRoot = rootRef?.get() ?: return@Runnable
+                val perRowPath = pathFn?.let { fn -> { f: Float -> fn(index, f) } }
+                val perRowRot  = rotationFn?.let { fn -> { f: Float -> fn(index, f) } }
+                val perRowScl  = scaleFn?.let { fn -> { f: Float -> fn(index, f) } }
+                CardAnimator.animateCardFlightCustom(
+                    currentRoot, centralGhost, tallone, backDrawable, flightDurationMs,
+                    pathFn = perRowPath,
+                    rotationFn = perRowRot,
+                    scaleFn = perRowScl
+                ) {
+                    // Reveal runs in parallel — we fire onLanded right away so the cascade can chain.
+                    revealTallone(tallone, style)
+                    landedCount++
+                    if (landedCount == total) {
+                        currentRoot.removeView(centralGhost)
+                        ghostViews.remove(centralGhost)
+                        onAllLanded()
+                    }
+                }
+            }
+            pendingRunnables.add(r)
+            handler.postDelayed(r, delays.getOrElse(index) { index * 60L })
+        }
+    }
+
+    /**
      * Phase 3 (deal cascade): fires each DealEntry at timings[originalIndex].
      * Entries with null drawable are skipped silently.
      * Fires onComplete after the last card's onLand callback.
