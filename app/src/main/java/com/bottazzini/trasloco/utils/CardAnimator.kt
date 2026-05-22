@@ -80,4 +80,82 @@ object CardAnimator {
             start()
         }
     }
+
+    /**
+     * Variant of [animateCardFlight] that allows custom in-flight motion:
+     * - [pathFn]:    returns an (Δx, Δy) **offset** added to the linear-interpolation position
+     *                at progress f. Pass null for straight-line flight.
+     * - [rotationFn]: returns Z-axis rotation degrees at progress f. Pass null for no rotation.
+     * - [scaleFn]:   returns a uniform scale multiplier at progress f. Pass null for scale=1.
+     *
+     * Same zero-dimension fallback as [animateCardFlight]: if either view has zero
+     * dimensions, [onComplete] is invoked immediately with no ghost created.
+     */
+    fun animateCardFlightCustom(
+        root: ViewGroup,
+        sourceView: View,
+        targetView: View,
+        drawable: Drawable?,
+        durationMs: Long,
+        pathFn: ((Float) -> Pair<Float, Float>)? = null,
+        rotationFn: ((Float) -> Float)? = null,
+        scaleFn: ((Float) -> Float)? = null,
+        onComplete: () -> Unit
+    ) {
+        if (sourceView.width == 0 || sourceView.height == 0 ||
+            targetView.width == 0 || targetView.height == 0) {
+            onComplete()
+            return
+        }
+
+        val srcLoc  = IntArray(2)
+        val dstLoc  = IntArray(2)
+        val rootLoc = IntArray(2)
+        sourceView.getLocationOnScreen(srcLoc)
+        targetView.getLocationOnScreen(dstLoc)
+        root.getLocationOnScreen(rootLoc)
+
+        val startX = (srcLoc[0]  - rootLoc[0]).toFloat()
+        val startY = (srcLoc[1]  - rootLoc[1]).toFloat()
+        val endX   = (dstLoc[0]  - rootLoc[0]).toFloat()
+        val endY   = (dstLoc[1]  - rootLoc[1]).toFloat()
+
+        val ghost = ImageView(root.context).apply {
+            setImageDrawable(drawable)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            alpha = 0.92f
+            elevation = 20f
+            translationX = startX
+            translationY = startY
+            layoutParams = ConstraintLayout.LayoutParams(sourceView.width, sourceView.height)
+        }
+        root.addView(ghost)
+
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = durationMs
+            addUpdateListener { anim ->
+                val f = anim.animatedFraction
+                val linX = startX + (endX - startX) * f
+                val linY = startY + (endY - startY) * f
+                val (dx, dy) = pathFn?.invoke(f) ?: (0f to 0f)
+                ghost.translationX = linX + dx
+                ghost.translationY = linY + dy
+                rotationFn?.invoke(f)?.let { ghost.rotation = it }
+                scaleFn?.invoke(f)?.let {
+                    ghost.scaleX = it
+                    ghost.scaleY = it
+                }
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    root.removeView(ghost)
+                    onComplete()
+                }
+                override fun onAnimationCancel(animation: Animator) {
+                    root.removeView(ghost)
+                }
+            })
+            start()
+        }
+    }
 }
