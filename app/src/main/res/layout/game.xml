@@ -673,6 +673,76 @@
         app:layout_constraintBottom_toBottomOf="@id/subDeck43"
         android:layout_marginBottom="2dp" />
 
+    <!-- ========== SOURCE DECK COUNT TEXT VIEWS ========== -->
+
+    <TextView
+        android:id="@+id/textViewDeck1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/counter_badge"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/subDeck1"
+        app:layout_constraintEnd_toEndOf="@id/subDeck1"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck1"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/textViewDeck2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/counter_badge"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/subDeck2"
+        app:layout_constraintEnd_toEndOf="@id/subDeck2"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck2"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/textViewDeck3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/counter_badge"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/subDeck3"
+        app:layout_constraintEnd_toEndOf="@id/subDeck3"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck3"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/textViewDeck4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/counter_badge"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/subDeck4"
+        app:layout_constraintEnd_toEndOf="@id/subDeck4"
+        app:layout_constraintBottom_toBottomOf="@id/subDeck4"
+        android:layout_marginBottom="2dp" />
+
     <!-- ========== GAME STATUS UI ========== -->
 
     <LinearLayout
