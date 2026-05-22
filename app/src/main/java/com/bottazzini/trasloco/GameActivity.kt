@@ -667,6 +667,11 @@ class GameActivity : AppCompatActivity() {
             textView.text = ""
             textView.visibility = View.INVISIBLE
         }
+        // stack indicator: show when > 1 card in slot
+        val cardViewId = resources.getIdentifier("subDeck$position", "id", packageName)
+        if (cardViewId != 0) {
+            setStackIndicator(findViewById(cardViewId), cardsList.size > 1)
+        }
     }
 
     /**
