@@ -747,8 +747,15 @@ object DealAnimator {
                     val r = rootRef?.get()
                     r?.removeView(ghostB)
                     ghostViews.remove(ghostB)
-                    playPhase2(root, ghostA, talloneViews, backDrawable, handler,
+                    playPhase2Custom(root, ghostA, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 100L, 100L, 0L),
+                        flightDurationMs = 300L,
+                        style = ShuffleStyle.CUT,
+                        // L-path approximation: pathFn returns zero offsets (true L-path
+                        // would need start/end coords in the lambda signature, which the
+                        // current animateCardFlightCustom doesn't expose). Pair theme is
+                        // carried by the paired delays + revealPairSync.
+                        pathFn = { _, _ -> 0f to 0f },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -809,7 +816,21 @@ object DealAnimator {
                     r?.removeView(rightGhost)
                     ghostViews.remove(leftGhost)
                     ghostViews.remove(rightGhost)
-                    playPhase2(root, centerGhost, talloneViews, backDrawable, handler,
+                    val dp20 = 20f * root.context.resources.displayMetrics.density
+                    // Row offset: -1.5, -0.5, +0.5, +1.5 for rows 0..3.
+                    // Mid-flight peaks at sin(πf)=1 → ghosts spread outward, then converge to their tallone.
+                    playPhase2Custom(root, centerGhost, talloneViews, backDrawable, handler,
+                        flightDurationMs = 300L,
+                        style = ShuffleStyle.FAN,
+                        pathFn = { index, f ->
+                            val rowOffset = -1.5f + index.toFloat()       // -1.5, -0.5, +0.5, +1.5
+                            val bow = Math.sin(f.toDouble() * Math.PI).toFloat()
+                            (rowOffset * bow * dp20) to 0f
+                        },
+                        rotationFn = { index, f ->
+                            val rowOffset = -1.5f + index.toFloat()
+                            rowOffset * 10f * Math.sin(f.toDouble() * Math.PI).toFloat()
+                        },
                         onAllLanded = onAfterPhase2)
                 }
             })
