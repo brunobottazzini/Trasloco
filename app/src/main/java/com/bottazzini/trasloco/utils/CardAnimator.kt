@@ -73,6 +73,9 @@ object CardAnimator {
                     root.removeView(ghost)
                     onComplete()
                 }
+                override fun onAnimationCancel(animation: Animator) {
+                    root.removeView(ghost)
+                }
             })
             start()
         }

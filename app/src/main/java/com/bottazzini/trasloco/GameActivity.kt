@@ -77,6 +77,7 @@ class GameActivity : AppCompatActivity() {
     private var autoMoveEnabled: Boolean = false
     private var soundEnabled: Boolean = true
     private var autoMoveRunnable: Runnable? = null
+    private val dealRunnables = mutableListOf<Runnable>()
     private val gameRoot: ConstraintLayout by lazy {
         findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
     }
@@ -705,20 +706,23 @@ class GameActivity : AppCompatActivity() {
         val deckView = findViewById<ImageView>(deckViewId)
 
         deals.forEachIndexed { index, entry ->
-            timerHandler.postDelayed({
-                if (isFinishing) return@postDelayed
+            val r = Runnable {
+                dealRunnables.remove(this)
+                if (isFinishing) return@Runnable
                 playSoundAtomic(R.raw.flipcard)
                 val cardResourceName = "${cardType}_${entry.cardName}"
                 val drawableId =
                     ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
-                val cardDrawable = ContextCompat.getDrawable(this, drawableId)
+                val cardDrawable = ContextCompat.getDrawable(this@GameActivity, drawableId)
                 val targetView = findViewById<ImageView>(entry.imageViewId)
                 CardAnimator.animateCardFlight(gameRoot, deckView, targetView, cardDrawable, 350L) {
                     if (!isFinishing) {
                         setImage(entry.imageViewId, entry.cardName)
                     }
                 }
-            }, index * 120L)
+            }
+            dealRunnables.add(r)
+            timerHandler.postDelayed(r, index * 120L)
         }
     }
 
@@ -1279,6 +1283,8 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         stopTimer()
         autoMoveRunnable?.let { timerHandler.removeCallbacks(it) }
+        dealRunnables.forEach { timerHandler.removeCallbacks(it) }
+        dealRunnables.clear()
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
         }
