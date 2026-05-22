@@ -505,6 +505,7 @@ class GameActivity : AppCompatActivity() {
         } else {
             val line = targetPosition.first()
             endDeckList[line.toString()] = sourceCard
+            updateEndDeckIndicator(line.toString())   // ← new line
             clearUndoButton()
 
             if (enabledFastEndDeckClick) {
@@ -559,6 +560,7 @@ class GameActivity : AppCompatActivity() {
         cardTableMap[selectedPositionName]!!.clear()
         setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
         endDeckList[line] = endDeckCard
+        updateEndDeckIndicator(line)   // ← new line
 
         // Clear source slot visually right away
         setImage(selectedPositionId, "zero")
@@ -714,6 +716,20 @@ class GameActivity : AppCompatActivity() {
         // indicator: show when 2+ cards remain
         val deckId = resources.getIdentifier("subDeck$line", "id", packageName)
         setStackIndicator(findViewById(deckId), size > 1)
+    }
+
+    /**
+     * Updates the end-deck stack indicator for [line] ("1"–"4").
+     * Shows indicator when rank of accumulated card > 1 (i.e. cards are below it).
+     * Call whenever endDeckList[line] changes.
+     */
+    private fun updateEndDeckIndicator(line: String) {
+        val card = endDeckList[line] ?: "zero"
+        val rank = if (card == "zero") 0 else card.substring(1).toIntOrNull() ?: 0
+        val endDeckId = resources.getIdentifier("subDeck${line}4", "id", packageName)
+        if (endDeckId != 0) {
+            setStackIndicator(findViewById(endDeckId), rank > 1)
+        }
     }
 
     private fun isEndDeckClick(positionName: String) = positionName.last() == '4'
