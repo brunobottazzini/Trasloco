@@ -436,7 +436,11 @@ class GameActivity : AppCompatActivity() {
             return false
         }
 
-        moveCard(targetPositionId, targetPosition, sourceCard, sourcePositionId)
+        if (isEndDeckClick(targetPosition)) {
+            moveCardToEndDeckAnimated(targetPositionId, targetPosition, sourceCard, sourcePositionId)
+        } else {
+            moveCard(targetPositionId, targetPosition, sourceCard, sourcePositionId)
+        }
 
         if (!isEndDeckClick(targetPosition)) {
             newPlayList()
@@ -487,28 +491,39 @@ class GameActivity : AppCompatActivity() {
         desiredCardPositionId: Int,
         line: String
     ) {
-        val lastCard = cardTableMap[selectedPositionName]!!.first()
+        // Snapshot the pile before clearing (top card = last, visually on top)
+        val pileCards = cardTableMap[selectedPositionName]!!.toList()
+        val endDeckCard = pileCards.first()  // game logic: this card ends up on the end deck
 
-        // Capture source view + card drawable BEFORE clearing the slot
         val sourceView = findViewById<ImageView>(selectedPositionId)
-        val cardResourceName = if (lastCard == "zero") lastCard else "${cardType}_${lastCard}"
-        val drawableId = ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
-        val cardDrawable = ContextCompat.getDrawable(this, drawableId)
         val targetView = findViewById<ImageView>(desiredCardPositionId)
 
         // Update game state synchronously so win-condition checks are correct immediately
         cardTableMap[selectedPositionName]!!.clear()
         setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
-        endDeckList[line] = lastCard
+        endDeckList[line] = endDeckCard
 
         // Clear source slot visually right away
         setImage(selectedPositionId, "zero")
 
-        // Animate the card ghost flying to the end-deck slot; show the card there on completion
-        CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 350L) {
-            if (!isFinishing) {
-                setImage(desiredCardPositionId, lastCard)
+        // Animate each pile card to end deck one by one, starting from the top card (reversed).
+        // 200 ms flight, 120 ms stagger between cards.
+        val animCards = pileCards.reversed()
+        animCards.forEachIndexed { index, card ->
+            val r = Runnable {
+                if (isFinishing) return@Runnable
+                val cardResourceName = if (card == "zero") card else "${cardType}_${card}"
+                val drawableId = ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
+                val cardDrawable = ContextCompat.getDrawable(this, drawableId)
+                val isLast = (index == animCards.size - 1)
+                CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 200L) {
+                    if (!isFinishing && isLast) {
+                        setImage(desiredCardPositionId, endDeckCard)
+                    }
+                }
             }
+            dealRunnables.add(r)
+            timerHandler.postDelayed(r, index * 120L)
         }
     }
 
@@ -537,6 +552,43 @@ class GameActivity : AppCompatActivity() {
             setImage(selectedPositionId, cardTableMap[selectedPositionName]!!.last())
         }
         playSoundAtomic(R.raw.flipcard)
+    }
+
+    /**
+     * Animated variant of moveCard for end-deck destinations.
+     * State is updated synchronously (so win/lost checks are correct immediately);
+     * only the visual update on the target end-deck slot is deferred to the animation callback.
+     */
+    private fun moveCardToEndDeckAnimated(
+        desiredCardPosition: Int,
+        desiredPosition: String,
+        selectedCard: String,
+        selectedPositionId: Int
+    ) {
+        val sourceView = findViewById<ImageView>(selectedPositionId)
+        val targetView = findViewById<ImageView>(desiredCardPosition)
+        val cardResourceName = "${cardType}_${selectedCard}"
+        val drawableId = ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
+        val cardDrawable = ContextCompat.getDrawable(this, drawableId)
+
+        val selectedPositionName =
+            resources.getResourceEntryName(selectedPositionId).split("subDeck")[1]
+
+        cardTableMap[desiredPosition]?.add(selectedCard)
+        // End-deck slots don't show a card count
+        cardTableMap[selectedPositionName]!!.remove(selectedCard)
+        setNumberOfCards(cardTableMap[selectedPositionName]!!, selectedPositionName)
+
+        if (cardTableMap[selectedPositionName]!!.isEmpty()) {
+            setImage(selectedPositionId, "zero")
+        } else {
+            setImage(selectedPositionId, cardTableMap[selectedPositionName]!!.last())
+        }
+        playSoundAtomic(R.raw.flipcard)
+
+        CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 200L) {
+            if (!isFinishing) setImage(desiredCardPosition, selectedCard)
+        }
     }
 
     private fun setNumberOfCards(cardsList: List<String>, position: String) {
@@ -717,14 +769,14 @@ class GameActivity : AppCompatActivity() {
                     ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
                 val cardDrawable = ContextCompat.getDrawable(this@GameActivity, drawableId)
                 val targetView = findViewById<ImageView>(entry.imageViewId)
-                CardAnimator.animateCardFlight(gameRoot, deckView, targetView, cardDrawable, 350L) {
+                CardAnimator.animateCardFlight(gameRoot, deckView, targetView, cardDrawable, 200L) {
                     if (!isFinishing) {
                         setImage(entry.imageViewId, entry.cardName)
                     }
                 }
             }
             dealRunnables.add(r)
-            timerHandler.postDelayed(r, index * 120L)
+            timerHandler.postDelayed(r, index * 80L)
         }
     }
 
