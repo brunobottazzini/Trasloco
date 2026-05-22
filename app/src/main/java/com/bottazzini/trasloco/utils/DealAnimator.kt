@@ -76,11 +76,11 @@ object DealAnimator {
         when (style) {
             ShuffleStyle.RIFFLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.CUT     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
-            ShuffleStyle.SPIN    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
+            ShuffleStyle.SPIN    -> playSpin   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.BOUNCE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
             ShuffleStyle.WAVE    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
-            ShuffleStyle.FLIP    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
-            ShuffleStyle.TUMBLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
+            ShuffleStyle.FLIP    -> playFlip   (root, talloneViews, backDrawable, handler, onAfterPhase2)
+            ShuffleStyle.TUMBLE  -> playTumble (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.PULSE   -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
             ShuffleStyle.TOSS    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
             ShuffleStyle.FAN     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
@@ -150,6 +150,27 @@ object DealAnimator {
         layoutParams = ConstraintLayout.LayoutParams(w, h)
     }
 
+    /**
+     * Helper: creates a single back-card ghost centered in the root, adds it to
+     * the view hierarchy and to `ghostViews`, and returns it along with its
+     * start translationX / translationY (useful for variants that animate
+     * around the center).
+     */
+    private fun makeCenterGhost(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?
+    ): Triple<ImageView, Float, Float> {
+        val deckW   = talloneViews.firstOrNull()?.width?.takeIf  { it > 0 } ?: 80
+        val deckH   = talloneViews.firstOrNull()?.height?.takeIf { it > 0 } ?: 100
+        val startTx = root.width  / 2f - deckW / 2f
+        val startTy = root.height / 2f - deckH / 2f
+        val ghost = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        ghostViews.add(ghost)
+        root.addView(ghost)
+        return Triple(ghost, startTx, startTy)
+    }
+
     /** RIFFLE: scale wobble 1→0.85→1.05→1.0 + sin sway. */
     private fun playRiffle(
         root: ViewGroup,
@@ -186,6 +207,96 @@ object DealAnimator {
                     ghost.translationX = startTx
                     ghost.scaleX = 1f
                     playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** SPIN: rotateZ 0→360° + subtle scale bounce. Phase 2 reverse stagger. */
+    private fun playSpin(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, startTx, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                ghost.rotation = f * 360f
+                val s = 1f + 0.10f * Math.sin(f.toDouble() * Math.PI).toFloat()
+                ghost.scaleX = s
+                ghost.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.rotation = 0f
+                    ghost.scaleX = 1f
+                    ghost.scaleY = 1f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        delays = longArrayOf(0L, 60L, 120L, 180L).reversedArray(),
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** FLIP: rotateY 0→360° (card flipping on its vertical axis). Phase 2 normal stagger. */
+    private fun playFlip(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, _, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                ghost.rotationY = va.animatedFraction * 360f
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.rotationY = 0f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** TUMBLE: rotateZ rocking ±15°. Phase 2 in pairs (1+2 fast, 3+4 slow). */
+    private fun playTumble(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, _, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                ghost.rotation = 15f * Math.sin(f.toDouble() * Math.PI * 4).toFloat()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.rotation = 0f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        delays = longArrayOf(0L, 60L, 160L, 220L),
                         onAllLanded = onAfterPhase2)
                 }
             })
