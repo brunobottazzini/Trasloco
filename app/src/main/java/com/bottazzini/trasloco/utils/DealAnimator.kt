@@ -79,6 +79,8 @@ object DealAnimator {
             }
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
+                    // ValueAnimator.cancel() fires onAnimationEnd too — bail if skip() already cleared state.
+                    if (rootRef?.get() == null) return
                     // reset translationX to exact center so Phase 2 source position is stable
                     centralGhost.translationX = startTx
                     centralGhost.scaleX = 1f
