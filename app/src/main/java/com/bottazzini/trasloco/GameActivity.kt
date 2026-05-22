@@ -419,7 +419,7 @@ class GameActivity : AppCompatActivity() {
         clearCardSelection()
 
         if (hasReachedLostConditions()) {
-            showYouLost()
+            runOrDeferEndState { showYouLost() }
         }
     }
 
@@ -448,10 +448,10 @@ class GameActivity : AppCompatActivity() {
         val moved = tryMove(sourceView, view)
         if (moved) {
             if (hasReachedWonConditions()) {
-                showYouWon()
+                runOrDeferEndState { showYouWon() }
                 return
             } else if (hasReachedLostConditions()) {
-                showYouLost()
+                runOrDeferEndState { showYouLost() }
                 return
             }
             clearCardSelection()
@@ -1305,9 +1305,9 @@ class GameActivity : AppCompatActivity() {
             val moved = tryMove(source, target, animateEndDeck = false)
             if (moved) {
                 if (hasReachedWonConditions()) {
-                    showYouWon()
+                    runOrDeferEndState { showYouWon() }
                 } else if (hasReachedLostConditions()) {
-                    showYouLost()
+                    runOrDeferEndState { showYouLost() }
                 } else {
                     triggerAutoMoveCycle()
                 }
@@ -1667,10 +1667,10 @@ class GameActivity : AppCompatActivity() {
         if (moved) {
             autoMovesThisGame++
             if (hasReachedWonConditions()) {
-                showYouWon()
+                runOrDeferEndState { showYouWon() }
                 return
             } else if (hasReachedLostConditions()) {
-                showYouLost()
+                runOrDeferEndState { showYouLost() }
                 return
             }
             // Continue cycle after short delay (350ms for visual feedback)
