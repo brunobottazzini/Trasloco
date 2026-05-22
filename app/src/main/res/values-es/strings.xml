@@ -87,7 +87,7 @@
     <string name="settings_label_background">Mesa</string>
     <string name="settings_label_preview">VISTA PREVIA</string>
     <string name="settings_title_decorated">~ Configuración ~</string>
-    <string name="fast_deal_with_icon">🎯 Finalización automática</string>
+    <string name="fast_deal_with_icon">⚡ Transferir toda la baraja</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Pistas</string>
     <string name="settings_label_auto_move">Mover automáticamente a la baraja final</string>
@@ -98,7 +98,7 @@
     <string name="cd_pause">Pausar/Reanudar</string>
     <string name="cd_hint">Pista</string>
     <string name="hint_with_icon">💡 Pistas</string>
-    <string name="auto_move_with_icon">🎯 Mover automáticamente a la baraja final</string>
+    <string name="auto_move_with_icon">🎯 Finalización automática</string>
     <string name="sound_with_icon">🔊 Sonido</string>
     <string name="win_title">¡Victoria!</string>
     <string name="win_stat_time">⏱ Tiempo</string>

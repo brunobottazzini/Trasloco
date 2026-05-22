@@ -87,7 +87,7 @@
     <string name="settings_label_background">Table</string>
     <string name="settings_label_preview">APERÇU</string>
     <string name="settings_title_decorated">~  Paramètres  ~</string>
-    <string name="fast_deal_with_icon">🎯 Complétion automatique</string>
+    <string name="fast_deal_with_icon">⚡ Transférer tout le jeu</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Indices</string>
     <string name="settings_label_auto_move">Déplacement automatique vers la pile finale</string>
@@ -98,7 +98,7 @@
     <string name="cd_pause">Pause/Reprendre</string>
     <string name="cd_hint">Indice</string>
     <string name="hint_with_icon">💡 Indices</string>
-    <string name="auto_move_with_icon">🎯 Déplacement automatique vers la pile finale</string>
+    <string name="auto_move_with_icon">🎯 Complétion automatique</string>
     <string name="sound_with_icon">🔊 Son</string>
     <string name="win_title">Victoire !</string>
     <string name="win_stat_time">⏱ Temps</string>

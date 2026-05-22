@@ -87,7 +87,7 @@
     <string name="settings_label_background">Tafel</string>
     <string name="settings_label_preview">VOORBEELD</string>
     <string name="settings_title_decorated">~ Instellingen ~</string>
-    <string name="fast_deal_with_icon">🎯 Automatisch aanvullen</string>
+    <string name="fast_deal_with_icon">⚡ Volledige kaartspel overbrengen</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Hints</string>
     <string name="settings_label_auto_move">Auto-verplaats naar finaal spel</string>
@@ -98,7 +98,7 @@
     <string name="cd_pause">Pauze/Hervatten</string>
     <string name="cd_hint">Hint</string>
     <string name="hint_with_icon">💡 Hints</string>
-    <string name="auto_move_with_icon">🎯 Auto-verplaats naar finaal spel</string>
+    <string name="auto_move_with_icon">🎯 Automatisch aanvullen</string>
     <string name="sound_with_icon">🔊 Geluid</string>
     <string name="win_title">Overwinning!</string>
     <string name="win_stat_time">⏱ Tijd</string>

@@ -87,7 +87,7 @@
     <string name="settings_label_background">テーブル</string>
     <string name="settings_label_preview">プレビュー</string>
     <string name="settings_title_decorated">~  設定  ~</string>
-    <string name="fast_deal_with_icon">🎯 自動補完</string>
+    <string name="fast_deal_with_icon">⚡ デッキ全体を移動</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">ヒント</string>
     <string name="settings_label_auto_move">最終デッキに自動移動</string>
@@ -98,7 +98,7 @@
     <string name="cd_pause">一時停止/再開</string>
     <string name="cd_hint">ヒント</string>
     <string name="hint_with_icon">💡 ヒント</string>
-    <string name="auto_move_with_icon">🎯 最終デッキに自動移動</string>
+    <string name="auto_move_with_icon">🎯 自動補完</string>
     <string name="sound_with_icon">🔊 サウンド</string>
     <string name="win_title">勝利!</string>
     <string name="win_stat_time">⏱ 時間</string>
