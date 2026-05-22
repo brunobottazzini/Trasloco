@@ -1432,6 +1432,7 @@ class GameActivity : AppCompatActivity() {
         autoMoveRunnable?.let { timerHandler.removeCallbacks(it) }
         dealRunnables.forEach { timerHandler.removeCallbacks(it) }
         dealRunnables.clear()
+        DealAnimator.skip()
         if (::gameStateRepo.isInitialized) {
             gameStateRepo.close()
         }
