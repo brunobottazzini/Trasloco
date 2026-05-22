@@ -565,16 +565,21 @@ class GameActivity : AppCompatActivity() {
         // 200 ms flight, 120 ms stagger between cards.
         val animCards = pileCards.reversed()
         animCards.forEachIndexed { index, card ->
+            bumpEndDeckAnim()
             val r = Runnable {
-                if (isFinishing) return@Runnable
+                if (isFinishing) {
+                    decEndDeckAnim()
+                    return@Runnable
+                }
                 val cardResourceName = if (card == "zero") card else "${cardType}_${card}"
                 val drawableId = ResourceUtils.getDrawableByName(resources, packageName, cardResourceName)
                 val cardDrawable = ContextCompat.getDrawable(this, drawableId)
                 val isLast = (index == animCards.size - 1)
                 CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 200L) {
-                    if (!isFinishing && isLast) {
+                    if (!isFinishing && isLast && endDeckList[line] == endDeckCard) {
                         setImage(desiredCardPositionId, endDeckCard)
                     }
+                    decEndDeckAnim()
                 }
             }
             dealRunnables.add(r)
