@@ -74,6 +74,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var hintEngine: HintEngine
     private var hintEnabled: Boolean = true
     private var autoMoveEnabled: Boolean = false
+    private var soundEnabled: Boolean = true
     private var autoMoveRunnable: Runnable? = null
     private val touchSlop: Int by lazy { ViewConfiguration.get(this).scaledTouchSlop }
     private var dragTouchStartX: Float = 0f
@@ -734,6 +735,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun playSound(soundId: Int) {
+        if (!soundEnabled) return
         try {
             if (mediaPlayer?.isPlaying == true) {
                 mediaPlayer?.stop()
@@ -754,6 +756,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun playSoundAtomic(soundId: Int) {
+        if (!soundEnabled) return
         try {
             mediaPlayerAtomic =
                 MediaPlayer.create(this, soundId)
@@ -869,6 +872,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         autoMoveEnabled = settingsHandler.readValue(Configuration.AUTO_MOVE.value) == "enabled"
+        soundEnabled = settingsHandler.readValue(Configuration.SOUND_ENABLED.value) != "disabled"
     }
 
     private fun applyAccentColor(bg: String) {
