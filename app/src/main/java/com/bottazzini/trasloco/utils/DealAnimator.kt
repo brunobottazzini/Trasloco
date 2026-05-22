@@ -840,44 +840,6 @@ object DealAnimator {
     }
 
     /**
-     * Phase 2: 4 ghost decks fly from centralGhost position to each tallone.
-     * Stagger and flight duration are caller-controlled via [delays] and
-     * [flightDurationMs] (defaults: 0/60/120/180 ms stagger, 220 ms flight).
-     * Fires onAllLanded after the last ghost lands.
-     */
-    private fun playPhase2(
-        root: ViewGroup,
-        centralGhost: View,
-        talloneViews: List<ImageView>,
-        backDrawable: Drawable?,
-        handler: Handler,
-        delays: LongArray = longArrayOf(0L, 60L, 120L, 180L),
-        flightDurationMs: Long = 220L,
-        onAllLanded: () -> Unit
-    ) {
-        var landedCount = 0
-        val total = talloneViews.size
-
-        talloneViews.forEachIndexed { index, tallone ->
-            val r = Runnable {
-                val currentRoot = rootRef?.get() ?: return@Runnable
-                CardAnimator.animateCardFlight(
-                    currentRoot, centralGhost, tallone, backDrawable, flightDurationMs
-                ) {
-                    landedCount++
-                    if (landedCount == total) {
-                        currentRoot.removeView(centralGhost)
-                        ghostViews.remove(centralGhost)
-                        onAllLanded()
-                    }
-                }
-            }
-            pendingRunnables.add(r)
-            handler.postDelayed(r, delays.getOrElse(index) { index * 60L })
-        }
-    }
-
-    /**
      * Generic Phase 2 dispatcher used by per-variant `playXxx` functions.
      *
      * For each tallone (with optional per-row delays), creates a ghost via
