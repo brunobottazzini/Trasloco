@@ -684,6 +684,9 @@ class GameActivity : AppCompatActivity() {
                 val imageViewId =
                     resources.getIdentifier("subDeck$position", "id", this.packageName)
                 if (getCardName(imageViewId) == "zero") {
+                    // Update the tag immediately so subsequent iterations don't re-claim
+                    // this slot (setImage is deferred to the animation callback)
+                    findViewById<ImageView>(imageViewId).tag = cardName
                     cardTableMap[position] = arrayListOf(cardName)
                     iterator.remove()
                     clearUndoButton()
