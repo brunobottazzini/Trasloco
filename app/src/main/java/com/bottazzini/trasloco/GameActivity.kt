@@ -707,7 +707,6 @@ class GameActivity : AppCompatActivity() {
 
         deals.forEachIndexed { index, entry ->
             val r = Runnable {
-                dealRunnables.remove(this)
                 if (isFinishing) return@Runnable
                 playSoundAtomic(R.raw.flipcard)
                 val cardResourceName = "${cardType}_${entry.cardName}"
