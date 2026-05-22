@@ -87,7 +87,7 @@
     <string name="settings_label_background">테이블</string>
     <string name="settings_label_preview">미리보기</string>
     <string name="settings_title_decorated">~ 설정 ~</string>
-    <string name="fast_deal_with_icon">⚡ 전체 덱 이동</string>
+    <string name="fast_deal_with_icon">🎯 자동 완성</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">힌트</string>
     <string name="settings_label_auto_move">최종 덱으로 자동 이동</string>

@@ -87,7 +87,7 @@
     <string name="settings_label_background">Стол</string>
     <string name="settings_label_preview">ПРЕДПРОСМОТР</string>
     <string name="settings_title_decorated">~ Настройки ~</string>
-    <string name="fast_deal_with_icon">⚡ Перенести всю колоду</string>
+    <string name="fast_deal_with_icon">🎯 Автодополнение</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Подсказки</string>
     <string name="settings_label_auto_move">Автоматический перенос в финальную колоду</string>

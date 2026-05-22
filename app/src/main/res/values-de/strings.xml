@@ -87,7 +87,7 @@
     <string name="settings_label_background">Tisch</string>
     <string name="settings_label_preview">VORSCHAU</string>
     <string name="settings_title_decorated">~  Einstellungen  ~</string>
-    <string name="fast_deal_with_icon">⚡ Gesamtes Deck übertragen</string>
+    <string name="fast_deal_with_icon">🎯 Automatische Vervollständigung</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Hinweise</string>
     <string name="settings_label_auto_move">Automatisch in Endstapel verschieben</string>

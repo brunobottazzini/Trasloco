@@ -87,7 +87,7 @@
     <string name="settings_label_background">Mesa</string>
     <string name="settings_label_preview">VISTA PREVIA</string>
     <string name="settings_title_decorated">~ Configuración ~</string>
-    <string name="fast_deal_with_icon">⚡ Transferir toda la baraja</string>
+    <string name="fast_deal_with_icon">🎯 Finalización automática</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Pistas</string>
     <string name="settings_label_auto_move">Mover automáticamente a la baraja final</string>

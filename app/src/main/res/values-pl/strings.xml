@@ -87,7 +87,7 @@
     <string name="settings_label_background">Stół</string>
     <string name="settings_label_preview">PODGLĄD</string>
     <string name="settings_title_decorated">~  Ustawienia  ~</string>
-    <string name="fast_deal_with_icon">⚡ Przenieś całą talię</string>
+    <string name="fast_deal_with_icon">🎯 Automatyczne uzupełnianie</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Wskazówki</string>
     <string name="settings_label_auto_move">Autoprzeniesienie do ostatniej talii</string>

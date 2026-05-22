@@ -87,7 +87,7 @@
     <string name="settings_label_background">Table</string>
     <string name="settings_label_preview">APERÇU</string>
     <string name="settings_title_decorated">~  Paramètres  ~</string>
-    <string name="fast_deal_with_icon">⚡ Transférer tout le jeu</string>
+    <string name="fast_deal_with_icon">🎯 Complétion automatique</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">Indices</string>
     <string name="settings_label_auto_move">Déplacement automatique vers la pile finale</string>

@@ -87,7 +87,7 @@
     <string name="settings_label_background">桌子</string>
     <string name="settings_label_preview">预览</string>
     <string name="settings_title_decorated">~  设置  ~</string>
-    <string name="fast_deal_with_icon">⚡ 移动整副牌</string>
+    <string name="fast_deal_with_icon">🎯 自动完成</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">提示</string>
     <string name="settings_label_auto_move">自动移到最后的牌堆</string>

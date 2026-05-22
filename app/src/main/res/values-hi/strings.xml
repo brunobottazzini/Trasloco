@@ -87,7 +87,7 @@
     <string name="settings_label_background">मेज</string>
     <string name="settings_label_preview">पूर्वावलोकन</string>
     <string name="settings_title_decorated">~ सेटिंग्स ~</string>
-    <string name="fast_deal_with_icon">⚡ पूरी डेक ट्रांसफर करें</string>
+    <string name="fast_deal_with_icon">🎯 स्वचालित पूर्णता</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">संकेत</string>
     <string name="settings_label_auto_move">अंतिम डेक में स्वचालित-चाल</string>

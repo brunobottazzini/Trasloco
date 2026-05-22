@@ -87,7 +87,7 @@
     <string name="settings_label_background">โต๊ะ</string>
     <string name="settings_label_preview">ตัวอย่าง</string>
     <string name="settings_title_decorated">~ ตั้งค่า ~</string>
-    <string name="fast_deal_with_icon">⚡ ส่งต่อสำรับไพ่ทั้งหมด</string>
+    <string name="fast_deal_with_icon">🎯 เติมอัตโนมัติ</string>
     <string name="watermark_studio" translatable="false">Bottazzini Softworks</string>
     <string name="settings_label_hint">คำใบ้</string>
     <string name="settings_label_auto_move">ย้ายอัตโนมัติไปยังสำรับสุดท้าย</string>
