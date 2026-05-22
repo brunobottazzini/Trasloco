@@ -181,14 +181,49 @@ class GameActivity : AppCompatActivity() {
                 DeckSetup.prepareSubDecks()
                 subDeckMap = DeckSetup.getSubDeckMap()
                 coppiedSubDeckMap = HashMap(subDeckMap)
+
+                // isIntroAnimating=true → dealCard() updates state but skips setImage;
+                // visuals are deferred to DealEntry.onLand callbacks.
+                isIntroAnimating = true
                 prepareTable()
+
                 if (hasReachedLostConditions()) {
+                    isIntroAnimating = false
                     startNewGame()
                     return@runOnUiThread
                 }
-                startTimer()
-                isInitializing = false
-                findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
+
+                val backCardValue = settingsHandler.readValue(Configuration.CARD_BACK.value)!!
+                val backDrawableId = ResourceUtils.getDrawableByName(resources, packageName, backCardValue)
+                val backDrawable = androidx.core.content.ContextCompat.getDrawable(this, backDrawableId)
+
+                val talloneViews = listOf(1, 2, 3, 4).map { row ->
+                    val id = resources.getIdentifier("subDeck$row", "id", packageName)
+                    findViewById<ImageView>(id)
+                }
+                val dealEntries = buildDealEntries()
+
+                // Tap on gameRoot skips the animation
+                gameRoot.setOnClickListener { DealAnimator.skip() }
+
+                DealAnimator.playNewGame(
+                    root         = gameRoot,
+                    talloneViews = talloneViews,
+                    dealEntries  = dealEntries,
+                    backDrawable = backDrawable,
+                    handler      = timerHandler,
+                    onPhase1Done = {
+                        // Hide loading overlay after riffle so the board
+                        // becomes visible as ghost decks fly to the talloni
+                        findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
+                    },
+                    onComplete   = {
+                        isIntroAnimating = false
+                        isInitializing   = false
+                        gameRoot.setOnClickListener(null)
+                        startTimer()
+                    }
+                )
             }
         }.start()
     }
