@@ -75,7 +75,7 @@ object DealAnimator {
     ) {
         when (style) {
             ShuffleStyle.RIFFLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.CUT     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
+            ShuffleStyle.CUT     -> playCut    (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.SPIN    -> playSpin   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.BOUNCE  -> playBounce (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.WAVE    -> playWave   (root, talloneViews, backDrawable, handler, onAfterPhase2)
@@ -83,7 +83,7 @@ object DealAnimator {
             ShuffleStyle.TUMBLE  -> playTumble (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.PULSE   -> playPulse  (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.TOSS    -> playToss   (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.FAN     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
+            ShuffleStyle.FAN     -> playFan    (root, talloneViews, backDrawable, handler, onAfterPhase2)
         }
     }
 
@@ -433,6 +433,124 @@ object DealAnimator {
                     playPhase2(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 40L, 80L, 120L),
                         flightDurationMs = 200L,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /**
+     * CUT: two full-size ghosts at center crosshatch. Ghost A drifts +20dp x / +5dp y,
+     * Ghost B drifts -20dp x / -5dp y, then both return to center; the second ghost is
+     * removed at end so Phase 2 launches from a single source ghost.
+     * Phase 2 in pairs: row1+row4 at 0 ms, row2+row3 at 100 ms (outside-in).
+     */
+    private fun playCut(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val deckW   = talloneViews.firstOrNull()?.width?.takeIf  { it > 0 } ?: 80
+        val deckH   = talloneViews.firstOrNull()?.height?.takeIf { it > 0 } ?: 100
+        val startTx = root.width  / 2f - deckW / 2f
+        val startTy = root.height / 2f - deckH / 2f
+        val dp20    = 20 * root.context.resources.displayMetrics.density
+        val dp5     = 5  * root.context.resources.displayMetrics.density
+
+        val ghostA = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        val ghostB = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        ghostViews.add(ghostA)
+        ghostViews.add(ghostB)
+        root.addView(ghostA)
+        root.addView(ghostB)
+
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                // Triangle wave: 0 → 1 → 0 over the duration
+                val tri = if (f < 0.5f) f * 2f else (1f - f) * 2f
+                ghostA.translationX = startTx + dp20 * tri
+                ghostA.translationY = startTy + dp5  * tri
+                ghostB.translationX = startTx - dp20 * tri
+                ghostB.translationY = startTy - dp5  * tri
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghostA.translationX = startTx
+                    ghostA.translationY = startTy
+                    // Drop ghostB so Phase 2 fires from a single source
+                    val r = rootRef?.get()
+                    r?.removeView(ghostB)
+                    ghostViews.remove(ghostB)
+                    playPhase2(root, ghostA, talloneViews, backDrawable, handler,
+                        delays = longArrayOf(0L, 100L, 100L, 0L),
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /**
+     * FAN: three ghosts at center. Left and right fan out ±20° rotation + outward
+     * translation, then converge back; the two outer ghosts are removed at end.
+     * Phase 2 normal stagger.
+     */
+    private fun playFan(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val deckW   = talloneViews.firstOrNull()?.width?.takeIf  { it > 0 } ?: 80
+        val deckH   = talloneViews.firstOrNull()?.height?.takeIf { it > 0 } ?: 100
+        val startTx = root.width  / 2f - deckW / 2f
+        val startTy = root.height / 2f - deckH / 2f
+        val dp25    = 25 * root.context.resources.displayMetrics.density
+
+        val centerGhost = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        val leftGhost   = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        val rightGhost  = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        ghostViews.add(centerGhost)
+        ghostViews.add(leftGhost)
+        ghostViews.add(rightGhost)
+        root.addView(centerGhost)
+        root.addView(leftGhost)
+        root.addView(rightGhost)
+
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 450
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                val tri = if (f < 0.5f) f * 2f else (1f - f) * 2f
+                leftGhost.translationX  = startTx - dp25 * tri
+                leftGhost.rotation      = -20f * tri
+                rightGhost.translationX = startTx + dp25 * tri
+                rightGhost.rotation     = 20f  * tri
+                // Center stays put, slightly scales to suggest a "deck of 3" pop
+                val s = 1f + 0.05f * tri
+                centerGhost.scaleX = s
+                centerGhost.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    centerGhost.scaleX = 1f
+                    centerGhost.scaleY = 1f
+                    val r = rootRef?.get()
+                    r?.removeView(leftGhost)
+                    r?.removeView(rightGhost)
+                    ghostViews.remove(leftGhost)
+                    ghostViews.remove(rightGhost)
+                    playPhase2(root, centerGhost, talloneViews, backDrawable, handler,
                         onAllLanded = onAfterPhase2)
                 }
             })
