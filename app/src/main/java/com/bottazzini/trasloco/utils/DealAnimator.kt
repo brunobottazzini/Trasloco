@@ -136,6 +136,216 @@ object DealAnimator {
         talloneRefs.forEach { it.alpha = 1f }
     }
 
+    /** Dispatch the style-specific reveal animation for a tallone landing. */
+    private fun revealTallone(tallone: ImageView, style: ShuffleStyle, onDone: () -> Unit = {}) {
+        when (style) {
+            ShuffleStyle.RIFFLE -> revealAlphaIn        (tallone, onDone)
+            ShuffleStyle.CUT    -> revealPairSync       (tallone, onDone)
+            ShuffleStyle.SPIN   -> revealSpin360        (tallone, onDone)
+            ShuffleStyle.BOUNCE -> revealScaleBounce    (tallone, onDone)
+            ShuffleStyle.WAVE   -> revealSlideInX       (tallone, onDone)
+            ShuffleStyle.FLIP   -> revealFlipY          (tallone, onDone)
+            ShuffleStyle.TUMBLE -> revealRocking        (tallone, onDone)
+            ShuffleStyle.PULSE  -> revealPulse          (tallone, onDone)
+            ShuffleStyle.TOSS   -> revealDropSquash     (tallone, onDone)
+            ShuffleStyle.FAN    -> revealRotationSettle (tallone, onDone)
+        }
+    }
+
+    /** Plain alpha 0→1 fade-in. */
+    private fun revealAlphaIn(tallone: ImageView, onDone: () -> Unit) {
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 180
+            addUpdateListener { tallone.alpha = it.animatedFraction }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) { tallone.alpha = 1f; onDone() }
+            })
+            start()
+        }
+    }
+
+    /** Pair sync: alpha + scale 0.9→1. */
+    private fun revealPairSync(tallone: ImageView, onDone: () -> Unit) {
+        tallone.scaleX = 0.9f
+        tallone.scaleY = 0.9f
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 180
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                val s = 0.9f + 0.1f * f
+                tallone.scaleX = s
+                tallone.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.scaleX = 1f; tallone.scaleY = 1f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Spin 360° while fading in. */
+    private fun revealSpin360(tallone: ImageView, onDone: () -> Unit) {
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                tallone.rotation = f * 360f
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.rotation = 0f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Scale bounce 0→1.2→1, alpha 0→1 in first 100ms. */
+    private fun revealScaleBounce(tallone: ImageView, onDone: () -> Unit) {
+        tallone.scaleX = 0f
+        tallone.scaleY = 0f
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = minOf(1f, f * 3f)              // alpha hits 1 at f≈0.33
+                val s = if (f < 0.5f) f * 2.4f                  // 0 → 1.2
+                        else 1.2f - (f - 0.5f) * 0.4f           // 1.2 → 1.0
+                tallone.scaleX = s
+                tallone.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.scaleX = 1f; tallone.scaleY = 1f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Slide in from -30dp on X, alpha 0→1. */
+    private fun revealSlideInX(tallone: ImageView, onDone: () -> Unit) {
+        val dp30 = 30f * tallone.context.resources.displayMetrics.density
+        tallone.translationX = -dp30
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 220
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                tallone.translationX = -dp30 * (1f - f)
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.translationX = 0f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** RotateY 90°→0° (card flipping into place), alpha 0→1. */
+    private fun revealFlipY(tallone: ImageView, onDone: () -> Unit) {
+        tallone.rotationY = 90f
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 240
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                tallone.rotationY = 90f * (1f - f)
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.rotationY = 0f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Rock ±10° once, settle, alpha 0→1. */
+    private fun revealRocking(tallone: ImageView, onDone: () -> Unit) {
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 260
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                tallone.rotation = 10f * Math.sin(f.toDouble() * Math.PI * 2).toFloat()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.rotation = 0f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Pulse scale 1→1.08→1→1.08→1, alpha 0→1 in first 100ms. */
+    private fun revealPulse(tallone: ImageView, onDone: () -> Unit) {
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 260
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = minOf(1f, f * 3f)
+                val s = 1f + 0.08f * Math.abs(Math.sin(f.toDouble() * Math.PI * 2)).toFloat()
+                tallone.scaleX = s
+                tallone.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.scaleX = 1f; tallone.scaleY = 1f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Drop-squash: scaleY 1→1.2→0.85→1 (squash on impact), alpha 0→1 quickly. */
+    private fun revealDropSquash(tallone: ImageView, onDone: () -> Unit) {
+        tallone.scaleY = 1.2f
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 280
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = minOf(1f, f * 3f)
+                val sy = when {
+                    f < 0.4f -> 1.2f - (f / 0.4f) * 0.35f         // 1.2 → 0.85
+                    else     -> 0.85f + ((f - 0.4f) / 0.6f) * 0.15f // 0.85 → 1.0
+                }
+                tallone.scaleY = sy
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.scaleY = 1f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
+    /** Rotation -10° → 0° + alpha 0→1. */
+    private fun revealRotationSettle(tallone: ImageView, onDone: () -> Unit) {
+        tallone.rotation = -10f
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 220
+            addUpdateListener {
+                val f = it.animatedFraction
+                tallone.alpha = f
+                tallone.rotation = -10f * (1f - f)
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    tallone.alpha = 1f; tallone.rotation = 0f; onDone()
+                }
+            })
+            start()
+        }
+    }
+
     private fun reset() {
         riffleAnims.forEach { it.cancel() }
         riffleAnims.clear()
