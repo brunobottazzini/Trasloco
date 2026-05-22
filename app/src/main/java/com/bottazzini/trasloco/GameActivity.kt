@@ -81,6 +81,8 @@ class GameActivity : AppCompatActivity() {
     private var soundEnabled: Boolean = true
     private var autoMoveRunnable: Runnable? = null
     private val dealRunnables = mutableListOf<Runnable>()
+    private var pendingEndDeckAnims: Int = 0
+    private var pendingEndStateAction: (() -> Unit)? = null
     private val gameRoot: ConstraintLayout by lazy {
         findViewById<ConstraintLayout>(R.id.gameConstraintLayout)
     }
@@ -887,6 +889,23 @@ class GameActivity : AppCompatActivity() {
         return (imageView.tag) as String
     }
 
+    private fun bumpEndDeckAnim() {
+        pendingEndDeckAnims++
+    }
+
+    private fun decEndDeckAnim() {
+        pendingEndDeckAnims = (pendingEndDeckAnims - 1).coerceAtLeast(0)
+        if (pendingEndDeckAnims == 0) {
+            val action = pendingEndStateAction
+            pendingEndStateAction = null
+            action?.invoke()
+        }
+    }
+
+    private fun runOrDeferEndState(action: () -> Unit) {
+        if (pendingEndDeckAnims == 0) action() else pendingEndStateAction = action
+    }
+
     private fun clearUndoButton() {
         val resetButton = findViewById<View>(R.id.resetButton)
         resetButton.isEnabled = false
@@ -1046,6 +1065,8 @@ class GameActivity : AppCompatActivity() {
         clearCardSelection()
         zeroFill()
         endDeckList = hashMapOf("1" to "zero", "2" to "zero", "3" to "zero", "4" to "zero")
+        pendingEndDeckAnims = 0
+        pendingEndStateAction = null
         prepareTextAndButtonForNewGame()
     }
 
@@ -1362,6 +1383,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun restoreGameFromViewModel() {
         isInitializing = true
+        pendingEndDeckAnims = 0
+        pendingEndStateAction = null
 
         prePrepareTable()
 
