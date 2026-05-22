@@ -628,6 +628,7 @@ class GameActivity : AppCompatActivity() {
 
         val selectedPositionName =
             resources.getResourceEntryName(selectedPositionId).split("subDeck")[1]
+        val targetLine = desiredPosition.first().toString()
 
         cardTableMap[desiredPosition]?.add(selectedCard)
         // End-deck slots don't show a card count
@@ -641,8 +642,12 @@ class GameActivity : AppCompatActivity() {
         }
         playSoundAtomic(R.raw.flipcard)
 
+        bumpEndDeckAnim()
         CardAnimator.animateCardFlight(gameRoot, sourceView, targetView, cardDrawable, 200L) {
-            if (!isFinishing) setImage(desiredCardPosition, selectedCard)
+            if (!isFinishing && endDeckList[targetLine] == selectedCard) {
+                setImage(desiredCardPosition, selectedCard)
+            }
+            decEndDeckAnim()
         }
     }
 
