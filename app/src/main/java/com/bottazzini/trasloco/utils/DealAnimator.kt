@@ -223,7 +223,7 @@ object DealAnimator {
         handler: Handler,
         onAfterPhase2: () -> Unit
     ) {
-        val (ghost, startTx, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val (ghost, _, _) = makeCenterGhost(root, talloneViews, backDrawable)
         val anim = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = 500
             addUpdateListener { va ->
@@ -240,7 +240,7 @@ object DealAnimator {
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
                     playPhase2(root, ghost, talloneViews, backDrawable, handler,
-                        delays = longArrayOf(0L, 60L, 120L, 180L).reversedArray(),
+                        delays = longArrayOf(180L, 120L, 60L, 0L),
                         onAllLanded = onAfterPhase2)
                 }
             })
