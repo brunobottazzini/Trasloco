@@ -416,7 +416,7 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun tryMove(sourceView: View, targetView: View): Boolean {
+    private fun tryMove(sourceView: View, targetView: View, animateEndDeck: Boolean = true): Boolean {
         val sourceCard = sourceView.tag as String
         val sourcePositionId = sourceView.id
         val targetCard = targetView.tag as String
@@ -436,7 +436,7 @@ class GameActivity : AppCompatActivity() {
             return false
         }
 
-        if (isEndDeckClick(targetPosition)) {
+        if (isEndDeckClick(targetPosition) && animateEndDeck) {
             moveCardToEndDeckAnimated(targetPositionId, targetPosition, sourceCard, sourcePositionId)
         } else {
             moveCard(targetPositionId, targetPosition, sourceCard, sourcePositionId)
@@ -1179,7 +1179,7 @@ class GameActivity : AppCompatActivity() {
         dragTouchView = null
 
         if (source != null && target != null && source !== target) {
-            val moved = tryMove(source, target)
+            val moved = tryMove(source, target, animateEndDeck = false)
             if (moved) {
                 if (hasReachedWonConditions()) {
                     showYouWon()
