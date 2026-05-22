@@ -47,7 +47,6 @@ object DealAnimator {
         dealEntries: List<DealEntry>,
         backDrawable: Drawable?,
         handler: Handler,
-        onPhase1Done: () -> Unit,
         onComplete: () -> Unit
     ) {
         reset()
@@ -82,22 +81,16 @@ object DealAnimator {
                 override fun onAnimationEnd(animation: Animator) {
                     // reset translationX to exact center so Phase 2 source position is stable
                     centralGhost.translationX = startTx
+                    centralGhost.scaleX = 1f
+                    playPhase2(root, centralGhost, talloneViews, backDrawable, handler) {
+                        val timings = cascadeTimings(staggerMs = 150L, roundGapMs = 250L)
+                        playDealCascade(root, dealEntries, timings, handler, onComplete)
+                    }
                 }
             })
         }
         riffleAnim = anim
         anim.start()
-
-        // ── 500 ms after playNewGame start: fire onPhase1Done + start Phase 2 ──
-        val r = Runnable {
-            onPhase1Done()
-            playPhase2(root, centralGhost, talloneViews, backDrawable, handler) {
-                val timings = cascadeTimings(staggerMs = 150L, roundGapMs = 250L)
-                playDealCascade(root, dealEntries, timings, handler, onComplete)
-            }
-        }
-        pendingRunnables.add(r)
-        handler.postDelayed(r, 500L)
     }
 
     fun playRetry(

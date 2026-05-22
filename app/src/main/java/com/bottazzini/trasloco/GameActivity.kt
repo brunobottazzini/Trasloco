@@ -203,6 +203,10 @@ class GameActivity : AppCompatActivity() {
                 }
                 val dealEntries = buildDealEntries()
 
+                // Hide loading overlay before the animation so the riffle plays
+                // on the visible (empty) board, not on top of the overlay
+                findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
+
                 // Tap on gameRoot skips the animation
                 gameRoot.setOnClickListener { DealAnimator.skip() }
 
@@ -212,11 +216,6 @@ class GameActivity : AppCompatActivity() {
                     dealEntries  = dealEntries,
                     backDrawable = backDrawable,
                     handler      = timerHandler,
-                    onPhase1Done = {
-                        // Hide loading overlay after riffle so the board
-                        // becomes visible as ghost decks fly to the talloni
-                        findViewById<View>(R.id.loadingOverlay).visibility = View.GONE
-                    },
                     onComplete   = {
                         isIntroAnimating = false
                         isInitializing   = false
