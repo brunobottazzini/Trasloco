@@ -78,11 +78,11 @@ object DealAnimator {
             ShuffleStyle.CUT     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
             ShuffleStyle.SPIN    -> playSpin   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.BOUNCE  -> playBounce (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.WAVE    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
+            ShuffleStyle.WAVE    -> playWave   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.FLIP    -> playFlip   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.TUMBLE  -> playTumble (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.PULSE   -> playPulse  (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.TOSS    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
+            ShuffleStyle.TOSS    -> playToss   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.FAN     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
         }
     }
@@ -365,6 +365,74 @@ object DealAnimator {
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
                     playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** WAVE: wide horizontal sway ±16dp, 4 oscillations. Phase 2 simultaneous (all delay 0). */
+    private fun playWave(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, startTx, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val dp16 = 16 * root.context.resources.displayMetrics.density
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                ghost.translationX =
+                    startTx + Math.sin(f.toDouble() * Math.PI * 4).toFloat() * dp16
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.translationX = startTx
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        delays = longArrayOf(0L, 0L, 0L, 0L),
+                        flightDurationMs = 180L,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** TOSS: vertical hop -50dp (sin half-cycle) + scale 1→1.15→1. Phase 2 tight stagger. */
+    private fun playToss(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, _, startTy) = makeCenterGhost(root, talloneViews, backDrawable)
+        val dp50 = 50 * root.context.resources.displayMetrics.density
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 500
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                ghost.translationY = startTy - Math.sin(f.toDouble() * Math.PI).toFloat() * dp50
+                val s = 1f + 0.15f * Math.sin(f.toDouble() * Math.PI).toFloat()
+                ghost.scaleX = s
+                ghost.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.translationY = startTy
+                    ghost.scaleX = 1f
+                    ghost.scaleY = 1f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        delays = longArrayOf(0L, 40L, 80L, 120L),
+                        flightDurationMs = 200L,
                         onAllLanded = onAfterPhase2)
                 }
             })
