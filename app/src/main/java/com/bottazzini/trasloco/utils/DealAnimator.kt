@@ -433,7 +433,8 @@ object DealAnimator {
                     if (rootRef?.get() == null) return
                     ghost.translationX = startTx
                     ghost.scaleX = 1f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
+                        style = ShuffleStyle.RIFFLE,
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -466,8 +467,18 @@ object DealAnimator {
                     ghost.rotation = 0f
                     ghost.scaleX = 1f
                     ghost.scaleY = 1f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    val dp30 = 30f * root.context.resources.displayMetrics.density
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(180L, 120L, 60L, 0L),
+                        flightDurationMs = 320L,
+                        style = ShuffleStyle.SPIN,
+                        pathFn = { _, f ->
+                            // Tangential offset: peaks at f=0.5, returns to 0
+                            val r = Math.sin(f.toDouble() * Math.PI).toFloat() * dp30
+                            val theta = (2.0 * Math.PI * f).toFloat()
+                            (r * Math.cos(theta.toDouble()).toFloat()) to (r * Math.sin(theta.toDouble()).toFloat())
+                        },
+                        rotationFn = { _, f -> f * 360f },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -494,7 +505,9 @@ object DealAnimator {
                 override fun onAnimationEnd(animation: Animator) {
                     if (rootRef?.get() == null) return
                     ghost.rotationY = 0f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
+                        style = ShuffleStyle.FLIP,
+                        rotationFn = { _, f -> f * 360f },
                         onAllLanded = onAfterPhase2)
                 }
             })
@@ -522,8 +535,10 @@ object DealAnimator {
                 override fun onAnimationEnd(animation: Animator) {
                     if (rootRef?.get() == null) return
                     ghost.rotation = 0f
-                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                    playPhase2Custom(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 60L, 160L, 220L),
+                        style = ShuffleStyle.TUMBLE,
+                        rotationFn = { _, f -> Math.sin(f.toDouble() * Math.PI * 2).toFloat() * 20f },
                         onAllLanded = onAfterPhase2)
                 }
             })
