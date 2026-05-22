@@ -39,6 +39,10 @@ object DealAnimator {
     private var rootRef: WeakReference<ViewGroup>? = null
     private var skipOnComplete: (() -> Unit)? = null
 
+    enum class ShuffleStyle {
+        RIFFLE, CUT, SPIN, BOUNCE, WAVE, FLIP, TUMBLE, PULSE, TOSS, FAN
+    }
+
     // ── Public API ────────────────────────────────────────────────────────
 
     fun playNewGame(
@@ -47,52 +51,40 @@ object DealAnimator {
         dealEntries: List<DealEntry>,
         backDrawable: Drawable?,
         handler: Handler,
-        onComplete: () -> Unit
+        onComplete: () -> Unit,
+        style: ShuffleStyle = ShuffleStyle.values().random()
     ) {
         reset()
-        handlerRef   = handler
-        rootRef      = WeakReference(root)
+        handlerRef     = handler
+        rootRef        = WeakReference(root)
         skipOnComplete = onComplete
 
-        val deckW   = talloneViews.firstOrNull()?.width?.takeIf  { it > 0 } ?: 80
-        val deckH   = talloneViews.firstOrNull()?.height?.takeIf { it > 0 } ?: 100
-        val startTx = root.width  / 2f - deckW / 2f
-        val startTy = root.height / 2f - deckH / 2f
-        val dp8     = 8 * root.context.resources.displayMetrics.density
-
-        // ── Phase 1: riffle ghost at screen centre (~400 ms) ──────────────
-        val centralGhost = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
-        ghostViews.add(centralGhost)
-        root.addView(centralGhost)
-
-        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 400
-            addUpdateListener { va ->
-                val f = va.animatedFraction
-                centralGhost.scaleX = when {
-                    f < 0.33f -> 1f - (f / 0.33f) * 0.15f
-                    f < 0.66f -> 0.85f + ((f - 0.33f) / 0.33f) * 0.20f
-                    else      -> 1.05f - ((f - 0.66f) / 0.34f) * 0.05f
-                }
-                centralGhost.translationX =
-                    startTx + Math.sin(f.toDouble() * Math.PI * 3).toFloat() * dp8
-            }
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    // ValueAnimator.cancel() fires onAnimationEnd too — bail if skip() already cleared state.
-                    if (rootRef?.get() == null) return
-                    // reset translationX to exact center so Phase 2 source position is stable
-                    centralGhost.translationX = startTx
-                    centralGhost.scaleX = 1f
-                    playPhase2(root, centralGhost, talloneViews, backDrawable, handler) {
-                        val timings = cascadeTimings(staggerMs = 150L, roundGapMs = 250L)
-                        playDealCascade(root, dealEntries, timings, handler, onComplete)
-                    }
-                }
-            })
+        playStyle(style, root, talloneViews, backDrawable, handler) {
+            val timings = cascadeTimings(staggerMs = 150L, roundGapMs = 250L)
+            playDealCascade(root, dealEntries, timings, handler, onComplete)
         }
-        riffleAnims.add(anim)
-        anim.start()
+    }
+
+    private fun playStyle(
+        style: ShuffleStyle,
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        when (style) {
+            ShuffleStyle.RIFFLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2)
+            ShuffleStyle.CUT     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
+            ShuffleStyle.SPIN    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
+            ShuffleStyle.BOUNCE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
+            ShuffleStyle.WAVE    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
+            ShuffleStyle.FLIP    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
+            ShuffleStyle.TUMBLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 4
+            ShuffleStyle.PULSE   -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
+            ShuffleStyle.TOSS    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
+            ShuffleStyle.FAN     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
+        }
     }
 
     fun playRetry(
@@ -156,6 +148,50 @@ object DealAnimator {
         translationX = tx
         translationY = ty
         layoutParams = ConstraintLayout.LayoutParams(w, h)
+    }
+
+    /** RIFFLE: scale wobble 1→0.85→1.05→1.0 + sin sway. */
+    private fun playRiffle(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val deckW   = talloneViews.firstOrNull()?.width?.takeIf  { it > 0 } ?: 80
+        val deckH   = talloneViews.firstOrNull()?.height?.takeIf { it > 0 } ?: 100
+        val startTx = root.width  / 2f - deckW / 2f
+        val startTy = root.height / 2f - deckH / 2f
+        val dp8     = 8 * root.context.resources.displayMetrics.density
+
+        val ghost = makeGhost(root, backDrawable, deckW, deckH, startTx, startTy)
+        ghostViews.add(ghost)
+        root.addView(ghost)
+
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 400
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                ghost.scaleX = when {
+                    f < 0.33f -> 1f - (f / 0.33f) * 0.15f
+                    f < 0.66f -> 0.85f + ((f - 0.33f) / 0.33f) * 0.20f
+                    else      -> 1.05f - ((f - 0.66f) / 0.34f) * 0.05f
+                }
+                ghost.translationX =
+                    startTx + Math.sin(f.toDouble() * Math.PI * 3).toFloat() * dp8
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.translationX = startTx
+                    ghost.scaleX = 1f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
     }
 
     /**
