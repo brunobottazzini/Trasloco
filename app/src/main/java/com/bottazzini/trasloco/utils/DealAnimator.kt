@@ -77,11 +77,11 @@ object DealAnimator {
             ShuffleStyle.RIFFLE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.CUT     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
             ShuffleStyle.SPIN    -> playSpin   (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.BOUNCE  -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
+            ShuffleStyle.BOUNCE  -> playBounce (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.WAVE    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
             ShuffleStyle.FLIP    -> playFlip   (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.TUMBLE  -> playTumble (root, talloneViews, backDrawable, handler, onAfterPhase2)
-            ShuffleStyle.PULSE   -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 5
+            ShuffleStyle.PULSE   -> playPulse  (root, talloneViews, backDrawable, handler, onAfterPhase2)
             ShuffleStyle.TOSS    -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 6
             ShuffleStyle.FAN     -> playRiffle (root, talloneViews, backDrawable, handler, onAfterPhase2) // placeholder until Task 7
         }
@@ -297,6 +297,74 @@ object DealAnimator {
                     ghost.rotation = 0f
                     playPhase2(root, ghost, talloneViews, backDrawable, handler,
                         delays = longArrayOf(0L, 60L, 160L, 220L),
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** BOUNCE: elastic scale pop 1→1.2→0.9→1.1→1. Phase 2 normal stagger. */
+    private fun playBounce(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, _, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 450
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                val s = when {
+                    f < 0.25f -> 1f + (f / 0.25f) * 0.20f                   // 1.0 → 1.2
+                    f < 0.50f -> 1.20f - ((f - 0.25f) / 0.25f) * 0.30f      // 1.2 → 0.9
+                    f < 0.75f -> 0.90f + ((f - 0.50f) / 0.25f) * 0.20f      // 0.9 → 1.1
+                    else      -> 1.10f - ((f - 0.75f) / 0.25f) * 0.10f      // 1.1 → 1.0
+                }
+                ghost.scaleX = s
+                ghost.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.scaleX = 1f
+                    ghost.scaleY = 1f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
+                        onAllLanded = onAfterPhase2)
+                }
+            })
+        }
+        riffleAnims.add(anim)
+        anim.start()
+    }
+
+    /** PULSE: 5 rapid scale pulses 1→1.1→1. Phase 2 normal stagger. */
+    private fun playPulse(
+        root: ViewGroup,
+        talloneViews: List<ImageView>,
+        backDrawable: Drawable?,
+        handler: Handler,
+        onAfterPhase2: () -> Unit
+    ) {
+        val (ghost, _, _) = makeCenterGhost(root, talloneViews, backDrawable)
+        val anim = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 400
+            addUpdateListener { va ->
+                val f = va.animatedFraction
+                // sin² wave gives a clean 0→1→0→1... bell-shape pulse
+                val s = 1f + 0.10f * Math.abs(Math.sin(f.toDouble() * Math.PI * 5)).toFloat()
+                ghost.scaleX = s
+                ghost.scaleY = s
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (rootRef?.get() == null) return
+                    ghost.scaleX = 1f
+                    ghost.scaleY = 1f
+                    playPhase2(root, ghost, talloneViews, backDrawable, handler,
                         onAllLanded = onAfterPhase2)
                 }
             })
