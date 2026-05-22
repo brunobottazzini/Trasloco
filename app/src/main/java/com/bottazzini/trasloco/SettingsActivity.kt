@@ -126,6 +126,12 @@ class SettingsActivity : AppCompatActivity() {
         settingsHandler.updateSetting(Configuration.AUTO_MOVE.value, value)
     }
 
+    fun changeSoundEnabled(view: View) {
+        val switch = view as Switch
+        val value = if (switch.isChecked) "enabled" else "disabled"
+        settingsHandler.updateSetting(Configuration.SOUND_ENABLED.value, value)
+    }
+
     override fun onDestroy() {
         settingsHandler.close()
         super.onDestroy()
@@ -215,6 +221,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val autoMove = settingsHandler.readValue(Configuration.AUTO_MOVE.value) ?: "disabled"
         findViewById<Switch>(R.id.switchAutoMove).isChecked = (autoMove == "enabled")
+
+        val sound = settingsHandler.readValue(Configuration.SOUND_ENABLED.value) ?: "enabled"
+        findViewById<Switch>(R.id.switchSound).isChecked = (sound == "enabled")
 
         applyScreenBackground(background)
         updateHeroPreview()
