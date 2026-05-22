@@ -831,7 +831,7 @@ class GameActivity : AppCompatActivity() {
                 val cardDrawable = ContextCompat.getDrawable(this@GameActivity, drawableId)
                 val targetView = findViewById<ImageView>(entry.imageViewId)
                 CardAnimator.animateCardFlight(gameRoot, deckView, targetView, cardDrawable, 200L) {
-                    if (!isFinishing) {
+                    if (!isFinishing && cardTableMap[entry.position]?.lastOrNull() == entry.cardName) {
                         setImage(entry.imageViewId, entry.cardName)
                     }
                 }
