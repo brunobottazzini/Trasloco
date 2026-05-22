@@ -732,6 +732,20 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    /** Removes stack indicator overlays from all card slots and source decks. */
+    private fun clearAllStackIndicators() {
+        for (row in 1..4) {
+            // table slots (col 1–4)
+            for (col in 1..4) {
+                val id = resources.getIdentifier("subDeck$row$col", "id", packageName)
+                if (id != 0) findViewById<View>(id)?.overlay?.clear()
+            }
+            // source decks
+            val deckId = resources.getIdentifier("subDeck$row", "id", packageName)
+            if (deckId != 0) findViewById<View>(deckId)?.overlay?.clear()
+        }
+    }
+
     private fun isEndDeckClick(positionName: String) = positionName.last() == '4'
 
     private fun canBeInserted(
@@ -1116,6 +1130,14 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun zeroFill() {
+        clearAllStackIndicators()
+        // reset source deck badges
+        for (line in listOf("1", "2", "3", "4")) {
+            val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
+            val badge = findViewById<TextView>(badgeId)
+            badge.text = ""
+            badge.visibility = View.INVISIBLE
+        }
         for (line in listOf("1", "2", "3", "4")) {
             val hideCardDeck =
                 resources.getIdentifier("subDeck$line", "id", this.packageName)
