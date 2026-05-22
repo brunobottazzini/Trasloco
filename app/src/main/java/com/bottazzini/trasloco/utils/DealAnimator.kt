@@ -34,7 +34,7 @@ object DealAnimator {
 
     private val pendingRunnables = mutableListOf<Runnable>()
     private val ghostViews       = mutableListOf<View>()
-    private var riffleAnim: ValueAnimator? = null
+    private val riffleAnims = mutableListOf<ValueAnimator>()
     private var handlerRef: Handler? = null
     private var rootRef: WeakReference<ViewGroup>? = null
     private var skipOnComplete: (() -> Unit)? = null
@@ -91,7 +91,7 @@ object DealAnimator {
                 }
             })
         }
-        riffleAnim = anim
+        riffleAnims.add(anim)
         anim.start()
     }
 
@@ -112,8 +112,8 @@ object DealAnimator {
 
     /** Cancel pending animations and call onComplete immediately. */
     fun skip() {
-        riffleAnim?.cancel()
-        riffleAnim = null
+        riffleAnims.forEach { it.cancel() }
+        riffleAnims.clear()
         val h = handlerRef
         val r = rootRef?.get()
         pendingRunnables.forEach { h?.removeCallbacks(it) }
@@ -130,8 +130,8 @@ object DealAnimator {
     // ── Private helpers ───────────────────────────────────────────────────
 
     private fun reset() {
-        riffleAnim?.cancel()
-        riffleAnim = null
+        riffleAnims.forEach { it.cancel() }
+        riffleAnims.clear()
         val h = handlerRef
         val r = rootRef?.get()
         pendingRunnables.forEach { h?.removeCallbacks(it) }
@@ -168,6 +168,8 @@ object DealAnimator {
         talloneViews: List<ImageView>,
         backDrawable: Drawable?,
         handler: Handler,
+        delays: LongArray = longArrayOf(0L, 60L, 120L, 180L),
+        flightDurationMs: Long = 220L,
         onAllLanded: () -> Unit
     ) {
         var landedCount = 0
@@ -177,7 +179,7 @@ object DealAnimator {
             val r = Runnable {
                 val currentRoot = rootRef?.get() ?: return@Runnable
                 CardAnimator.animateCardFlight(
-                    currentRoot, centralGhost, tallone, backDrawable, 220L
+                    currentRoot, centralGhost, tallone, backDrawable, flightDurationMs
                 ) {
                     landedCount++
                     if (landedCount == total) {
@@ -188,7 +190,7 @@ object DealAnimator {
                 }
             }
             pendingRunnables.add(r)
-            handler.postDelayed(r, index * 60L)
+            handler.postDelayed(r, delays.getOrElse(index) { index * 60L })
         }
     }
 
@@ -241,7 +243,7 @@ object DealAnimator {
         ghostViews.forEach { r?.removeView(it) }
         ghostViews.clear()
         pendingRunnables.clear()
-        riffleAnim     = null
+        riffleAnims.clear()
         handlerRef     = null
         rootRef        = null
         skipOnComplete = null
