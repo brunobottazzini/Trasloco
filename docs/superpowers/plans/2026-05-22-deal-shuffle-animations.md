@@ -343,19 +343,16 @@ Add directly below it:
 private var isIntroAnimating = false
 ```
 
-- [ ] **Step 2: Modify `dealCard()` to respect `isIntroAnimating`**
+- [ ] **Step 2: Modify `dealCard()` to respect `isIntroAnimating` (images AND badge)**
 
-Find this block inside `dealCard()`:
-```kotlin
-        if (isInitializing || deals.isEmpty()) {
-            // During board setup: apply images directly, no animation
-            deals.forEach { setImage(it.imageViewId, it.cardName) }
-            return
-        }
-```
+`dealCard()` currently calls `updateSourceDeck(line)` **before** the `isInitializing` check, so with
+`isIntroAnimating=true` the badge jumps immediately to 7 (post-deal). We need to gate it.
 
-Replace it with:
+Find the block in `dealCard()` that currently looks like:
 ```kotlin
+        subDeckMap[line] = subDeck
+        updateSourceDeck(line)   // ← new line
+
         if (deals.isEmpty()) return
 
         if (isInitializing) {
@@ -369,30 +366,102 @@ Replace it with:
         }
 ```
 
-- [ ] **Step 3: Add `buildDealEntries()` private helper**
+Replace it with:
+```kotlin
+        subDeckMap[line] = subDeck
+        // Skip badge/indicator update during intro animation:
+        // buildDealEntries() will set the initial count (10) and decrement per-card in onLand.
+        if (!isInitializing || !isIntroAnimating) {
+            updateSourceDeck(line)
+        }
 
-Add this method anywhere in `GameActivity` (e.g. just before `setImage()`):
+        if (deals.isEmpty()) return
+
+        if (isInitializing) {
+            // During board setup with no intro animation: apply images directly
+            if (!isIntroAnimating) {
+                deals.forEach { setImage(it.imageViewId, it.cardName) }
+            }
+            // With isIntroAnimating=true: state is already updated above; visuals
+            // are deferred to DealEntry.onLand callbacks in DealAnimator.
+            return
+        }
+```
+
+- [ ] **Step 3: Add `updateDeckBadge()` helper and `buildDealEntries()` private helper**
+
+Add both methods in `GameActivity` (e.g. just before `setImage()`):
 
 ```kotlin
+    /**
+     * Updates only the textViewDeck badge for [line] ("1"–"4") to show [count].
+     * Used by the intro animation to animate the deck counter while cards fly.
+     */
+    private fun updateDeckBadge(line: String, count: Int) {
+        val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
+        val badge = findViewById<TextView>(badgeId) ?: return
+        if (count > 0) {
+            badge.text  = count.toString()
+            badge.visibility = View.VISIBLE
+        } else {
+            badge.text  = ""
+            badge.visibility = View.INVISIBLE
+        }
+    }
+
     /**
      * Builds the 12 DealEntry objects for the intro cascade animation.
      * Order: col=1 rows 1-4, col=2 rows 1-4, col=3 rows 1-4 (cascade vertical order).
      * Entries for empty slots (card == "zero" or missing) have drawable=null and are skipped.
+     *
+     * Badge animation:
+     *  - Sets each textViewDeck badge to the pre-deal count (post-deal + dealt, e.g. 10).
+     *  - Each onLand decrements its deck's badge so the user sees 10→9→8→7 as cards fly.
      */
     private fun buildDealEntries(): List<DealEntry> {
         val entries = mutableListOf<DealEntry>()
+
+        // Count how many cards were dealt per deck line (to compute pre-deal size).
+        val dealtPerLine = mutableMapOf<String, Int>()
         for (col in 1..3) {
             for (row in 1..4) {
-                val position  = "$row$col"
-                val cardName  = cardTableMap[position]?.lastOrNull() ?: continue
+                val position = "$row$col"
+                val cardName = cardTableMap[position]?.lastOrNull() ?: continue
                 if (cardName == "zero") continue
-                val imageViewId = resources.getIdentifier("subDeck$position", "id", packageName)
-                val talloneId   = resources.getIdentifier("subDeck$row",      "id", packageName)
+                val line = row.toString()
+                dealtPerLine[line] = (dealtPerLine[line] ?: 0) + 1
+            }
+        }
+
+        // Set initial badges to pre-deal count (e.g. 7 + 3 = 10) and seed running counter.
+        val badgeCount = mutableMapOf<String, Int>()
+        for (row in 1..4) {
+            val line = row.toString()
+            val postDealSize = subDeckMap[line]?.size ?: 0
+            val dealt = dealtPerLine[line] ?: 0
+            val initial = postDealSize + dealt           // = 10 for a full starting deck
+            badgeCount[line] = initial
+            updateDeckBadge(line, initial)
+        }
+
+        for (col in 1..3) {
+            for (row in 1..4) {
+                val position     = "$row$col"
+                val cardName     = cardTableMap[position]?.lastOrNull() ?: continue
+                if (cardName == "zero") continue
+                val line         = row.toString()
+                val imageViewId  = resources.getIdentifier("subDeck$position", "id", packageName)
+                val talloneId    = resources.getIdentifier("subDeck$row",      "id", packageName)
                 val resourceName = "${cardType}_$cardName"
                 val drawableId   = ResourceUtils.getDrawableByName(resources, packageName, resourceName)
                 val drawable     = androidx.core.content.ContextCompat.getDrawable(this, drawableId)
                 val sourceView   = findViewById<ImageView>(talloneId)
                 val targetView   = findViewById<ImageView>(imageViewId)
+
+                // Decrement the running count: this card will remove itself from the deck badge.
+                val countAtLand = (badgeCount[line] ?: 1) - 1
+                badgeCount[line] = countAtLand
+
                 entries.add(DealEntry(
                     sourceView = sourceView,
                     targetView = targetView,
@@ -400,6 +469,7 @@ Add this method anywhere in `GameActivity` (e.g. just before `setImage()`):
                     onLand     = {
                         playSoundAtomic(R.raw.flipcard)
                         setImage(imageViewId, cardName)
+                        updateDeckBadge(line, countAtLand)   // 10→9→8→7 as cards land
                     }
                 ))
             }
