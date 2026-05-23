@@ -479,10 +479,20 @@ class GameActivity : AppCompatActivity() {
     private fun tryMove(sourceView: View, targetView: View, animateEndDeck: Boolean = true): Boolean {
         val sourceCard = sourceView.tag as String
         val sourcePositionId = sourceView.id
-        val targetCard = targetView.tag as String
         val targetPositionId = targetView.id
         val targetPosition =
             resources.getResourceEntryName(targetPositionId).split("subDeck")[1]
+
+        // For end-deck targets, derive the current top from the data model (endDeckList) rather
+        // than from targetView.tag.  The view tag is updated only in the animation callback
+        // (~200ms after the move), so it can be stale when triggerAutoMoveCycle() fires
+        // immediately after a tap-to-end-deck move — causing the next auto-move to fail
+        // validation even though the data model is already correct.
+        val targetCard = if (isEndDeckClick(targetPosition)) {
+            endDeckList[targetPosition.first().toString()] ?: "zero"
+        } else {
+            targetView.tag as String
+        }
 
         if (isTutorialMode) {
             val engine = tutorialEngine ?: return false
