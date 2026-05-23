@@ -665,12 +665,14 @@ class GameActivity : AppCompatActivity() {
 
     private fun setNumberOfCards(cardsList: List<String>, position: String) {
         val textView = findViewById<TextView>(getTextViewByName(position))
-        if (cardsList.size > 1) {
-            textView.text = cardsList.size.toString()
-            textView.visibility = View.VISIBLE
-        } else {
-            textView.text = ""
-            textView.visibility = View.INVISIBLE
+        if (textView != null) {
+            if (cardsList.size > 1) {
+                textView.text = cardsList.size.toString()
+                textView.visibility = View.VISIBLE
+            } else {
+                textView.text = ""
+                textView.visibility = View.INVISIBLE
+            }
         }
         // stack indicator: show when > 1 card in slot
         val cardViewId = resources.getIdentifier("subDeck$position", "id", packageName)
@@ -709,12 +711,14 @@ class GameActivity : AppCompatActivity() {
         // badge
         val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
         val badge = findViewById<TextView>(badgeId)
-        if (size > 0) {
-            badge.text = size.toString()
-            badge.visibility = View.VISIBLE
-        } else {
-            badge.text = ""
-            badge.visibility = View.INVISIBLE
+        if (badge != null) {
+            if (size > 0) {
+                badge.text = size.toString()
+                badge.visibility = View.VISIBLE
+            } else {
+                badge.text = ""
+                badge.visibility = View.INVISIBLE
+            }
         }
         // indicator: show when 2+ cards remain
         val deckId = resources.getIdentifier("subDeck$line", "id", packageName)
@@ -1160,7 +1164,7 @@ class GameActivity : AppCompatActivity() {
         // reset source deck badges
         for (line in listOf("1", "2", "3", "4")) {
             val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
-            val badge = findViewById<TextView>(badgeId)
+            val badge = findViewById<TextView>(badgeId) ?: continue
             badge.text = ""
             badge.visibility = View.INVISIBLE
         }
@@ -1177,7 +1181,7 @@ class GameActivity : AppCompatActivity() {
                 setImage(imageViewId, "zero")
 
                 if (!isEndDeckClick(position)) {
-                    val textView = findViewById<TextView>(getTextViewByName(position))
+                    val textView = findViewById<TextView>(getTextViewByName(position)) ?: continue
                     textView.text = ""
                     textView.visibility = View.INVISIBLE
                 }
