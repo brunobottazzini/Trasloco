@@ -932,7 +932,11 @@ class GameActivity : AppCompatActivity() {
             }
         }
         subDeckMap[line] = subDeck
-        updateSourceDeck(line)   // ← new line
+        // Skip badge/indicator update during intro animation:
+        // buildDealEntries() sets the initial count (10) and decrements per-card in onLand.
+        if (!isInitializing || !isIntroAnimating) {
+            updateSourceDeck(line)
+        }
 
         if (deals.isEmpty()) return
 
@@ -972,24 +976,74 @@ class GameActivity : AppCompatActivity() {
     }
 
     /**
+     * Updates only the textViewDeck badge for [line] ("1"–"4") to show [count].
+     * Used by the intro animation to animate the deck counter (10→9→8→7) as cards fly.
+     */
+    private fun updateDeckBadge(line: String, count: Int) {
+        val badgeId = resources.getIdentifier("textViewDeck$line", "id", packageName)
+        val badge = findViewById<TextView>(badgeId) ?: return
+        if (count > 0) {
+            badge.text = count.toString()
+            badge.visibility = View.VISIBLE
+        } else {
+            badge.text = ""
+            badge.visibility = View.INVISIBLE
+        }
+    }
+
+    /**
      * Builds the 12 DealEntry objects for the intro cascade animation.
      * Order: col=1 rows 1-4, col=2 rows 1-4, col=3 rows 1-4 (cascade vertical order).
      * Entries for empty slots (card == "zero" or missing) have drawable=null and are skipped.
+     *
+     * Badge animation:
+     *  - Sets each textViewDeck badge to the pre-deal count (post-deal + dealt, e.g. 10).
+     *  - Each onLand decrements its deck's badge so the user sees 10→9→8→7 as cards fly.
      */
     private fun buildDealEntries(): List<DealEntry> {
         val entries = mutableListOf<DealEntry>()
+
+        // Count how many cards were dealt per deck row (to compute pre-deal size).
+        val dealtPerLine = mutableMapOf<String, Int>()
         for (col in 1..3) {
             for (row in 1..4) {
-                val position  = "$row$col"
-                val cardName  = cardTableMap[position]?.lastOrNull() ?: continue
+                val position = "$row$col"
+                val cardName = cardTableMap[position]?.lastOrNull() ?: continue
                 if (cardName == "zero") continue
-                val imageViewId = resources.getIdentifier("subDeck$position", "id", packageName)
-                val talloneId   = resources.getIdentifier("subDeck$row",      "id", packageName)
+                val line = row.toString()
+                dealtPerLine[line] = (dealtPerLine[line] ?: 0) + 1
+            }
+        }
+
+        // Set initial badges to pre-deal count (post-deal + dealt = 10 for a full deck).
+        val badgeCount = mutableMapOf<String, Int>()
+        for (row in 1..4) {
+            val line = row.toString()
+            val postDealSize = subDeckMap[line]?.size ?: 0
+            val dealt = dealtPerLine[line] ?: 0
+            val initial = postDealSize + dealt      // e.g. 7 + 3 = 10
+            badgeCount[line] = initial
+            updateDeckBadge(line, initial)
+        }
+
+        for (col in 1..3) {
+            for (row in 1..4) {
+                val position     = "$row$col"
+                val cardName     = cardTableMap[position]?.lastOrNull() ?: continue
+                if (cardName == "zero") continue
+                val line         = row.toString()
+                val imageViewId  = resources.getIdentifier("subDeck$position", "id", packageName)
+                val talloneId    = resources.getIdentifier("subDeck$row",      "id", packageName)
                 val resourceName = "${cardType}_$cardName"
                 val drawableId   = ResourceUtils.getDrawableByName(resources, packageName, resourceName)
                 val drawable     = androidx.core.content.ContextCompat.getDrawable(this, drawableId)
                 val sourceView   = findViewById<ImageView>(talloneId)
                 val targetView   = findViewById<ImageView>(imageViewId)
+
+                // Capture the decrementing count for this card's landing moment.
+                val countAtLand = (badgeCount[line] ?: 1) - 1
+                badgeCount[line] = countAtLand
+
                 entries.add(DealEntry(
                     sourceView = sourceView,
                     targetView = targetView,
@@ -997,6 +1051,7 @@ class GameActivity : AppCompatActivity() {
                     onLand     = {
                         playSoundAtomic(R.raw.flipcard)
                         setImage(imageViewId, cardName)
+                        updateDeckBadge(line, countAtLand)   // 10→9→8→7 as cards land
                     }
                 ))
             }
