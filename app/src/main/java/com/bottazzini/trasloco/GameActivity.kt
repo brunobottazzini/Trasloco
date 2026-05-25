@@ -206,6 +206,8 @@ class GameActivity : AppCompatActivity() {
                     findViewById<ImageView>(id)
                 }
                 val dealEntries = buildDealEntries()
+                // Pre-compute badge counts once so the onTalloneLanded lambda can use them.
+                val initialBadgeCounts = computePreDealBadgeCounts()
 
                 // Hide loading overlay before the animation so the riffle plays
                 // on the visible (empty) board, not on top of the overlay
@@ -220,6 +222,11 @@ class GameActivity : AppCompatActivity() {
                     dealEntries  = dealEntries,
                     backDrawable = backDrawable,
                     handler      = timerHandler,
+                    // Reveal each deck badge only when the ghost deck lands on its tallone.
+                    onTalloneLanded = { index ->
+                        val line = (index + 1).toString()
+                        updateDeckBadge(line, initialBadgeCounts[line] ?: 10)
+                    },
                     onComplete   = {
                         isIntroAnimating = false
                         isInitializing   = false
@@ -362,6 +369,8 @@ class GameActivity : AppCompatActivity() {
         prepareTable()  // state updated; setImage skipped because isIntroAnimating=true
 
         val dealEntries = buildDealEntries()
+        // No ghost-deck landing phase in Retry — show all deck badges immediately.
+        computePreDealBadgeCounts().forEach { (line, count) -> updateDeckBadge(line, count) }
 
         // Tap on gameRoot skips the animation
         gameRoot.setOnClickListener { DealAnimator.skip() }
@@ -992,39 +1001,39 @@ class GameActivity : AppCompatActivity() {
     }
 
     /**
+     * Returns the pre-deal badge count for each deck line ("1"–"4"):
+     * remaining cards in subDeckMap + cards already dealt to the table = full deck size.
+     * e.g. 7 remaining + 3 dealt = 10.
+     */
+    private fun computePreDealBadgeCounts(): Map<String, Int> {
+        val counts = mutableMapOf<String, Int>()
+        for (row in 1..4) {
+            val line = row.toString()
+            val postDealSize = subDeckMap[line]?.size ?: 0
+            val dealt = (1..3).count { col ->
+                val card = cardTableMap["$row$col"]?.lastOrNull()
+                card != null && card != "zero"
+            }
+            counts[line] = postDealSize + dealt
+        }
+        return counts
+    }
+
+    /**
      * Builds the 12 DealEntry objects for the intro cascade animation.
      * Order: col=1 rows 1-4, col=2 rows 1-4, col=3 rows 1-4 (cascade vertical order).
      * Entries for empty slots (card == "zero" or missing) have drawable=null and are skipped.
      *
-     * Badge animation:
-     *  - Sets each textViewDeck badge to the pre-deal count (post-deal + dealt, e.g. 10).
-     *  - Each onLand decrements its deck's badge so the user sees 10→9→8→7 as cards fly.
+     * Badge animation: each onLand decrements the deck's badge (10→9→8→7 as cards land).
+     * The initial badge display (10) is NOT set here — it is triggered externally:
+     *   - New Game: via the onTalloneLanded callback in DealAnimator.playNewGame
+     *   - Retry:    immediately before DealAnimator.playRetry starts
      */
     private fun buildDealEntries(): List<DealEntry> {
         val entries = mutableListOf<DealEntry>()
 
-        // Count how many cards were dealt per deck row (to compute pre-deal size).
-        val dealtPerLine = mutableMapOf<String, Int>()
-        for (col in 1..3) {
-            for (row in 1..4) {
-                val position = "$row$col"
-                val cardName = cardTableMap[position]?.lastOrNull() ?: continue
-                if (cardName == "zero") continue
-                val line = row.toString()
-                dealtPerLine[line] = (dealtPerLine[line] ?: 0) + 1
-            }
-        }
-
-        // Set initial badges to pre-deal count (post-deal + dealt = 10 for a full deck).
-        val badgeCount = mutableMapOf<String, Int>()
-        for (row in 1..4) {
-            val line = row.toString()
-            val postDealSize = subDeckMap[line]?.size ?: 0
-            val dealt = dealtPerLine[line] ?: 0
-            val initial = postDealSize + dealt      // e.g. 7 + 3 = 10
-            badgeCount[line] = initial
-            updateDeckBadge(line, initial)
-        }
+        // Compute starting badge counts per line for the per-card decrement tracking.
+        val badgeCount = computePreDealBadgeCounts().toMutableMap()
 
         for (col in 1..3) {
             for (row in 1..4) {

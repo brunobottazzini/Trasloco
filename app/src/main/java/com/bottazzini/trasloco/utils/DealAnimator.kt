@@ -39,6 +39,9 @@ object DealAnimator {
     private var rootRef: WeakReference<ViewGroup>? = null
     private var skipOnComplete: (() -> Unit)? = null
     private var talloneRefs: List<ImageView> = emptyList()
+    /** Called when each ghost deck lands on its tallone (index 0..3). Used by GameActivity
+     *  to reveal the deck badge at the right moment during the New Game intro. */
+    private var onTalloneLandedCallback: ((Int) -> Unit)? = null
 
     enum class ShuffleStyle {
         RIFFLE, CUT, SPIN, BOUNCE, WAVE, FLIP, TUMBLE, PULSE, TOSS, FAN
@@ -53,13 +56,15 @@ object DealAnimator {
         backDrawable: Drawable?,
         handler: Handler,
         onComplete: () -> Unit,
+        onTalloneLanded: ((Int) -> Unit)? = null,
         style: ShuffleStyle = ShuffleStyle.values().random()
     ) {
         reset()
-        handlerRef     = handler
-        rootRef        = WeakReference(root)
-        skipOnComplete = onComplete
-        talloneRefs    = talloneViews
+        handlerRef              = handler
+        rootRef                 = WeakReference(root)
+        skipOnComplete          = onComplete
+        onTalloneLandedCallback = onTalloneLanded
+        talloneRefs             = talloneViews
         hideTalloni()
 
         playStyle(style, root, talloneViews, backDrawable, handler) {
@@ -118,9 +123,10 @@ object DealAnimator {
         restoreTalloni()
         talloneRefs = emptyList()
         val cb = skipOnComplete
-        skipOnComplete = null
-        handlerRef = null
-        rootRef    = null
+        skipOnComplete          = null
+        onTalloneLandedCallback = null
+        handlerRef              = null
+        rootRef                 = null
         cb?.invoke()
     }
 
@@ -356,10 +362,11 @@ object DealAnimator {
         ghostViews.forEach { r?.removeView(it) }
         ghostViews.clear()
         restoreTalloni()
-        talloneRefs    = emptyList()
-        handlerRef     = null
-        rootRef        = null
-        skipOnComplete = null
+        talloneRefs             = emptyList()
+        handlerRef              = null
+        rootRef                 = null
+        skipOnComplete          = null
+        onTalloneLandedCallback = null
     }
 
     private fun makeGhost(
@@ -882,6 +889,7 @@ object DealAnimator {
                 ) {
                     // Reveal runs in parallel — we fire onLanded right away so the cascade can chain.
                     revealTallone(tallone, style)
+                    onTalloneLandedCallback?.invoke(index)
                     landedCount++
                     if (landedCount == total) {
                         currentRoot.removeView(centralGhost)
@@ -945,10 +953,11 @@ object DealAnimator {
         ghostViews.clear()
         pendingRunnables.clear()
         riffleAnims.clear()
-        talloneRefs    = emptyList()
-        handlerRef     = null
-        rootRef        = null
-        skipOnComplete = null
+        talloneRefs             = emptyList()
+        handlerRef              = null
+        rootRef                 = null
+        skipOnComplete          = null
+        onTalloneLandedCallback = null
     }
 
     /**
