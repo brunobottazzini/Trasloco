@@ -34,6 +34,8 @@ class SplashActivity : AppCompatActivity() {
     private val skipEnableDelayMs = 500L
     private val totalDurationMs = 3200L
 
+    private var soundEnabled: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,6 +54,7 @@ class SplashActivity : AppCompatActivity() {
         val settings = SettingsHandler(applicationContext)
         val bg = settings.readValue(Configuration.BACKGROUND.value) ?: "bordeaux"
         val cardBack = settings.readValue(Configuration.CARD_BACK.value) ?: "bg2"
+        soundEnabled = settings.readValue(Configuration.SOUND_ENABLED.value) != "disabled"
 
         val bgDrawable = ResourceUtils.getDrawableByName(resources, packageName, bg)
         findViewById<View>(R.id.splashRoot).background = ContextCompat.getDrawable(this, bgDrawable)
@@ -78,8 +81,10 @@ class SplashActivity : AppCompatActivity() {
         // Card animation starts at 1200ms — schedule the existing shuffle sound + Phase 1
         handler.postDelayed({
             try {
-                mediaPlayer = MediaPlayer.create(this, R.raw.shuffle)
-                mediaPlayer?.start()
+                if (soundEnabled) {
+                    mediaPlayer = MediaPlayer.create(this, R.raw.shuffle)
+                    mediaPlayer?.start()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

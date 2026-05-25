@@ -162,7 +162,20 @@
       "Bash(chmod +x /tmp/verify_ja.sh)",
       "Bash(/tmp/verify_ja.sh)",
       "Bash(./gradlew testDebugUnitTest --tests \"com.bottazzini.trasloco.*\")",
-      "Bash(./gradlew assembleDebug --quiet)"
+      "Bash(./gradlew assembleDebug --quiet)",
+      "Read(//Users/bottazzini/.claude/plugins/**)",
+      "Read(//Users/bottazzini/**)",
+      "Bash(python3 -m http.server 54210)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:54210/stack-indicator.html)",
+      "Bash(echo \"pid=$!\")",
+      "Bash(./gradlew :app:compileDebugKotlin)",
+      "Bash(sed -n '505,511p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)",
+      "Bash(sed -n '560,565p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(sed -n '224,232p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)",
+      "Bash(sed -n '247,254p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)",
+      "Bash(sed -n '374,381p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)",
+      "Bash(sed -n '1549,1556p' app/src/main/java/com/bottazzini/trasloco/GameActivity.kt)"
     ]
   }
 }
